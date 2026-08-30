@@ -15,7 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ashiquepj.dev"),
+  metadataBase: new URL("https://ashiquedev.netlify.app"),
   title: "Ashique PJ — Frontend Developer | React.js & Next.js Specialist",
   description:
     "Frontend Developer with 5+ years of experience building high-performance web applications using React.js, Next.js, and TypeScript. Based in Dubai, UAE.",
@@ -56,7 +56,7 @@ const jsonLd = {
   jobTitle: "Frontend Developer",
   description:
     "Frontend Developer with 5+ years of experience building high-performance web applications using React.js, Next.js, and TypeScript.",
-  url: "https://ashiquepj.dev",
+  url: "https://ashiquedev.netlify.app",
   email: "ashiquejabbar007@gmail.com",
   telephone: "+971505619899",
   address: {
