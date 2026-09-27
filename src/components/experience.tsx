@@ -1,90 +1,106 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { experiences } from "@/lib/data";
-import { Briefcase, MapPin, Calendar } from "lucide-react";
 import SectionHeading from "@/components/section-heading";
 
-export default function Experience() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+const VISIBLE_HIGHLIGHTS = 4;
+
+function Role({ exp }: { exp: (typeof experiences)[number] }) {
+  const [expanded, setExpanded] = useState(false);
+  const extra = exp.highlights.length - VISIBLE_HIGHLIGHTS;
+  const listId = `${exp.company}-highlights`.replace(/\W+/g, "-").toLowerCase();
 
   return (
-    <section id="experience" className="relative py-24 md:py-32">
-      <div className="section-container" ref={ref}>
-        <SectionHeading title="Work" highlight="Experience" />
+    <li className="relative pl-8 sm:pl-10 pb-14 last:pb-0">
+      {/* The dot fills as the scroll-drawn line reaches this job */}
+      <span
+        className="absolute left-0 top-2 size-[11px] -translate-x-[5px] rounded-full bg-background border-2 border-primary overflow-hidden"
+        aria-hidden="true"
+      >
+        <motion.span
+          className="block size-full rounded-full bg-primary"
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true, margin: "0px 0px -40% 0px" }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        />
+      </span>
+      <p className="text-sm text-muted-foreground tabular-nums">
+        {exp.period}, {exp.location}
+      </p>
+      <h3 className="mt-1 text-xl font-semibold">
+        {exp.title}, <span className="font-normal">{exp.company}</span>
+      </h3>
 
-        {/* Timeline */}
-        <div className="relative max-w-4xl mx-auto">
-          {/* Timeline line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-accent/30 to-transparent md:-translate-x-px" />
+      <ul id={listId} className="mt-4 space-y-2.5 max-w-[68ch] text-muted-foreground">
+        {exp.highlights.slice(0, VISIBLE_HIGHLIGHTS).map((h) => (
+          <li key={h} className="pl-4 relative before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
+            {h}
+          </li>
+        ))}
+        <AnimatePresence initial={false}>
+          {expanded &&
+            exp.highlights.slice(VISIBLE_HIGHLIGHTS).map((h, i) => (
+              <motion.li
+                key={h}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25, delay: i * 0.03 }}
+                className="pl-4 relative overflow-hidden before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
+              >
+                {h}
+              </motion.li>
+            ))}
+        </AnimatePresence>
+      </ul>
 
-          {experiences.map((exp, i) => (
-            <motion.div
-              key={exp.title + exp.company}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-              className={`relative flex flex-col md:flex-row gap-4 md:gap-8 mb-12 last:mb-0 ${
-                i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              }`}
-            >
-              {/* Timeline dot */}
-              <div className="absolute left-4 md:left-1/2 top-6 w-3 h-3 -translate-x-1.5 md:-translate-x-1.5">
-                <div className="w-full h-full rounded-full bg-primary glow-blue" />
-                <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30" />
-              </div>
+      {extra > 0 && (
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-controls={listId}
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-4 text-sm font-medium text-primary hover:underline underline-offset-4"
+        >
+          {expanded ? "Show fewer" : `Show all ${exp.highlights.length}`}
+        </button>
+      )}
+    </li>
+  );
+}
 
-              {/* Spacer for layout */}
-              <div className="hidden md:block md:w-1/2" />
+export default function Experience() {
+  const ref = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 75%", "end 60%"],
+  });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+  const reduceMotion = useReducedMotion();
 
-              {/* Card */}
-              <div className="ml-10 md:ml-0 md:w-1/2">
-                <div className="group glass rounded-2xl p-6 hover:border-primary/30 transition-all duration-300">
-                  {/* Title */}
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5">
-                      <Briefcase size={16} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold font-[family-name:var(--font-heading)] text-foreground">
-                        {exp.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground font-medium">
-                        {exp.company}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Meta */}
-                  <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={12} className="text-accent" />
-                      {exp.period}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={12} className="text-accent" />
-                      {exp.location}
-                    </span>
-                  </div>
-
-                  {/* Highlights */}
-                  <ul className="space-y-2">
-                    {exp.highlights.map((highlight, j) => (
-                      <li
-                        key={j}
-                        className="flex items-start gap-2 text-sm text-muted-foreground"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0 mt-1.5" />
-                        {highlight}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+  return (
+    <section id="experience" aria-labelledby="experience-title" className="py-20 md:py-28 border-t border-border">
+      <div className="section-container lg:grid lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-28">
+            <SectionHeading id="experience-title" title="Where I’ve worked" />
+          </div>
+        </div>
+        <div className="relative ml-1 lg:col-span-8">
+          <div className="absolute left-0 top-2 bottom-0 w-px bg-border" aria-hidden="true" />
+          <motion.div
+            className="absolute left-0 top-2 bottom-0 w-px bg-primary origin-top"
+            style={{ scaleY: reduceMotion ? 1 : progress }}
+            aria-hidden="true"
+          />
+          <ol ref={ref} className="relative">
+            {experiences.map((exp) => (
+              <Role key={exp.title + exp.company} exp={exp} />
+            ))}
+          </ol>
         </div>
       </div>
     </section>

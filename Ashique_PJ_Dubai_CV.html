@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashique PJ - Frontend Developer Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Segoe UI', Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.5;
+            color: #222;
+            background: #d5d5d5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .cv-page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20mm 20mm 16mm 20mm;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a237e;
+            margin-bottom: 12px;
+        }
+
+        .header-info {
+        }
+
+        .header-info h1 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 20pt;
+            font-weight: 800;
+            color: #1a237e;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+
+        .header-info .role {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 10.5pt;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .header-info .contact {
+            font-size: 8.5pt;
+            color: #333;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header-info .contact a {
+            color: #1a237e;
+            text-decoration: none;
+        }
+
+        .header-info .contact a:hover {
+            text-decoration: underline;
+        }
+
+        .contact .dot {
+            margin: 0 8px;
+            color: #999;
+            font-size: 8.5pt;
+        }
+
+        .header-details {
+            font-size: 8pt;
+            color: #555;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .header-details .tag {
+            background: #e8eaf6;
+            color: #1a237e;
+            padding: 1px 8px;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 7.5pt;
+        }
+
+        .header-details .dot {
+            margin: 0 8px;
+            color: #aaa;
+            font-size: 7pt;
+        }
+
+        /* ========== SECTIONS ========== */
+        .section {
+            margin-top: 11px;
+        }
+
+        .section-heading {
+            font-family: 'Raleway', sans-serif;
+            font-size: 9.5pt;
+            font-weight: 700;
+            color: #1a237e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1.5px solid #1a237e;
+            padding-bottom: 2px;
+            margin-bottom: 6px;
+        }
+
+        /* ========== SUMMARY ========== */
+        .summary {
+            font-size: 9pt;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ========== SKILLS ========== */
+        .skills-list {
+            font-size: 9pt;
+            line-height: 1.7;
+        }
+
+        .skills-list .skill-row {
+            display: flex;
+            margin-bottom: 1px;
+        }
+
+        .skills-list .label {
+            width: 120px;
+            min-width: 120px;
+            font-weight: 600;
+            color: #1a237e;
+            text-align: right;
+            padding-right: 12px;
+            white-space: nowrap;
+        }
+
+        .skills-list .value {
+            color: #333;
+            flex: 1;
+        }
+
+        /* ========== EXPERIENCE ========== */
+        .job {
+            margin-bottom: 12px;
+        }
+
+        .job-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .job-title {
+            font-size: 10pt;
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .job-period {
+            font-size: 8.5pt;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .job-company {
+            font-size: 9pt;
+            color: #37474f;
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+
+        .job ul {
+            padding-left: 15px;
+            font-size: 9pt;
+            color: #333;
+        }
+
+        .job ul li {
+            margin-bottom: 1.5px;
+            line-height: 1.45;
+        }
+
+        /* ========== PROJECTS ========== */
+        .project {
+            margin-bottom: 8px;
+        }
+
+        .project-header {
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .project-header a {
+            font-weight: 400;
+            font-size: 8pt;
+            color: #1a237e;
+            text-decoration: none;
+        }
+
+        .project-stack {
+            font-size: 8pt;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 1px;
+        }
+
+        .project ul {
+            padding-left: 15px;
+            font-size: 9pt;
+            color: #333;
+        }
+
+        .project ul li {
+            margin-bottom: 1px;
+            line-height: 1.4;
+        }
+
+        /* ========== EDUCATION ========== */
+        .edu {
+            margin-bottom: 6px;
+        }
+
+        .edu-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .edu-name {
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .edu-year {
+            font-size: 8.5pt;
+            color: #666;
+        }
+
+        .edu-school {
+            font-size: 9pt;
+            color: #555;
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            body { background: #fff; }
+            .cv-page {
+                margin: 0;
+                box-shadow: none;
+                padding: 15mm 18mm 12mm 18mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-page">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-info">
+                <h1>ASHIQUE P J</h1>
+                <div class="role">Frontend Developer — React.js and Next.js Specialist</div>
+                <div class="contact">
+                    <span style="color: #1a237e;">Dubai, United Arab Emirates</span>
+                    <span class="dot">|</span>
+                    <a href="tel:+971505619899">+971 50 561 9899</a>
+                    <span class="dot">|</span>
+                    <a href="mailto:ashiquejabbar007@gmail.com">ashiquejabbar007@gmail.com</a>
+                </div>
+                <div class="contact" style="margin-top: 2px;">
+                    <a href="https://www.linkedin.com/in/ashique-pj/">linkedin.com/in/ashique-pj</a>
+                    <span class="dot">|</span>
+                    <a href="https://ashiquedev.netlify.app/">ashiquedev.netlify.app</a>
+                    <span class="dot">|</span>
+                    <span style="font-weight: 600; color: #1a237e;">Immediate Joiner</span>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- PROFESSIONAL SUMMARY -->
+        <section class="section">
+            <h2 class="section-heading">Professional Summary</h2>
+            <p class="summary">
+                Frontend Developer with 5+ years of experience specializing in React.js, Next.js, and TypeScript. Built enterprise-grade platforms for government and private sectors across India and the Middle East, including RBAC systems with biometric verification, AI-powered real estate platforms, and cross-platform networking apps. Proven ability to architect scalable frontend solutions for complex, multi-role workflows.
+            </p>
+        </section>
+
+        <!-- TECHNICAL SKILLS -->
+        <section class="section">
+            <h2 class="section-heading">Technical Skills</h2>
+            <div class="skills-list">
+                <div class="skill-row">
+                    <span class="label">Frontend</span>
+                    <span class="value">React.js, Next.js (SSR/SSG), Micro Frontends (Module Federation), React Native, TypeScript, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, shadcn/ui, Material-UI, Ant Design, Mantine</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">State Management</span>
+                    <span class="value">Zustand, Redux, Context API, TanStack Query, React Router, Axios, JWT Authentication</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">Testing</span>
+                    <span class="value">Playwright, End-to-End Testing, Cross-Browser Testing</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">Backend</span>
+                    <span class="value">Node.js, Python, Django, RESTful APIs, PostgreSQL, MongoDB, MySQL, Firebase</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">DevOps and Tools</span>
+                    <span class="value">Git, GitHub, Docker, AWS (EC2, S3), GitHub Actions, CI/CD Pipelines, WebSockets</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">UI/UX</span>
+                    <span class="value">Responsive Design, Semantic HTML, WCAG Accessibility, ARIA Labels, Cross-Browser Compatibility</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROFESSIONAL EXPERIENCE -->
+        <section class="section">
+            <h2 class="section-heading">Professional Experience</h2>
+
+            <div class="job">
+                <div class="job-top">
+                    <span class="job-title">React Developer</span>
+                    <span class="job-period">Sep 2022 – Apr 2026</span>
+                </div>
+                <div class="job-company">Floges Software Solutions, India</div>
+                <ul>
+                    <li>Engineered reusable component libraries with React.js and TypeScript using Material-UI, Tailwind CSS, and shadcn/ui across 5+ client projects, improving UI development speed and ensuring design consistency.</li>
+                    <li>Implemented Micro Frontend architecture using Webpack Module Federation to decompose monolithic applications into independently deployable modules, enabling parallel team development and faster release cycles.</li>
+                    <li>Improved page load performance through code splitting, lazy loading, memoization, and Webpack optimization, reducing initial bundle size and improving Core Web Vitals.</li>
+                    <li>Architected RBAC systems supporting up to 11 user roles with biometric verification (iris, fingerprint, facial recognition) and multi-level approval workflows for government document management platforms serving 500+ daily users.</li>
+                    <li>Integrated RESTful API endpoints with optimistic UI updates, TanStack Query caching, and real-time WebSocket features for live notifications, chat, and collaborative workflows.</li>
+                    <li>Configured CI/CD pipelines using GitHub Actions, automating testing and deployment for faster, reliable releases.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-top">
+                    <span class="job-title">Python Developer</span>
+                    <span class="job-period">Mar 2021 – Aug 2022</span>
+                </div>
+                <div class="job-company">Infox Technologies, India</div>
+                <ul>
+                    <li>Developed and maintained RESTful APIs using Python and Django for various web applications.</li>
+                    <li>Designed and optimized MySQL database schemas, improving query response times and ensuring data integrity at scale.</li>
+                    <li>Delivered frontend features using React.js, bridging full-stack capabilities and accelerating feature delivery across projects.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- KEY PROJECTS -->
+        <section class="section">
+            <h2 class="section-heading">Projects</h2>
+
+
+            <div class="project">
+                <div class="project-header">kyna.ai - AI Property Finder <a href="https://kyna.ai">(kyna.ai)</a></div>
+                <div class="project-stack">Next.js (SSR/SSG), TypeScript, Tailwind CSS, OpenAI API</div>
+                <ul>
+                    <li>Developed AI-driven property search platform for Dubai real estate market with intelligent recommendation engine and SEO-optimized server-side rendering.</li>
+                    <li>Integrated property listing APIs and lead management system for channel partners, enabling real-time property matching for agents.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">Orbin - Professional Networking Platform <a href="https://theorbin.com">(theorbin.com)</a></div>
+                <div class="project-stack">Next.js, React Native, TypeScript, WebSockets, TanStack Query</div>
+                <ul>
+                    <li>Developed LinkedIn-style networking platform with consultation booking, real-time messaging, and push notifications across web and mobile.</li>
+                    <li>Optimized data fetching with TanStack Query caching and WebSocket-based real-time notifications, eliminating unnecessary API calls and improving app responsiveness.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">IDMS - Government Document Management System</div>
+                <div class="project-stack">React.js, TypeScript, Zustand, Material-UI, Biometric SDKs | Middle East Govt. Project</div>
+                <ul>
+                    <li>Architected RBAC with 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows for enterprise-scale government operations.</li>
+                    <li>Developed secure UI components for document handling, audit trail tracking, and role-based data visibility.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">Sinyar - Access Management System</div>
+                <div class="project-stack">React.js, TypeScript, Zustand, Material-UI | Abu Dhabi, UAE</div>
+                <ul>
+                    <li>Designed RBAC with 5 user roles for company and employee workflow management with secure, multi-level approval processes.</li>
+                    <li>Built dynamic forms and approval dashboards with role-based data visibility and audit trail tracking for compliance requirements.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">Virtual Optical Store - AI-Powered Eyewear E-Commerce</div>
+                <div class="project-stack">React.js, Node.js, TypeScript, MediaPipe FaceMesh, AI/ML</div>
+                <ul>
+                    <li>Developed full-featured e-commerce platform with AI-powered Virtual Try-On using MediaPipe FaceMesh for real-time glasses fitting visualization.</li>
+                    <li>Implemented role-based access for 4 user types (Admin, Optician, Salesman, Customer) with responsive cross-device UI.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section class="section">
+            <h2 class="section-heading">Education &amp; Certifications</h2>
+
+            <div class="edu">
+                <div class="edu-top">
+                    <span class="edu-name">Bachelor of Computer Applications (BCA)</span>
+                    <span class="edu-year">2017 – 2020</span>
+                </div>
+                <div class="edu-school">MG University, Kerala, India</div>
+            </div>
+
+            <div class="edu">
+                <div class="edu-top">
+                    <span class="edu-name">Certified Python Developer</span>
+                    <span class="edu-year">2021</span>
+                </div>
+                <div class="edu-school">Nordic Academy</div>
+            </div>
+        </section>
+
+        <!-- ADDITIONAL INFORMATION -->
+        <section class="section">
+            <h2 class="section-heading">Additional Information</h2>
+            <div style="font-size: 9pt; color: #333; line-height: 1.7;">
+                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Nationality</span> Indian</div>
+                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Visa Status</span> Visit Visa — Immediate Joiner</div>
+                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Languages</span> English, Malayalam (Native)</div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

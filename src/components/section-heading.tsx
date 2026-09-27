@@ -1,29 +1,17 @@
-"use client";
-
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-
 interface SectionHeadingProps {
   title: string;
-  highlight: string;
+  id?: string;
 }
 
-export default function SectionHeading({ title, highlight }: SectionHeadingProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
+// Same motion as the hero headline, driven by scroll in CSS (globals.css .scroll-rise),
+// so the heading is visible without JS and simply static where scroll timelines aren't supported
+export default function SectionHeading({ title, id }: SectionHeadingProps) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-16"
+    <h2
+      id={id}
+      className="text-[2rem] sm:text-[2.5rem] leading-tight font-semibold tracking-[-0.01em] mb-10 overflow-hidden pb-[0.08em]"
     >
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-[family-name:var(--font-heading)] mb-4">
-        {title} <span className="gradient-text">{highlight}</span>
-      </h2>
-      <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full mx-auto" />
-    </motion.div>
+      <span className="block scroll-rise">{title}</span>
+    </h2>
   );
 }

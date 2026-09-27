@@ -1,113 +1,119 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Plus } from "lucide-react";
 import { projects } from "@/lib/data";
-import { Badge } from "@/components/ui/badge";
-import { ExternalLink, ArrowUpRight } from "lucide-react";
 import SectionHeading from "@/components/section-heading";
 
-const projectGradients = [
-  "from-blue-500/10 to-cyan-500/10",
-  "from-purple-500/10 to-pink-500/10",
-  "from-emerald-500/10 to-teal-500/10",
-  "from-orange-500/10 to-amber-500/10",
-  "from-rose-500/10 to-red-500/10",
-];
-
 export default function Projects() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="projects" className="relative py-24 md:py-32">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/3 to-transparent" />
+    <section id="projects" aria-labelledby="projects-title" className="py-20 md:py-28 border-t border-border">
+      <div className="section-container">
+        <SectionHeading id="projects-title" title="Selected projects" />
 
-      <div className="section-container relative" ref={ref}>
-        <SectionHeading title="Featured" highlight="Projects" />
+        <ul className="border-t border-border">
+          {projects.map((project, i) => {
+            const isOpen = open === i;
+            const [name, tagline] = project.name.split(" — ");
+            const panelId = `project-panel-${i}`;
+            const buttonId = `project-button-${i}`;
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, i) => (
-            <motion.div
-              key={project.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-              className="group relative"
-            >
-              {/* Hover glow */}
-              <div
-                className={`absolute -inset-1 bg-gradient-to-br ${projectGradients[i % projectGradients.length]} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-              />
-
-              <div className="relative glass rounded-2xl p-6 h-full flex flex-col hover:border-primary/30 transition-all duration-300">
-                {/* Header */}
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-base font-semibold font-[family-name:var(--font-heading)] text-foreground leading-tight pr-2">
-                    {project.name}
-                  </h3>
-                  {project.url && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0 p-1.5 rounded-lg hover:bg-white/10 text-muted-foreground hover:text-primary transition-all duration-200"
-                      aria-label={`Visit ${project.name}`}
-                    >
-                      <ArrowUpRight size={16} />
-                    </a>
-                  )}
-                </div>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed flex-grow">
-                  {project.description}
-                </p>
-
-                {/* Highlights */}
-                <ul className="space-y-1.5 mb-4">
-                  {project.highlights.map((h, j) => (
-                    <li
-                      key={j}
-                      className="flex items-start gap-2 text-xs text-muted-foreground/80"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-accent/60 shrink-0 mt-1.5" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-white/5">
-                  {project.stack.map((tech) => (
-                    <Badge
-                      key={tech}
-                      variant="secondary"
-                      className="px-2 py-0.5 text-[10px] font-medium bg-white/5 border border-white/10"
-                    >
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-
-                {/* Live link */}
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 mt-4 text-xs text-primary hover:text-accent transition-colors font-medium"
+            return (
+              <li key={project.name} className="border-b border-border">
+                <h3 className="flex items-stretch">
+                  <button
+                    id={buttonId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="group flex-1 flex items-center gap-4 py-5 text-left"
                   >
-                    <ExternalLink size={12} />
-                    View Live
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                    <span className="flex-1 min-w-0 sm:flex sm:items-baseline sm:gap-4">
+                      <span className="block text-xl sm:text-2xl font-semibold group-hover:text-primary transition-colors">
+                        {name}
+                      </span>
+                      {tagline && (
+                        <span className="block text-muted-foreground font-sans text-base font-normal">
+                          {tagline}
+                        </span>
+                      )}
+                    </span>
+                    <motion.span
+                      animate={{ rotate: isOpen ? 45 : 0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                      className="shrink-0 text-muted-foreground group-hover:text-primary"
+                      aria-hidden="true"
+                    >
+                      <Plus size={22} />
+                    </motion.span>
+                  </button>
+                </h3>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={panelId}
+                      role="region"
+                      aria-labelledby={buttonId}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-7 grid gap-6 md:grid-cols-12">
+                        <div className="md:col-span-7 space-y-3 text-muted-foreground max-w-[64ch]">
+                          <p className="text-foreground">{project.description}</p>
+                          <ul className="space-y-2">
+                            {project.highlights.map((h) => (
+                              <li
+                                key={h}
+                                className="pl-4 relative before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
+                              >
+                                {h}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="md:col-span-5 md:pl-6 md:border-l border-border space-y-4 text-sm">
+                          {project.context && (
+                            <div>
+                              <p className="text-muted-foreground">Client</p>
+                              <p className="mt-1">{project.context}</p>
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-muted-foreground">Built with</p>
+                            <p className="mt-1">{project.stack.join(", ")}</p>
+                          </div>
+                          {project.url ? (
+                            <a
+                              href={project.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 font-medium text-primary hover:underline underline-offset-4"
+                            >
+                              Visit {new URL(project.url).hostname}
+                              <ArrowUpRight size={16} aria-hidden="true" />
+                            </a>
+                          ) : (
+                            <p className="text-muted-foreground">
+                              Private client system, not publicly available.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
