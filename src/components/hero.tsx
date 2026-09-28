@@ -3,6 +3,7 @@ import { Download, Mail } from "lucide-react";
 import { siWhatsapp, type SimpleIcon } from "simple-icons";
 import { personalInfo, contactInfo } from "@/lib/data";
 import StackGrid from "@/components/stack-grid";
+import NamePronunciation from "@/components/name-pronunciation";
 
 const proofPoints = [
   { value: "5+", label: "years in React and Next.js" },
@@ -65,7 +66,8 @@ export default function Hero() {
             ))}
           </h1>
 
-          <Reveal delay={0.4} className="mt-7 flex items-center gap-4">
+          {/* z-10 keeps the voice menu above the animated paragraphs below, which form their own layers */}
+          <Reveal delay={0.4} className="relative z-10 mt-7 flex items-center gap-4">
             <Image
               src={personalInfo.photo}
               alt=""
@@ -75,7 +77,11 @@ export default function Hero() {
               className="size-14 rounded-full object-cover object-top border border-border"
             />
             <div>
-              <p className="font-medium text-foreground">{personalInfo.name}</p>
+              {/* div, not p: the voice picker inside holds a menu, which a <p> can't contain */}
+              <div className="flex items-center gap-1 font-medium text-foreground">
+                {personalInfo.name}
+                <NamePronunciation name={personalInfo.name} />
+              </div>
               <p className="text-muted-foreground text-sm">
                 Frontend developer in Dubai, UAE. React, Next.js and AI integration
               </p>
@@ -109,7 +115,7 @@ export default function Hero() {
             </a>
             <a
               href="/Ashique_PJ_Dubai_CV.pdf"
-              download
+              download="ashique_pj_cv.pdf"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-foreground/20 text-foreground font-medium hover:border-foreground/50 transition-colors"
             >
               <Download size={17} aria-hidden="true" />

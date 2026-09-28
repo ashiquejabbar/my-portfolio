@@ -67,7 +67,7 @@ export default function Contact() {
             </button>
             <a
               href="/Ashique_PJ_Dubai_CV.pdf"
-              download
+              download="ashique_pj_cv.pdf"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-panel-foreground/30 font-medium hover:border-panel-foreground/70 transition-colors focus-visible:outline-panel-accent"
             >
               <Download size={17} aria-hidden="true" />

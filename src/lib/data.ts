@@ -1,4 +1,4 @@
-// Content mirrors Ashique_PJ_Dubai_CV (latest CV). AI Integration is website-only.
+// Content mirrors Ashique_PJ_Dubai_CV (latest CV). Claude and Gemini under AI Integration are website-only.
 
 export interface ContactInfo {
   location: string;
@@ -41,7 +41,7 @@ export const personalInfo = {
   role: "Frontend Developer",
   specialization: "React.js and Next.js Specialist",
   summary:
-    "Frontend Developer with 5+ years of experience specializing in React.js, Next.js, and TypeScript. Built enterprise-grade platforms for government and private sectors across India and the Middle East, including RBAC systems with biometric verification, AI-powered real estate platforms, and cross-platform networking apps. Proven ability to architect scalable frontend solutions for complex, multi-role workflows.",
+    "Frontend Developer with 5+ years of software development experience, including 3.5+ years specializing in React.js, Next.js, and TypeScript. Delivered enterprise platforms for government and private-sector clients in the UAE and Middle East, with bilingual Arabic/English (RTL) interfaces, REST API integration, secure JWT/OAuth authentication, and role-based access control. Built the user interface for an 11-role government document platform with iris, fingerprint, and facial recognition, used by 500+ people daily.",
   photo: "/Ashique.JPG",
 } as const;
 
@@ -59,21 +59,21 @@ export const skills: Skill[] = [
     items: [
       "React.js",
       "Next.js (SSR/SSG)",
-      "Micro Frontends (Module Federation)",
-      "React Native",
       "TypeScript",
       "JavaScript (ES6+)",
       "HTML5",
       "CSS3",
-      "Tailwind CSS",
-      "shadcn/ui",
-      "Material-UI",
-      "Ant Design",
-      "Mantine",
+      "React Native",
+      "Micro Frontends",
+      "Module Federation",
     ],
   },
   {
-    category: "State Management",
+    category: "UI Libraries",
+    items: ["Tailwind CSS", "shadcn/ui", "Material-UI", "Ant Design", "Mantine"],
+  },
+  {
+    category: "State and Data",
     items: [
       "Zustand",
       "Redux",
@@ -81,7 +81,17 @@ export const skills: Skill[] = [
       "TanStack Query",
       "React Router",
       "Axios",
+      "RESTful APIs",
+      "WebSockets",
+    ],
+  },
+  {
+    category: "Security",
+    items: [
       "JWT Authentication",
+      "OAuth 2.0",
+      "Role-Based Access Control (RBAC)",
+      "Biometric SDK Integration",
     ],
   },
   {
@@ -91,12 +101,7 @@ export const skills: Skill[] = [
       "Claude API (Anthropic)",
       "Google Gemini API",
       "MediaPipe FaceMesh",
-      "AI-powered search & recommendations",
     ],
-  },
-  {
-    category: "Testing",
-    items: ["Playwright", "End-to-End Testing", "Cross-Browser Testing"],
   },
   {
     category: "Backend",
@@ -104,11 +109,11 @@ export const skills: Skill[] = [
       "Node.js",
       "Python",
       "Django",
-      "RESTful APIs",
       "PostgreSQL",
       "MongoDB",
       "MySQL",
       "Firebase",
+      "Supabase",
     ],
   },
   {
@@ -116,21 +121,25 @@ export const skills: Skill[] = [
     items: [
       "Git",
       "GitHub",
-      "Docker",
-      "AWS (EC2, S3)",
       "GitHub Actions",
       "CI/CD Pipelines",
-      "WebSockets",
+      "Docker",
+      "AWS (EC2)",
+      "Webpack",
     ],
+  },
+  {
+    category: "Testing",
+    items: ["Playwright", "End-to-End Testing", "Cross-Browser Testing"],
   },
   {
     category: "UI/UX",
     items: [
+      "Arabic/English RTL Layouts",
       "Responsive Design",
+      "WCAG/ARIA Accessibility",
       "Semantic HTML",
-      "WCAG Accessibility",
-      "ARIA Labels",
-      "Cross-Browser Compatibility",
+      "SEO",
     ],
   },
 ];
@@ -139,15 +148,17 @@ export const experiences: Experience[] = [
   {
     title: "React Developer",
     company: "Floges Software Solutions",
-    location: "India",
+    location: "India (clients in UAE and Middle East)",
     period: "Sep 2022 – Apr 2026",
     highlights: [
-      "Engineered reusable component libraries with React.js and TypeScript using Material-UI, Tailwind CSS, and shadcn/ui across 5+ client projects, improving UI development speed and ensuring design consistency.",
-      "Implemented Micro Frontend architecture using Webpack Module Federation to decompose monolithic applications into independently deployable modules, enabling parallel team development and faster release cycles.",
-      "Improved page load performance through code splitting, lazy loading, memoization, and Webpack optimization, reducing initial bundle size and improving Core Web Vitals.",
-      "Architected RBAC systems supporting up to 11 user roles with biometric verification (iris, fingerprint, facial recognition) and multi-level approval workflows for government document management platforms serving 500+ daily users.",
-      "Integrated RESTful API endpoints with optimistic UI updates, TanStack Query caching, and real-time WebSocket features for live notifications, chat, and collaborative workflows.",
-      "Configured CI/CD pipelines using GitHub Actions, automating testing and deployment for faster, reliable releases.",
+      "Architected RBAC for government document management platforms with up to 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows, serving 500+ daily users.",
+      "Built bilingual Arabic/English interfaces with full RTL/LTR layout switching for UAE government and enterprise clients.",
+      "Created reusable component libraries with React.js and TypeScript (Material-UI, Tailwind CSS, shadcn/ui) shared across 5+ client projects, speeding up UI delivery and keeping design consistent.",
+      "Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.",
+      "Optimized page load performance using code splitting, lazy loading, memoization, and Webpack tuning, reducing initial bundle size and improving Core Web Vitals.",
+      "Integrated authentication APIs using JWT, OAuth 2.0, and Supabase, handling login flows, protected routes, and role-based UI access.",
+      "Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications, chat, and collaborative workflows.",
+      "Set up CI/CD pipelines with GitHub Actions to automate testing and deployment.",
     ],
   },
   {
@@ -156,42 +167,22 @@ export const experiences: Experience[] = [
     location: "India",
     period: "Mar 2021 – Aug 2022",
     highlights: [
-      "Developed and maintained RESTful APIs using Python and Django for various web applications.",
-      "Designed and optimized MySQL database schemas, improving query response times and ensuring data integrity at scale.",
-      "Delivered frontend features using React.js, bridging full-stack capabilities and accelerating feature delivery across projects.",
+      "Developed and maintained RESTful APIs with Python and Django for client web applications.",
+      "Designed and optimized MySQL schemas and queries, improving query response times and data integrity.",
+      "Shipped frontend features with React.js, working across the full stack to speed up feature delivery.",
     ],
   },
 ];
 
 export const projects: Project[] = [
   {
-    name: "kyna.ai — AI Property Finder",
-    description: "AI-driven property search for the Dubai real estate market.",
-    stack: ["Next.js (SSR/SSG)", "TypeScript", "Tailwind CSS", "OpenAI API"],
-    highlights: [
-      "Developed AI-driven property search platform for Dubai real estate market with intelligent recommendation engine and SEO-optimized server-side rendering.",
-      "Integrated property listing APIs and lead management system for channel partners, enabling real-time property matching for agents.",
-    ],
-    url: "https://kyna.ai",
-  },
-  {
-    name: "Orbin — Professional Networking Platform",
-    description: "LinkedIn-style networking platform across web and mobile.",
-    stack: ["Next.js", "React Native", "TypeScript", "WebSockets", "TanStack Query"],
-    highlights: [
-      "Developed LinkedIn-style networking platform with consultation booking, real-time messaging, and push notifications across web and mobile.",
-      "Optimized data fetching with TanStack Query caching and WebSocket-based real-time notifications, eliminating unnecessary API calls and improving app responsiveness.",
-    ],
-    url: "https://theorbin.com",
-  },
-  {
     name: "IDMS — Government Document Management System",
-    description: "Enterprise-scale document management for government operations.",
+    description: "Bilingual document management for government operations.",
     context: "Middle East government project",
     stack: ["React.js", "TypeScript", "Zustand", "Material-UI", "Biometric SDKs"],
     highlights: [
-      "Architected RBAC with 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows for enterprise-scale government operations.",
-      "Developed secure UI components for document handling, audit trail tracking, and role-based data visibility.",
+      "Developed bilingual Arabic/English UI with RTL support for secure document handling and role-based data visibility.",
+      "Integrated iris, fingerprint, and facial recognition SDKs for identity verification.",
     ],
   },
   {
@@ -200,17 +191,38 @@ export const projects: Project[] = [
     context: "Abu Dhabi, UAE",
     stack: ["React.js", "TypeScript", "Zustand", "Material-UI"],
     highlights: [
-      "Designed RBAC with 5 user roles for company and employee workflow management with secure, multi-level approval processes.",
-      "Built dynamic forms and approval dashboards with role-based data visibility and audit trail tracking for compliance requirements.",
+      "Designed RBAC with 5 user roles for company and employee workflow management with multi-level approvals.",
+      "Built bilingual Arabic/English (RTL) dynamic forms and approval dashboards.",
     ],
+  },
+  {
+    name: "kyna.ai — AI Property Finder",
+    description: "AI-driven property search for the Dubai real estate market.",
+    context: "Dubai, UAE",
+    stack: ["Next.js (SSR/SSG)", "TypeScript", "Tailwind CSS", "OpenAI API"],
+    highlights: [
+      "Developed an AI-driven property search platform for the Dubai real estate market with an intelligent recommendation engine and SEO-optimized server-side rendering.",
+      "Integrated property listing APIs and a lead management system for channel partners, enabling real-time property matching for agents.",
+    ],
+    url: "https://kyna.ai",
+  },
+  {
+    name: "Orbin — Professional Networking Platform",
+    description: "LinkedIn-style networking platform across web and mobile.",
+    stack: ["Next.js", "React Native", "TypeScript", "WebSockets", "TanStack Query"],
+    highlights: [
+      "Built a LinkedIn-style networking platform for web and mobile with consultation booking, real-time messaging, and push notifications.",
+      "Reduced redundant API calls with TanStack Query caching and WebSocket-based notifications, improving app responsiveness.",
+    ],
+    url: "https://theorbin.com",
   },
   {
     name: "Virtual Optical Store — AI-Powered Eyewear E-Commerce",
     description: "Eyewear e-commerce with an AI-powered virtual try-on.",
-    stack: ["React.js", "Node.js", "TypeScript", "MediaPipe FaceMesh", "AI/ML"],
+    stack: ["React.js", "Node.js", "TypeScript", "MediaPipe FaceMesh"],
     highlights: [
-      "Developed full-featured e-commerce platform with AI-powered Virtual Try-On using MediaPipe FaceMesh for real-time glasses fitting visualization.",
-      "Implemented role-based access for 4 user types (Admin, Optician, Salesman, Customer) with responsive cross-device UI.",
+      "Developed an e-commerce platform with Virtual Try-On using MediaPipe FaceMesh for real-time glasses fitting.",
+      "Implemented role-based access for 4 user types (Admin, Optician, Salesman, Customer) with a responsive cross-device UI.",
     ],
   },
 ];
@@ -230,7 +242,7 @@ export const education: Education[] = [
 
 export const additionalInfo = {
   nationality: "Indian",
-  visaStatus: "Visit Visa — Immediate Joiner",
+  visaStatus: "UAE Visit Visa — Available to join immediately",
   languages: ["English", "Malayalam (Native)"],
 } as const;
 
