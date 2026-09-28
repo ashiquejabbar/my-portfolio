@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import MotionProvider from "@/components/motion-provider";
-import { themeInitScript } from "@/lib/theme";
+import { themeColors, themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#eef2f6",
+  themeColor: themeColors.dark,
 };
 
 const jsonLd = {
@@ -105,9 +105,11 @@ const jsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // data-theme is set by themeInitScript before hydration, so the server markup won't match it
+    // Dark by default (also without JS); themeInitScript swaps in a saved choice before hydration,
+    // so the server markup may not match it
     <html
       lang="en"
+      data-theme="dark"
       className={`${display.variable} ${body.variable} h-full antialiased`}
       suppressHydrationWarning
     >

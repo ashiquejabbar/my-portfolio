@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/data";
 import ThemeToggle from "@/components/theme-toggle";
+import IntroShowcase from "@/components/intro-showcase";
 
 const sectionIds = navLinks.map((link) => link.href.slice(1));
 
@@ -79,6 +80,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-1 md:ml-2">
+        <IntroShowcase />
         <ThemeToggle />
         <button
           type="button"

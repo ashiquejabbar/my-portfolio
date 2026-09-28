@@ -41,7 +41,7 @@ export const personalInfo = {
   role: "Frontend Developer",
   specialization: "React.js and Next.js Specialist",
   summary:
-    "Frontend Developer with 5+ years of software development experience, including 3.5+ years specializing in React.js, Next.js, and TypeScript. Delivered enterprise platforms for government and private-sector clients in the UAE and Middle East, with bilingual Arabic/English (RTL) interfaces, REST API integration, secure JWT/OAuth authentication, and role-based access control. Built the user interface for an 11-role government document platform with iris, fingerprint, and facial recognition, used by 500+ people daily.",
+    "Frontend Developer with 5+ years of experience specializing in React.js, Next.js, and TypeScript. Delivered enterprise platforms for government and private-sector clients in the UAE and Middle East, with bilingual Arabic/English (RTL) interfaces, REST API integration, secure JWT/OAuth authentication, and role-based access control. Built the user interface for an 11-role government document platform with iris, fingerprint, and facial recognition, used by 500+ people daily. Integrates AI into web applications using the OpenAI API, including AI-driven property search and recommendations for the Dubai market, and real-time virtual try-on with MediaPipe FaceMesh.",
   photo: "/Ashique.JPG",
 } as const;
 
@@ -167,9 +167,8 @@ export const experiences: Experience[] = [
     location: "India",
     period: "Mar 2021 – Aug 2022",
     highlights: [
-      "Developed and maintained RESTful APIs with Python and Django for client web applications.",
+      "Developed and maintained client web applications with React.js on the frontend and RESTful APIs with Python and Django on the backend.",
       "Designed and optimized MySQL schemas and queries, improving query response times and data integrity.",
-      "Shipped frontend features with React.js, working across the full stack to speed up feature delivery.",
     ],
   },
 ];

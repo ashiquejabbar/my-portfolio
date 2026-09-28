@@ -228,6 +228,20 @@
   animation: eq-bounce 700ms ease-in-out infinite;
 }
 
+/* Intro overlay: logo rings orbit the photo; each logo counter-spins at the same speed to stay upright */
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit-cw,
+.orbit-ccw {
+  animation: orbit-spin 40s linear infinite;
+}
+.orbit-ccw {
+  animation-direction: reverse;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .line-rise,
   .fade-rise,
@@ -235,7 +249,9 @@
   .tile-in,
   .scroll-rise,
   .scroll-draw,
-  .eq-bar {
+  .eq-bar,
+  .orbit-cw,
+  .orbit-ccw {
     animation: none;
   }
 }

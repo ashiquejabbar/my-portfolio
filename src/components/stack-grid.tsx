@@ -19,12 +19,13 @@ import {
 
 // How a tile draws its mark: an official simple-icons path, or a stand-in when simple-icons has none
 type Mark = { icon: SimpleIcon } | { glyph: "openai" } | { letter: string };
-type Tool = { label: string; mark: Mark; color?: string };
+export type Tool = { label: string; mark: Mark; color?: string };
 
 // Brand marks that are black by default follow the text colour, so they work in both themes
 const INK = "currentColor";
 
-const tools: Tool[] = [
+// Also used by the full-screen intro (intro-showcase.tsx)
+export const tools: Tool[] = [
   { label: "React", mark: { icon: siReact } },
   { label: "Next.js", mark: { icon: siNextdotjs }, color: INK },
   { label: "TypeScript", mark: { icon: siTypescript } },
@@ -48,7 +49,9 @@ const tools: Tool[] = [
 const COLUMNS = 4;
 const START = 0.35;
 
-function MarkIcon({ mark, color }: { mark: Mark; color: string }) {
+export const toolColor = (tool: Tool) => tool.color ?? `#${"icon" in tool.mark ? tool.mark.icon.hex : "2446E0"}`;
+
+export function MarkIcon({ mark, color }: { mark: Mark; color: string }) {
   if ("icon" in mark) {
     return (
       <svg viewBox="0 0 24 24" width="26" height="26" fill={color} aria-hidden="true">
@@ -78,7 +81,7 @@ export default function StackGrid() {
       </h2>
       <ul className="grid grid-cols-4 gap-x-2 gap-y-5">
         {tools.map((tool, i) => {
-          const color = tool.color ?? `#${"icon" in tool.mark ? tool.mark.icon.hex : "2446E0"}`;
+          const color = toolColor(tool);
           // Diagonal ripple: tiles further along row + column come in a beat later
           const delay = START + ((i % COLUMNS) + Math.floor(i / COLUMNS)) * 0.07;
 
