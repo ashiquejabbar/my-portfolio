@@ -3,9 +3,16 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Download } from "lucide-react";
-import { contactInfo, additionalInfo } from "@/lib/data";
+import { CV_PATH, contactInfo } from "@/lib/data";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
-export default function Contact() {
+export default function Contact({
+  t,
+  common,
+}: {
+  t: Dictionary["contact"];
+  common: Dictionary["common"];
+}) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -32,14 +39,16 @@ export default function Contact() {
       <div className="section-container grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <h2 id="contact-title" className="text-[2rem] sm:text-[2.5rem] font-semibold leading-tight">
-            Hiring a frontend developer in Dubai?
+            {t.title}
           </h2>
           <p className="mt-4 max-w-[52ch] text-panel-foreground/70">
-            I can start immediately. Email is the quickest way to reach me.
+            {t.lead}
           </p>
 
           <a
             href={`mailto:${contactInfo.email}`}
+            dir="ltr"
+            lang="en"
             className="font-heading type-condensed mt-10 inline-block break-all text-[2rem] sm:text-[3rem] lg:text-[3.6rem] leading-none font-semibold underline decoration-2 decoration-panel-foreground/30 underline-offset-[0.15em] hover:decoration-panel-accent transition-colors focus-visible:outline-panel-accent"
           >
             {contactInfo.email}
@@ -61,32 +70,33 @@ export default function Contact() {
                   className="inline-flex items-center gap-2"
                 >
                   {copied ? <Check size={17} aria-hidden="true" /> : <Copy size={17} aria-hidden="true" />}
-                  {copied ? "Email copied" : "Copy email"}
+                  {copied ? t.emailCopied : t.copyEmail}
                 </motion.span>
               </AnimatePresence>
             </button>
             <a
-              href="/Ashique_PJ_Dubai_CV.pdf"
+              href={CV_PATH}
               download="ashique_pj_cv.pdf"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-panel-foreground/30 font-medium hover:border-panel-foreground/70 transition-colors focus-visible:outline-panel-accent"
             >
               <Download size={17} aria-hidden="true" />
-              Download CV
+              {common.downloadCv}
+              {common.cvLanguageNote && <span className="font-normal opacity-70">{common.cvLanguageNote}</span>}
             </a>
           </div>
           <p className="sr-only" aria-live="polite">
-            {copied ? "Email address copied to clipboard" : ""}
+            {copied ? t.copiedAnnouncement : ""}
           </p>
         </div>
 
         <dl className="lg:col-span-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 content-start text-sm lg:pt-3">
-          <dt className="text-panel-foreground/60">Phone</dt>
+          <dt className="text-panel-foreground/60">{t.phone}</dt>
           <dd>
-            <a href={`tel:${contactInfo.phone.replace(/\s/g, "")}`} className="hover:underline underline-offset-4 focus-visible:outline-panel-accent">
+            <a href={`tel:${contactInfo.phone.replace(/\s/g, "")}`} dir="ltr" className="hover:underline underline-offset-4 focus-visible:outline-panel-accent">
               {contactInfo.phone}
             </a>
           </dd>
-          <dt className="text-panel-foreground/60">WhatsApp</dt>
+          <dt className="text-panel-foreground/60">{t.whatsapp}</dt>
           <dd>
             <a
               href={`https://wa.me/${contactInfo.phone.replace(/\D/g, "")}`}
@@ -94,10 +104,10 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="hover:underline underline-offset-4 focus-visible:outline-panel-accent"
             >
-              Message me
+              {t.messageMe}
             </a>
           </dd>
-          <dt className="text-panel-foreground/60">LinkedIn</dt>
+          <dt className="text-panel-foreground/60">{t.linkedin}</dt>
           <dd>
             <a
               href={contactInfo.linkedinUrl}
@@ -108,14 +118,14 @@ export default function Contact() {
               in/{contactInfo.linkedin}
             </a>
           </dd>
-          <dt className="text-panel-foreground/60">Based in</dt>
-          <dd>{contactInfo.location}</dd>
-          <dt className="text-panel-foreground/60">Status</dt>
-          <dd className="text-dune-soft">{additionalInfo.visaStatus}</dd>
-          <dt className="text-panel-foreground/60">Languages</dt>
-          <dd>{additionalInfo.languages.join(", ")}</dd>
-          <dt className="text-panel-foreground/60">Nationality</dt>
-          <dd>{additionalInfo.nationality}</dd>
+          <dt className="text-panel-foreground/60">{t.basedIn}</dt>
+          <dd>{t.location}</dd>
+          <dt className="text-panel-foreground/60">{t.status}</dt>
+          <dd className="text-dune-soft">{t.visaStatus}</dd>
+          <dt className="text-panel-foreground/60">{t.languages}</dt>
+          <dd>{t.languageList}</dd>
+          <dt className="text-panel-foreground/60">{t.nationality}</dt>
+          <dd>{t.nationalityValue}</dd>
         </dl>
       </div>
     </section>

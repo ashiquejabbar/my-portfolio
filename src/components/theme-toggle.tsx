@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 
 import { THEME_STORAGE_KEY, themeColors, type Theme } from "@/lib/theme";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
@@ -26,7 +27,7 @@ const getTheme = (): Theme =>
   document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 const getServerTheme = (): Theme | null => null;
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ t }: { t: Dictionary["theme"] }) {
   const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
 
   const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,7 +64,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={isDark ? t.toLight : t.toDark}
       className="relative grid place-items-center size-9 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors overflow-hidden"
     >
       {/* Render nothing until the stored theme is known, so the icon never flips on load */}

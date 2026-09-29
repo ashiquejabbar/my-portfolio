@@ -3,6 +3,8 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown, Volume2 } from "lucide-react";
+import { format } from "@/lib/i18n/format";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 type Look = {
   bg: string;
@@ -195,7 +197,9 @@ function SpeakingBars() {
   );
 }
 
-export default function NamePronunciation({ name }: { name: string }) {
+export default function NamePronunciation({ name, t }: { name: string; t: Dictionary["pronounce"] }) {
+  const voices: Record<string, { label: string; detail: string }> = t.voices;
+  const voiceText = (preset: VoicePreset) => voices[preset.id] ?? preset;
   const speechSupported = useSyncExternalStore(noopSubscribe, hasSpeech, serverFalse);
   const voiceCount = useSyncExternalStore(subscribeVoices, getVoiceCount, getServerVoiceCount);
   const presetId = useSyncExternalStore(subscribePreset, getSavedPreset, getServerPreset);
@@ -339,9 +343,11 @@ export default function NamePronunciation({ name }: { name: string }) {
         type="button"
         onClick={() => speakPreset(presetId)}
         aria-label={
-          canSpeak ? `Hear how to pronounce ${name} (${current.label}, ${current.detail} voice)` : `Hear how to pronounce ${name}`
+          canSpeak
+            ? format(t.buttonLabelVoice, { name, voice: voiceText(current).label, detail: voiceText(current).detail })
+            : format(t.buttonLabel, { name })
         }
-        title="Hear how to pronounce my name"
+        title={t.buttonTitle}
         className={`grid place-items-center size-8 rounded-md transition-colors hover:bg-muted ${
           speakingId ? "text-primary" : "text-muted-foreground hover:text-foreground"
         }`}
@@ -354,7 +360,7 @@ export default function NamePronunciation({ name }: { name: string }) {
           ref={triggerRef}
           type="button"
           onClick={() => setOpen((o) => !o)}
-          aria-label="Choose a voice"
+          aria-label={t.chooseVoice}
           aria-haspopup="dialog"
           aria-expanded={open}
           className="grid place-items-center h-8 w-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -372,13 +378,13 @@ export default function NamePronunciation({ name }: { name: string }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 sm:left-[4.5rem] top-full z-50 mt-2 w-[min(18rem,calc(100vw-2rem))] origin-top-left rounded-xl border border-border bg-popover p-1.5 font-normal text-popover-foreground shadow-[var(--shadow-raised)]"
+            className="absolute start-0 sm:start-[4.5rem] top-full z-50 mt-2 w-[min(18rem,calc(100vw-2rem))] origin-top-left rtl:origin-top-right rounded-xl border border-border bg-popover p-1.5 font-normal text-popover-foreground shadow-[var(--shadow-raised)]"
           >
             <div className="px-2.5 pt-1.5 pb-2">
               <p id={titleId} className="text-sm font-semibold">
-                Hear my name
+                {t.title}
               </p>
-              <p className="text-xs text-muted-foreground">Pick a voice. Your choice is remembered.</p>
+              <p className="text-xs text-muted-foreground">{t.hint}</p>
             </div>
 
             <div ref={listRef} role="radiogroup" aria-labelledby={titleId} onKeyDown={onListKeyDown} className="space-y-0.5">
@@ -392,15 +398,15 @@ export default function NamePronunciation({ name }: { name: string }) {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => choose(preset.id)}
-                    className={`flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none ${
+                    className={`flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-start transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none ${
                       selected ? "bg-muted/60" : ""
                     }`}
                   >
                     <VoiceAvatar look={preset.look} region={preset.region} />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-medium leading-tight">{preset.label}</span>
+                      <span className="block text-sm font-medium leading-tight">{voiceText(preset).label}</span>
                       <span className="block truncate text-xs text-muted-foreground">
-                        {exact ? preset.detail : "Similar voice on this device"}
+                        {exact ? voiceText(preset).detail : t.similarVoice}
                       </span>
                     </span>
                     <span className="grid w-4 shrink-0 place-items-center">

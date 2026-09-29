@@ -73,11 +73,11 @@ export function MarkIcon({ mark, color }: { mark: Mark; color: string }) {
   );
 }
 
-export default function StackGrid() {
+export default function StackGrid({ title }: { title: string }) {
   return (
     <div className="rounded-xl bg-card border border-border shadow-[var(--shadow-raised)] p-5 sm:p-6">
       <h2 className="font-sans text-sm font-medium text-muted-foreground mb-4">
-        What I build with
+        {title}
       </h2>
       <ul className="grid grid-cols-4 gap-x-2 gap-y-5">
         {tools.map((tool, i) => {

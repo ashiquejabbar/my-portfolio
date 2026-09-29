@@ -7,12 +7,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Download, Mail, Phone, Sparkles, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 
-import { contactInfo, personalInfo } from "@/lib/data";
+import { CV_PATH, contactInfo, personalInfo } from "@/lib/data";
+import { format } from "@/lib/i18n/format";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
+
+type IntroText = Dictionary["intro"];
 import { MarkIcon, toolColor, tools, type Tool } from "@/components/stack-grid";
 import { BrandIcon, LinkedInIcon, phoneUrl, whatsappUrl } from "@/components/brand-icons";
 
-// The role line already names React.js and Next.js, so the chips show the other frontend strengths
-const HEADLINE_SKILLS = ["TypeScript", "Tailwind CSS", "Micro Frontends", "Arabic/English RTL", "AI Integration"];
 const EASE = [0.22, 1, 0.36, 1] as const;
 // Keeps "Ashique PJ" on one line while each letter animates separately
 const NBSP = String.fromCharCode(160);
@@ -72,7 +74,7 @@ function OrbitRing({
   );
 }
 
-function CopyEmail() {
+function CopyEmail({ t }: { t: IntroText }) {
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<number | null>(null);
 
@@ -100,24 +102,24 @@ function CopyEmail() {
   };
 
   return (
-    <div className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-card py-1 pl-4 pr-1 shadow-[var(--shadow-raised)]">
+    <div className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-card py-1 ps-4 pe-1 shadow-[var(--shadow-raised)]">
       <Mail size={16} className="shrink-0 text-muted-foreground" aria-hidden="true" />
-      <a href={`mailto:${contactInfo.email}`} className="ml-1 truncate text-sm sm:text-base font-medium hover:text-primary transition-colors">
+      <a href={`mailto:${contactInfo.email}`} dir="ltr" className="ms-1 truncate text-sm sm:text-base font-medium hover:text-primary transition-colors">
         {contactInfo.email}
       </a>
       <button
         type="button"
         onClick={copy}
-        aria-label={copied ? "Email copied" : "Copy email address"}
-        className={`ml-1 inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors ${
+        aria-label={copied ? t.copied : t.copyLabel}
+        className={`ms-1 inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors ${
           copied ? "bg-primary text-primary-foreground" : "bg-muted text-foreground hover:bg-primary/15"
         }`}
       >
         {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
-        {copied ? "Copied!" : "Copy"}
+        {copied ? t.copied : t.copy}
       </button>
       <span className="sr-only" aria-live="polite">
-        {copied ? "Email address copied to clipboard" : ""}
+        {copied ? t.copied : ""}
       </span>
     </div>
   );
@@ -133,12 +135,14 @@ const rise = (delay: number) => ({
 const contactButton =
   "inline-flex items-center gap-2 h-10 px-3.5 rounded-md border border-border bg-card text-sm font-medium hover:border-foreground/40 transition-colors";
 
-function IntroContent() {
+function IntroContent({ t, common }: { t: IntroText; common: Dictionary["common"] }) {
   const letters = Array.from(personalInfo.name);
 
   return (
     <div className="flex min-h-full items-center justify-center px-4 py-14">
-      <p className="sr-only">Tech I work with: {tools.map((t) => t.label).join(", ")}</p>
+      <p className="sr-only">
+        {t.techLabel}: {tools.map((tool) => tool.label).join(", ")}
+      </p>
 
       {/* Laptop: orbit left, details right. Phone: one centred column */}
       <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
@@ -180,18 +184,23 @@ function IntroContent() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-start">
           {/* Same availability styling as the hero */}
           <motion.p
             {...rise(0.45)}
             className="inline-flex items-center gap-2 rounded-full border border-dune-soft/40 bg-dune-soft/15 px-3 py-1 text-sm font-medium text-dune"
           >
             <span className="size-2 rounded-full bg-dune-soft animate-pulse" aria-hidden="true" />
-            Immediate joiner · Dubai, UAE
+            {t.badge}
           </motion.p>
 
-          {/* Letters rise through a clipping line, like the hero headline */}
+          {/* Letters rise through a clipping line, like the hero headline.
+              dir="ltr": the name is in Latin letters, and on the Arabic page the per-letter spans
+              would otherwise be laid out right to left and spell it backwards.
+              lang="en" keeps the condensed display font there too (globals.css) */}
           <h2
+            dir="ltr"
+            lang="en"
             aria-label={personalInfo.name}
             className="mt-3 font-heading type-condensed font-semibold text-foreground text-[3.25rem] sm:text-[4.5rem] leading-[0.95] overflow-hidden pb-[0.08em]"
           >
@@ -210,11 +219,11 @@ function IntroContent() {
           </h2>
 
           <motion.p {...rise(0.85)} className="mt-1 text-lg sm:text-xl text-muted-foreground">
-            {personalInfo.role} — {personalInfo.specialization}
+            {t.role}
           </motion.p>
 
-          <ul className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start" aria-label="Frontend skills">
-            {HEADLINE_SKILLS.map((skill, i) => (
+          <ul className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start" aria-label={t.skillsLabel}>
+            {t.skills.map((skill, i) => (
               <motion.li
                 key={skill}
                 className="rounded-full border border-primary/40 bg-primary/10 px-4 py-1 text-sm font-medium text-primary"
@@ -228,7 +237,7 @@ function IntroContent() {
           </ul>
 
           <motion.div {...rise(1.2)} className="mt-6 flex w-full flex-col items-center gap-3 lg:items-start">
-            <CopyEmail />
+            <CopyEmail t={t} />
             <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={contactButton}>
                 <span className="text-[#25D366]">
@@ -236,7 +245,7 @@ function IntroContent() {
                 </span>
                 WhatsApp
               </a>
-              <a href={phoneUrl} className={contactButton}>
+              <a href={phoneUrl} dir="ltr" className={contactButton}>
                 <Phone size={16} className="text-muted-foreground" aria-hidden="true" />
                 {contactInfo.phone}
               </a>
@@ -248,12 +257,13 @@ function IntroContent() {
               </a>
             </div>
             <a
-              href="/Ashique_PJ_Dubai_CV.pdf"
+              href={CV_PATH}
               download="ashique_pj_cv.pdf"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
             >
               <Download size={17} aria-hidden="true" />
-              Download CV
+              {common.downloadCv}
+              {common.cvLanguageNote && <span className="font-normal opacity-80">{common.cvLanguageNote}</span>}
             </a>
           </motion.div>
         </div>
@@ -262,7 +272,7 @@ function IntroContent() {
   );
 }
 
-export default function IntroShowcase() {
+export default function IntroShowcase({ t, common }: { t: IntroText; common: Dictionary["common"] }) {
   const [open, setOpen] = useState(false);
   // A new key each time it opens remounts the content, so the animation plays from the start
   const [runId, setRunId] = useState(0);
@@ -320,8 +330,8 @@ export default function IntroShowcase() {
           setRunId((r) => r + 1);
           setOpen(true);
         }}
-        aria-label="Play intro"
-        title="Play intro"
+        aria-label={t.play}
+        title={t.play}
         className="grid place-items-center size-9 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
       >
         <Sparkles size={18} aria-hidden="true" />
@@ -338,7 +348,7 @@ export default function IntroShowcase() {
                   ref={dialogRef}
                   role="dialog"
                   aria-modal="true"
-                  aria-label={`Intro: ${personalInfo.name}, Frontend Developer`}
+                  aria-label={format(t.dialogLabel, { name: personalInfo.name })}
                   onClick={onBackdropClick}
                   className="fixed inset-0 z-[100] overflow-y-auto overflow-x-hidden bg-background text-foreground"
                   initial={{ opacity: 0 }}
@@ -359,12 +369,12 @@ export default function IntroShowcase() {
                     ref={closeRef}
                     type="button"
                     onClick={() => setOpen(false)}
-                    aria-label="Close intro"
-                    className="fixed top-4 right-4 z-10 grid place-items-center size-10 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={t.close}
+                    className="fixed top-4 end-4 z-10 grid place-items-center size-10 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <X size={20} aria-hidden="true" />
                   </button>
-                  <IntroContent key={runId} />
+                  <IntroContent key={runId} t={t} common={common} />
                 </motion.div>
               )}
             </AnimatePresence>

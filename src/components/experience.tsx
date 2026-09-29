@@ -4,19 +4,31 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { experiences } from "@/lib/data";
 import SectionHeading from "@/components/section-heading";
+import { format } from "@/lib/i18n/format";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
+
+type RoleText = Dictionary["experience"]["roles"][number];
 
 const VISIBLE_HIGHLIGHTS = 4;
 
-function Role({ exp }: { exp: (typeof experiences)[number] }) {
+function Role({
+  exp,
+  t,
+  sep,
+}: {
+  exp: RoleText & (typeof experiences)[number];
+  t: Dictionary["experience"];
+  sep: string;
+}) {
   const [expanded, setExpanded] = useState(false);
   const extra = exp.highlights.length - VISIBLE_HIGHLIGHTS;
   const listId = `${exp.company}-highlights`.replace(/\W+/g, "-").toLowerCase();
 
   return (
-    <li className="relative pl-8 sm:pl-10 pb-14 last:pb-0">
+    <li className="relative ps-8 sm:ps-10 pb-14 last:pb-0">
       {/* The dot fills as the scroll-drawn line reaches this job */}
       <span
-        className="absolute left-0 top-2 size-[11px] -translate-x-[5px] rounded-full bg-background border-2 border-primary overflow-hidden"
+        className="absolute start-0 top-2 size-[11px] -translate-x-[5px] rtl:translate-x-[5px] rounded-full bg-background border-2 border-primary overflow-hidden"
         aria-hidden="true"
       >
         <motion.span
@@ -28,15 +40,19 @@ function Role({ exp }: { exp: (typeof experiences)[number] }) {
         />
       </span>
       <p className="text-sm text-muted-foreground tabular-nums">
-        {exp.period}, {exp.location}
+        {exp.period}
+        {sep}
+        {exp.location}
       </p>
       <h3 className="mt-1 text-xl font-semibold">
-        {exp.title}, <span className="font-normal">{exp.company}</span>
+        {exp.title}
+        {sep}
+        <span className="font-normal">{exp.company}</span>
       </h3>
 
       <ul id={listId} className="mt-4 space-y-2.5 max-w-[68ch] text-muted-foreground">
         {exp.highlights.slice(0, VISIBLE_HIGHLIGHTS).map((h) => (
-          <li key={h} className="pl-4 relative before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
+          <li key={h} className="ps-4 relative before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
             {h}
           </li>
         ))}
@@ -49,7 +65,7 @@ function Role({ exp }: { exp: (typeof experiences)[number] }) {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.25, delay: i * 0.03 }}
-                className="pl-4 relative overflow-hidden before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
+                className="ps-4 relative overflow-hidden before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
               >
                 {h}
               </motion.li>
@@ -65,14 +81,14 @@ function Role({ exp }: { exp: (typeof experiences)[number] }) {
           onClick={() => setExpanded((v) => !v)}
           className="mt-4 text-sm font-medium text-primary hover:underline underline-offset-4"
         >
-          {expanded ? "Show fewer" : `Show all ${exp.highlights.length}`}
+          {expanded ? t.showFewer : format(t.showAll, { count: exp.highlights.length })}
         </button>
       )}
     </li>
   );
 }
 
-export default function Experience() {
+export default function Experience({ t, sep }: { t: Dictionary["experience"]; sep: string }) {
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -86,19 +102,19 @@ export default function Experience() {
       <div className="section-container lg:grid lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
-            <SectionHeading id="experience-title" title="Where I’ve worked" />
+            <SectionHeading id="experience-title" title={t.title} />
           </div>
         </div>
-        <div className="relative ml-1 lg:col-span-8">
-          <div className="absolute left-0 top-2 bottom-0 w-px bg-border" aria-hidden="true" />
+        <div className="relative ms-1 lg:col-span-8">
+          <div className="absolute start-0 top-2 bottom-0 w-px bg-border" aria-hidden="true" />
           <motion.div
-            className="absolute left-0 top-2 bottom-0 w-px bg-primary origin-top"
+            className="absolute start-0 top-2 bottom-0 w-px bg-primary origin-top"
             style={{ scaleY: reduceMotion ? 1 : progress }}
             aria-hidden="true"
           />
           <ol ref={ref} className="relative">
-            {experiences.map((exp) => (
-              <Role key={exp.title + exp.company} exp={exp} />
+            {experiences.map((exp, i) => (
+              <Role key={exp.company} exp={{ ...exp, ...t.roles[i] }} t={t} sep={sep} />
             ))}
           </ol>
         </div>

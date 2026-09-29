@@ -6,10 +6,14 @@ import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/data";
 import ThemeToggle from "@/components/theme-toggle";
 import IntroShowcase from "@/components/intro-showcase";
+import LanguageSwitcher from "@/components/language-switcher";
+import type { Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 const sectionIds = navLinks.map((link) => link.href.slice(1));
 
-export default function Navbar() {
+export default function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const t = dict.nav;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -48,12 +52,12 @@ export default function Navbar() {
           : "bg-transparent border-transparent"
       }`}
     >
-      <nav aria-label="Main" className="section-container flex items-center justify-between h-16">
+      <nav aria-label={t.main} className="section-container flex items-center justify-between h-16">
         <a href="#home" className="font-heading font-semibold text-lg">
           Ashique PJ
         </a>
 
-        <ul className="hidden md:flex items-center gap-1 ml-auto">
+        <ul className="hidden md:flex items-center gap-1 ms-auto">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.slice(1);
             return (
@@ -65,7 +69,7 @@ export default function Navbar() {
                     isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {link.label}
+                  {t[link.key]}
                   {isActive && (
                     <motion.span
                       layoutId="nav-indicator"
@@ -79,14 +83,15 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-1 md:ml-2">
-        <IntroShowcase />
-        <ThemeToggle />
+        <div className="flex items-center gap-1 md:ms-2">
+        <IntroShowcase t={dict.intro} common={dict.common} />
+        <LanguageSwitcher locale={locale} t={dict.language} />
+        <ThemeToggle t={dict.theme} />
         <button
           type="button"
-          className="md:hidden -mr-2 p-2 rounded-md hover:bg-muted"
+          className="md:hidden -me-2 p-2 rounded-md hover:bg-muted"
           onClick={() => setIsMobileOpen((v) => !v)}
-          aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+          aria-label={isMobileOpen ? t.closeMenu : t.openMenu}
           aria-expanded={isMobileOpen}
           aria-controls="mobile-menu"
         >
@@ -112,7 +117,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileOpen(false)}
                   className="block py-3.5 font-heading text-xl"
                 >
-                  {link.label}
+                  {t[link.key]}
                 </a>
               </li>
             ))}

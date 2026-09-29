@@ -140,10 +140,36 @@
   }
 }
 
+/* Font stacks from the next/font variables in src/app/[lang]/layout.tsx.
+   Arabic pages put IBM Plex Sans Arabic first, so Arabic and Latin running text share one family. */
+:root {
+  --font-body: var(--font-instrument), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+}
+:root:lang(ar) {
+  --font-body: var(--font-plex-arabic), var(--font-instrument), system-ui, sans-serif;
+  --font-display: var(--font-plex-arabic), var(--font-bricolage), system-ui, sans-serif;
+}
+/* Plex Arabic also ships Latin letters, which suits running text but not the big condensed
+   display lines (name, email). Those are marked lang="en" and keep the site's own fonts. */
+:root:lang(ar) [lang="en"] {
+  --font-body: var(--font-instrument), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+}
+
 /* Condensed display cut of Bricolage Grotesque */
 .type-condensed {
   font-variation-settings: "wdth" 75, "opsz" 96;
   letter-spacing: -0.02em;
+}
+/* Arabic letters join, so they must never be letter-spaced; Arabic also needs more line height */
+:lang(ar) .type-condensed,
+:lang(ar) h1,
+:lang(ar) h2 {
+  letter-spacing: 0;
+}
+:lang(ar) h1 {
+  line-height: 1.25;
 }
 
 /* Hero headline: each line rises through its clipping parent */
@@ -242,6 +268,50 @@
   animation-direction: reverse;
 }
 
+/* Hero background: tech logos floating behind the content (see hero-backdrop.tsx).
+   --depth (0–1) sets size and strength; --near (0–1, set by JS) brightens a logo as the pointer gets close. */
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-50%, calc(-50% - 14px)) rotate(4deg);
+  }
+}
+.hero-floater {
+  --near: 0;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation: float-bob 11s ease-in-out infinite;
+  opacity: calc(0.22 + var(--depth) * 0.25 + var(--near) * 0.45);
+  will-change: translate;
+}
+.hero-floater-tile {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 70%, transparent);
+  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.5);
+  scale: calc(0.7 + var(--depth) * 0.45);
+  filter: blur(calc((1 - var(--depth)) * 1.2px));
+}
+@media (max-width: 1023px) {
+  .hero-floater {
+    opacity: 0.18;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .line-rise,
   .fade-rise,
@@ -251,7 +321,8 @@
   .scroll-draw,
   .eq-bar,
   .orbit-cw,
-  .orbit-ccw {
+  .orbit-ccw,
+  .hero-floater {
     animation: none;
   }
 }

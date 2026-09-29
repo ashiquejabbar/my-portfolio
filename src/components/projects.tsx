@@ -5,24 +5,27 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Plus } from "lucide-react";
 import { projects } from "@/lib/data";
 import SectionHeading from "@/components/section-heading";
+import { format } from "@/lib/i18n/format";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
-export default function Projects() {
+export default function Projects({ t }: { t: Dictionary["projects"] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section id="projects" aria-labelledby="projects-title" className="py-20 md:py-28 border-t border-border">
       <div className="section-container">
-        <SectionHeading id="projects-title" title="Selected projects" />
+        <SectionHeading id="projects-title" title={t.title} />
 
         <ul className="border-t border-border">
-          {projects.map((project, i) => {
+          {t.items.map((item, i) => {
+            const project = { ...item, ...projects[i] };
+            const { name, tagline } = project;
             const isOpen = open === i;
-            const [name, tagline] = project.name.split(" — ");
             const panelId = `project-panel-${i}`;
             const buttonId = `project-button-${i}`;
 
             return (
-              <li key={project.name} className="border-b border-border">
+              <li key={name} className="border-b border-border">
                 <h3 className="flex items-stretch">
                   <button
                     id={buttonId}
@@ -30,7 +33,7 @@ export default function Projects() {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="group flex-1 flex items-center gap-4 py-5 text-left"
+                    className="group flex-1 flex items-center gap-4 py-5 text-start"
                   >
                     <span className="flex-1 min-w-0 sm:flex sm:items-baseline sm:gap-4">
                       <span className="block text-xl sm:text-2xl font-semibold group-hover:text-primary transition-colors">
@@ -72,22 +75,22 @@ export default function Projects() {
                             {project.highlights.map((h) => (
                               <li
                                 key={h}
-                                className="pl-4 relative before:absolute before:left-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
+                                className="ps-4 relative before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60"
                               >
                                 {h}
                               </li>
                             ))}
                           </ul>
                         </div>
-                        <div className="md:col-span-5 md:pl-6 md:border-l border-border space-y-4 text-sm">
+                        <div className="md:col-span-5 md:ps-6 md:border-s border-border space-y-4 text-sm">
                           {project.context && (
                             <div>
-                              <p className="text-muted-foreground">Client</p>
+                              <p className="text-muted-foreground">{t.client}</p>
                               <p className="mt-1">{project.context}</p>
                             </div>
                           )}
                           <div>
-                            <p className="text-muted-foreground">Built with</p>
+                            <p className="text-muted-foreground">{t.builtWith}</p>
                             <p className="mt-1">{project.stack.join(", ")}</p>
                           </div>
                           {project.url ? (
@@ -97,12 +100,12 @@ export default function Projects() {
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 font-medium text-primary hover:underline underline-offset-4"
                             >
-                              Visit {new URL(project.url).hostname}
-                              <ArrowUpRight size={16} aria-hidden="true" />
+                              {format(t.visit, { host: new URL(project.url).hostname })}
+                              <ArrowUpRight size={16} aria-hidden="true" className="rtl:-scale-x-100" />
                             </a>
                           ) : (
                             <p className="text-muted-foreground">
-                              Private client system, not publicly available.
+                              {t.private}
                             </p>
                           )}
                         </div>

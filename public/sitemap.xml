@@ -1,9 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ashiquedev.netlify.app/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ashiquedev.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ashiquedev.netlify.app/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ashiquedev.netlify.app/fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ashiquedev.netlify.app/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ashiquedev.netlify.app/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ashiquedev.netlify.app/"/>
+  </url>
+  <url>
+    <loc>https://ashiquedev.netlify.app/ar</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ashiquedev.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ashiquedev.netlify.app/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ashiquedev.netlify.app/fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ashiquedev.netlify.app/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ashiquedev.netlify.app/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ashiquedev.netlify.app/"/>
+  </url>
+  <url>
+    <loc>https://ashiquedev.netlify.app/fr</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ashiquedev.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ashiquedev.netlify.app/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ashiquedev.netlify.app/fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ashiquedev.netlify.app/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ashiquedev.netlify.app/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ashiquedev.netlify.app/"/>
+  </url>
+  <url>
+    <loc>https://ashiquedev.netlify.app/de</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ashiquedev.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ashiquedev.netlify.app/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ashiquedev.netlify.app/fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ashiquedev.netlify.app/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ashiquedev.netlify.app/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ashiquedev.netlify.app/"/>
+  </url>
+  <url>
+    <loc>https://ashiquedev.netlify.app/es</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ashiquedev.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ashiquedev.netlify.app/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ashiquedev.netlify.app/fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://ashiquedev.netlify.app/de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ashiquedev.netlify.app/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ashiquedev.netlify.app/"/>
   </url>
 </urlset>

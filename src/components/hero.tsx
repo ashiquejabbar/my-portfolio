@@ -1,19 +1,12 @@
 import Image from "next/image";
 import { Download, Mail } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
-import { personalInfo, contactInfo } from "@/lib/data";
+import { CV_PATH, personalInfo, contactInfo } from "@/lib/data";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import StackGrid from "@/components/stack-grid";
+import HeroBackdrop from "@/components/hero-backdrop";
 import NamePronunciation from "@/components/name-pronunciation";
 import { BrandIcon, LinkedInIcon, whatsappUrl } from "@/components/brand-icons";
-
-const proofPoints = [
-  { value: "5+", label: "years in React and Next.js" },
-  { value: "500+", label: "daily users on a government platform" },
-  { value: "11", label: "user roles in one RBAC system" },
-  { value: "5+", label: "client projects on shared UI libraries" },
-];
-
-const headline = ["I build the interfaces", "enterprise teams", "rely on."];
 
 // CSS animation (globals.css) so hero content is visible even before JS hydrates
 function Reveal({
@@ -32,13 +25,15 @@ function Reveal({
   );
 }
 
-export default function Hero() {
+export default function Hero({ dict }: { dict: Dictionary }) {
+  const t = dict.hero;
   return (
-    <section id="home" className="pt-24 pb-20 md:pt-28 md:pb-24">
+    <section id="home" className="relative isolate pt-24 pb-20 md:pt-28 md:pb-24">
+      <HeroBackdrop />
       <div className="section-container grid gap-14 lg:grid-cols-12 lg:gap-10 items-start">
         <div className="lg:col-span-7">
           <h1 className="type-condensed font-semibold text-[3rem] leading-[0.95] sm:text-[4rem] lg:text-[4.5rem] text-foreground">
-            {headline.map((line, i) => (
+            {t.headline.map((line, i) => (
               <span key={line} className="block overflow-hidden pb-[0.08em]">
                 {/* CSS rather than JS so the headline shows even before hydration */}
                 <span className="block line-rise" style={{ animationDelay: `${50 + i * 90}ms` }}>
@@ -62,28 +57,20 @@ export default function Hero() {
               {/* div, not p: the voice picker inside holds a menu, which a <p> can't contain */}
               <div className="flex items-center gap-1 font-medium text-foreground">
                 {personalInfo.name}
-                <NamePronunciation name={personalInfo.name} />
+                <NamePronunciation name={personalInfo.name} t={dict.pronounce} />
               </div>
               <p className="text-muted-foreground text-sm">
-                Frontend developer in Dubai, UAE. React, Next.js and AI integration
+                {t.roleLine}
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={0.5} className="mt-5 max-w-[60ch] space-y-3 text-muted-foreground">
-            <p>
-              Five years of React, Next.js and TypeScript, building enterprise platforms
-              for government and private sectors across India and the Middle East: role-based
-              access with biometric verification, an AI property search for the Dubai market,
-              and a networking app across web and mobile.
-            </p>
-            <p>
-              I also build AI features into web apps using the OpenAI, Claude and Google
-              Gemini APIs, like the AI-driven search and recommendations behind kyna.ai.
-            </p>
+            <p>{t.intro}</p>
+            <p>{t.ai}</p>
             <p className="flex items-center gap-2 text-dune font-medium">
               <span className="size-2 rounded-full bg-dune-soft" aria-hidden="true" />
-              Available to join immediately, in Dubai on a visit visa
+              {t.available}
             </p>
           </Reveal>
 
@@ -93,21 +80,24 @@ export default function Hero() {
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/85 transition-colors"
             >
               <Mail size={17} aria-hidden="true" />
-              Email me
+              {t.emailMe}
             </a>
             <a
-              href="/Ashique_PJ_Dubai_CV.pdf"
+              href={CV_PATH}
               download="ashique_pj_cv.pdf"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-foreground/20 text-foreground font-medium hover:border-foreground/50 transition-colors"
             >
               <Download size={17} aria-hidden="true" />
-              Download CV
+              {dict.common.downloadCv}
+              {dict.common.cvLanguageNote && (
+                <span className="font-normal text-muted-foreground">{dict.common.cvLanguageNote}</span>
+              )}
             </a>
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Message on WhatsApp"
+              aria-label={t.whatsappLabel}
               className="grid place-items-center size-11 rounded-md border border-foreground/20 text-foreground hover:border-foreground/50 transition-colors"
             >
               <BrandIcon icon={siWhatsapp} />
@@ -116,7 +106,7 @@ export default function Hero() {
               href={contactInfo.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn profile"
+              aria-label={t.linkedinLabel}
               className="grid place-items-center size-11 rounded-md border border-foreground/20 text-foreground hover:border-foreground/50 transition-colors"
             >
               <LinkedInIcon />
@@ -125,12 +115,12 @@ export default function Hero() {
         </div>
 
         <Reveal delay={0.25} className="lg:col-span-5 lg:pt-3">
-          <StackGrid />
+          <StackGrid title={t.stackTitle} />
 
           {/* Proof points, taken from the CV */}
           <Reveal delay={0.7} className="mt-6">
             <dl className="grid grid-cols-2 gap-px rounded-xl overflow-hidden border border-border bg-border">
-              {proofPoints.map((p) => (
+              {t.proofPoints.map((p) => (
                 <div key={p.label} className="bg-background px-4 py-3">
                   <dt className="sr-only">{p.label}</dt>
                   <dd>
