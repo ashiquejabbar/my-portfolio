@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Sans_Arabic, Instrument_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import MotionProvider from "@/components/motion-provider";
 import { themeColors, themeInitScript } from "@/lib/theme";
 import { isLocale, localeDir, localePath, locales, ogLocales } from "@/lib/i18n/config";
@@ -169,6 +170,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         </a>
         <MotionProvider>{children}</MotionProvider>
       </body>
+      {/* Visitor stats (count, country/city, referrer) — view at analytics.google.com */}
+      <GoogleAnalytics gaId="G-WKH285ECQ9" />
     </html>
   );
 }
