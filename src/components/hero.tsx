@@ -3,8 +3,9 @@ import { Download, Mail } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 import { CV_PATH, personalInfo, contactInfo } from "@/lib/data";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
-import StackGrid from "@/components/stack-grid";
 import HeroBackdrop from "@/components/hero-backdrop";
+import CodeStage from "@/components/code-stage";
+import { StackRow } from "@/components/stack-grid";
 import NamePronunciation from "@/components/name-pronunciation";
 import { BrandIcon, LinkedInIcon, whatsappUrl } from "@/components/brand-icons";
 
@@ -34,7 +35,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         <div className="lg:col-span-7">
           <h1 className="type-condensed font-semibold text-[3rem] leading-[0.95] sm:text-[4rem] lg:text-[4.5rem] text-foreground">
             {t.headline.map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.08em]">
+              <span key={line} className="block">
                 {/* CSS rather than JS so the headline shows even before hydration */}
                 <span className="block line-rise" style={{ animationDelay: `${50 + i * 90}ms` }}>
                   {line}
@@ -115,24 +116,8 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         </div>
 
         <Reveal delay={0.25} className="lg:col-span-5 lg:pt-3">
-          <StackGrid title={t.stackTitle} />
-
-          {/* Proof points, taken from the CV */}
-          <Reveal delay={0.7} className="mt-6">
-            <dl className="grid grid-cols-2 gap-px rounded-xl overflow-hidden border border-border bg-border">
-              {t.proofPoints.map((p) => (
-                <div key={p.label} className="bg-background px-4 py-3">
-                  <dt className="sr-only">{p.label}</dt>
-                  <dd>
-                    <span className="block font-heading type-condensed text-3xl font-semibold text-foreground tabular-nums">
-                      {p.value}
-                    </span>
-                    <span className="block text-sm text-muted-foreground leading-snug">{p.label}</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
+          <StackRow title={t.stackTitle} />
+          <CodeStage />
         </Reveal>
       </div>
     </section>

@@ -6,7 +6,6 @@ import { CalendarCheck, Mail, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 import { contactInfo } from "@/lib/data";
 import { BrandIcon, whatsappUrl } from "@/components/brand-icons";
-import { RETURN_EVENT } from "@/components/tab-alert";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 // Seconds the visitor has actually had the page on screen (hidden tabs don't count)
@@ -43,9 +42,8 @@ function wasDismissed() {
   }
 }
 
-// "Available for interview" card, bottom corner. It opens after a few minutes on the site, or earlier:
-// - when the visitor comes back to the tab after the tab alert (tab-alert.tsx)
-// - on exit intent: the mouse leaving through the top of the page, towards the tabs or the close button.
+// "Available for interview" card, bottom corner. It opens after a few minutes on the site, or earlier
+// on exit intent: the mouse leaving through the top of the page, towards the tabs or the close button.
 //   Browsers don't let a page delay closing or show its own UI on close; this catches the moment before.
 // An in-page card rather than a browser notification: no permission prompt, works on every device.
 export default function HireToast({ t }: { t: Dictionary["hire"] }) {
@@ -67,14 +65,12 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
         setOpen(true);
       }
     }, 1000);
-    // Coming back after the tab alert (tab-alert.tsx): show the card now instead of waiting
     const showNow = () => {
       // Closed earlier in this visit: stay closed
       if (!preview && wasDismissed()) return;
       window.clearInterval(tick);
       setOpen(true);
     };
-    const onReturn = () => showNow();
 
     // Exit intent (mouse only): leaving the page through its top edge
     const onMouseOut = (e: MouseEvent) => {
@@ -83,11 +79,9 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
       showNow();
     };
 
-    window.addEventListener(RETURN_EVENT, onReturn);
     document.addEventListener("mouseout", onMouseOut);
     return () => {
       window.clearInterval(tick);
-      window.removeEventListener(RETURN_EVENT, onReturn);
       document.removeEventListener("mouseout", onMouseOut);
     };
   }, []);

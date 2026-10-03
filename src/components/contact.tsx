@@ -34,11 +34,12 @@ export default function Contact({
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="py-20 md:py-28 bg-panel text-panel-foreground"
+      className="relative isolate overflow-hidden py-20 md:py-28 bg-panel text-panel-foreground"
     >
+      <div className="contact-glow" aria-hidden="true" />
       <div className="section-container grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <h2 id="contact-title" className="text-[2rem] sm:text-[2.5rem] font-semibold leading-tight">
+          <h2 id="contact-title" className="scroll-scale text-[2rem] sm:text-[2.5rem] font-semibold leading-tight">
             {t.title}
           </h2>
           <p className="mt-4 max-w-[52ch] text-panel-foreground/70">
@@ -49,7 +50,7 @@ export default function Contact({
             href={`mailto:${contactInfo.email}`}
             dir="ltr"
             lang="en"
-            className="font-heading type-condensed mt-10 inline-block break-all text-[2rem] sm:text-[3rem] lg:text-[3.6rem] leading-none font-semibold underline decoration-2 decoration-panel-foreground/30 underline-offset-[0.15em] hover:decoration-panel-accent transition-colors focus-visible:outline-panel-accent"
+            className="scroll-wipe font-heading type-condensed mt-10 inline-block break-all text-[2rem] sm:text-[3rem] lg:text-[3.6rem] leading-none font-semibold underline decoration-2 decoration-panel-foreground/30 underline-offset-[0.15em] hover:decoration-panel-accent transition-colors focus-visible:outline-panel-accent"
           >
             {contactInfo.email}
           </a>
@@ -89,7 +90,7 @@ export default function Contact({
           </p>
         </div>
 
-        <dl className="lg:col-span-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 content-start text-sm lg:pt-3">
+        <dl className="stagger-rows lg:col-span-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 content-start text-sm lg:pt-3">
           <dt className="text-panel-foreground/60">{t.phone}</dt>
           <dd>
             <a href={`tel:${contactInfo.phone.replace(/\s/g, "")}`} dir="ltr" className="hover:underline underline-offset-4 focus-visible:outline-panel-accent">

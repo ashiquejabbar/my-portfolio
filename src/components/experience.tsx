@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { experiences } from "@/lib/data";
 import SectionHeading from "@/components/section-heading";
+import CoderScene from "@/components/coder-scene";
 import { format } from "@/lib/i18n/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
@@ -39,12 +40,12 @@ function Role({
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         />
       </span>
-      <p className="text-sm text-muted-foreground tabular-nums">
+      <p className="scroll-slide text-sm text-muted-foreground tabular-nums">
         {exp.period}
         {sep}
         {exp.location}
       </p>
-      <h3 className="mt-1 text-xl font-semibold">
+      <h3 className="scroll-slide mt-1 text-xl font-semibold">
         {exp.title}
         {sep}
         <span className="font-normal">{exp.company}</span>
@@ -52,7 +53,7 @@ function Role({
 
       <ul id={listId} className="mt-4 space-y-2.5 max-w-[68ch] text-muted-foreground">
         {exp.highlights.slice(0, VISIBLE_HIGHLIGHTS).map((h) => (
-          <li key={h} className="ps-4 relative before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
+          <li key={h} className="scroll-reveal ps-4 relative before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
             {h}
           </li>
         ))}
@@ -103,6 +104,7 @@ export default function Experience({ t, sep }: { t: Dictionary["experience"]; se
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
             <SectionHeading id="experience-title" title={t.title} />
+            <CoderScene />
           </div>
         </div>
         <div className="relative ms-1 lg:col-span-8">

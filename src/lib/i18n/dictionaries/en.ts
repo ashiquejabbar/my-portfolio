@@ -52,16 +52,10 @@ const en = {
     intro:
       "Five years of React, Next.js and TypeScript, building enterprise platforms for government and private sectors across India and the Middle East: role-based access with biometric verification, an AI property search for the Dubai market, and a networking app across web and mobile.",
     ai: "I also build AI features into web apps using the OpenAI, Claude and Google Gemini APIs, like the AI-driven search and recommendations behind kyna.ai.",
-    available: "Available to join immediately, in Dubai on a visit visa",
+    available: "Relocated from India to Dubai. Available to join immediately, on a visit visa",
     emailMe: "Email me",
     whatsappLabel: "Message on WhatsApp",
     linkedinLabel: "LinkedIn profile",
-    proofPoints: [
-      { value: "5+", label: "years in React and Next.js" },
-      { value: "500+", label: "daily users on a government platform" },
-      { value: "11", label: "user roles in one RBAC system" },
-      { value: "5+", label: "client projects on shared UI libraries" },
-    ],
     stackTitle: "What I build with",
   },
   pronounce: {
@@ -119,6 +113,8 @@ const en = {
     builtWith: "Built with",
     visit: "Visit {host}",
     private: "Private client system, not publicly available.",
+    // Badge on projects with a public site
+    live: "Live",
     // Same order as `projects` in src/lib/data.ts
     items: [
       {
@@ -234,8 +230,6 @@ const en = {
     nationalityValue: "Indian",
   },
   hire: {
-    // Browser tab title while the visitor is on another tab or app
-    tabAlert: "(1) Available for interview",
     label: "Interview availability",
     title: "Hiring a frontend developer?",
     body: "I’m available to join immediately and can interview this week, in person in Dubai or online.",

@@ -15,15 +15,16 @@ export default function Skills({ t }: { t: Dictionary["skills"] }) {
             return (
             <div
               key={skill.category}
-              className="grid gap-3 border-t border-border py-5 md:grid-cols-[13rem_1fr] md:gap-8"
+              className="scroll-reveal grid gap-3 border-t border-border py-5 md:grid-cols-[13rem_1fr] md:gap-8"
             >
               <dt className="font-semibold text-foreground md:pt-1">{category}</dt>
               <dd>
                 <ul className="flex flex-wrap gap-2" aria-label={category}>
-                  {skill.items.map((item) => (
+                  {skill.items.map((item, i) => (
                     <li
                       key={item}
-                      className="rounded-md border border-border bg-card px-2.5 py-1 text-sm leading-snug text-foreground/85"
+                      style={{ "--i": i } as React.CSSProperties}
+                      className="scroll-chip rounded-md border border-border bg-card px-2.5 py-1 text-sm leading-snug text-foreground/85 transition-[translate,border-color,color] duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:text-foreground"
                     >
                       {terms[item] ?? item}
                     </li>

@@ -172,14 +172,16 @@
   line-height: 1.25;
 }
 
-/* Hero headline: each line rises through its clipping parent */
+/* Hero headline: each line rises a little into place. Visible from the first frame (never clipped
+   or fully transparent), so it counts as painted at once for Largest Contentful Paint */
 @keyframes line-rise {
   from {
-    transform: translateY(105%);
+    opacity: 0.25;
+    transform: translateY(0.25em);
   }
 }
 .line-rise {
-  animation: line-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: line-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 /* Hero supporting content: fades up after the headline. CSS so it never waits for JS */
 @keyframes fade-rise {
@@ -237,6 +239,226 @@
     animation-timeline: view();
     animation-range: entry 20% cover 30%;
   }
+
+  /* Rows and bullets fade up as they come on screen */
+  @keyframes scroll-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+  .scroll-reveal {
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+  /* Jobs slide in from the timeline side (mirrored on Arabic pages) */
+  @keyframes scroll-slide {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--slide-dir) * -48px));
+    }
+  }
+  .scroll-slide {
+    --slide-dir: 1;
+    animation: scroll-slide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+  .scroll-slide:dir(rtl) {
+    --slide-dir: -1;
+  }
+  /* Skill chips pop in one after another: --i (set inline) delays each chip a little more */
+  @keyframes chip-pop {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.9);
+    }
+  }
+  .scroll-chip {
+    animation: chip-pop linear both;
+    animation-timeline: view();
+    animation-range: entry calc(var(--i, 0) * 4%) entry calc(50% + var(--i, 0) * 4%);
+  }
+  /* Every direct child fades up on its own timeline, so rows lower down follow a beat later */
+  .stagger-rows > * {
+    animation: chip-pop linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+  /* Contact title grows into place */
+  @keyframes scroll-scale {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  }
+  .scroll-scale {
+    transform-origin: left bottom;
+    animation: scroll-scale linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 90%;
+  }
+  .scroll-scale:dir(rtl) {
+    transform-origin: right bottom;
+  }
+  /* The big contact email is wiped in from the left as it scrolls up (it's always LTR text) */
+  @keyframes scroll-wipe {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+  }
+  .scroll-wipe {
+    animation: scroll-wipe linear both;
+    animation-timeline: view();
+    animation-range: entry 20% entry 100%;
+  }
+}
+
+/* Contact band: two soft glows drifting behind the content (transform only, so it stays cheap) */
+.contact-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.contact-glow::before,
+.contact-glow::after {
+  content: "";
+  position: absolute;
+  width: 46rem;
+  height: 46rem;
+  border-radius: 50%;
+  will-change: transform;
+}
+.contact-glow::before {
+  top: -22rem;
+  inset-inline-end: -12rem;
+  /* Eased falloff: a straight ramp to transparent reads as a faint edge where it starts */
+  background: radial-gradient(
+    closest-side,
+    rgba(123, 147, 255, 0.22),
+    rgba(123, 147, 255, 0.12) 40%,
+    rgba(123, 147, 255, 0.04) 70%,
+    rgba(123, 147, 255, 0.01) 88%,
+    transparent
+  );
+  animation: glow-drift 18s ease-in-out infinite alternate;
+}
+.contact-glow::after {
+  bottom: -26rem;
+  inset-inline-start: -14rem;
+  background: radial-gradient(
+    closest-side,
+    rgba(217, 174, 114, 0.14),
+    rgba(217, 174, 114, 0.07) 40%,
+    rgba(217, 174, 114, 0.025) 70%,
+    rgba(217, 174, 114, 0.006) 88%,
+    transparent
+  );
+  animation: glow-drift 24s ease-in-out infinite alternate-reverse;
+}
+@keyframes glow-drift {
+  to {
+    transform: translate(-6rem, 5rem) scale(1.15);
+  }
+}
+
+/* "Where I've worked" 3D developer scene (coder-scene.tsx): fades in once three.js has drawn it */
+.coder-scene {
+  height: 15rem;
+  margin: -1rem 0 2.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+.coder-scene[data-ready] {
+  opacity: 1;
+}
+.coder-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Soft bottom edge, so the floor shadow never ends in a hard line */
+  mask-image: linear-gradient(#000 78%, transparent);
+}
+@media (min-width: 1024px) {
+  .coder-scene {
+    height: 19rem;
+    margin: -1.5rem -1rem 0;
+  }
+}
+
+/* Projects: each row is a 3D tilt card (projects.tsx). It turns towards the pointer (--rx/--ry, set
+   by JS), and on hover its layers lift to different depths.
+   The card itself must not clip: overflow would flatten the 3D. */
+.tilt-card {
+  perspective: 1100px;
+  /* Text and icon shade of the accent: the pastel itself on dark, a deeper mix on light */
+  --accent-ink: color-mix(in oklab, var(--accent) 62%, var(--foreground));
+}
+:root[data-theme="dark"] .tilt-card {
+  --accent-ink: var(--accent);
+}
+.tilt-card-inner {
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  border-radius: 1.25rem;
+  /* A light neutral edge, clearer than the page's hairlines */
+  border: 1px solid color-mix(in oklab, var(--foreground) 16%, transparent);
+  background:
+    radial-gradient(80% 70% at 100% 0%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--card), color-mix(in oklab, var(--card) 75%, var(--background)));
+  box-shadow: var(--shadow-raised);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms;
+}
+.tilt-card-inner:hover {
+  transition:
+    transform 140ms ease-out,
+    border-color 300ms;
+}
+/* The open project: a border in its own colour (no outer glow) and a slightly stronger tint inside */
+.tilt-card-inner[data-open] {
+  border-color: color-mix(in oklab, var(--accent) 60%, transparent);
+  background:
+    radial-gradient(70% 90% at 100% 0%, color-mix(in oklab, var(--accent) 9%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--card), color-mix(in oklab, var(--card) 75%, var(--background)));
+}
+/* Big faint project icon in the open card's corner */
+.tilt-watermark {
+  position: absolute;
+  bottom: 1rem;
+  inset-inline-end: 1.25rem;
+  width: 8.5rem;
+  height: 8.5rem;
+  color: var(--accent);
+  opacity: 0.05;
+  pointer-events: none;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tilt-card-inner:hover .tilt-watermark {
+  transform: translateZ(10px);
+}
+/* Flat (and aligned) at rest; the layers lift off the card only while it's hovered */
+.tilt-layer-1,
+.tilt-layer-2 {
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tilt-card-inner:hover .tilt-layer-1 {
+  transform: translateZ(18px);
+}
+.tilt-card-inner:hover .tilt-layer-2 {
+  transform: translateZ(32px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card-inner {
+    transform: none;
+  }
 }
 
 /* Voice picker: bars bounce while a voice is speaking (see name-pronunciation.tsx) */
@@ -266,6 +488,141 @@
 }
 .orbit-ccw {
   animation-direction: reverse;
+}
+
+/* Floating glass navigation bar (navbar.tsx). See-through at the top of the page, nearly solid
+   with a shadow once scrolled, so text behind never shows through. The blur itself comes from
+   Tailwind's backdrop-blur classes on the elements (a hand-written backdrop-filter is dropped
+   by the CSS build). The intro overlay is portaled out, so the blur can't trap it. */
+.nav-glass {
+  border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  background: color-mix(in oklab, var(--background) 60%, transparent);
+}
+.nav-glass-solid {
+  background: color-mix(in oklab, var(--background) 94%, transparent);
+  box-shadow: 0 12px 32px -18px rgba(0, 0, 0, 0.45);
+}
+
+/* Hero 3D workspace (see code-stage.tsx). Always-dark panes, stacked in depth.
+   --tilt-x / --tilt-y (-1–1) follow the pointer; --spread (0–1) fans the panes apart on scroll. */
+.code-stage {
+  --tilt-x: 0;
+  --tilt-y: 0;
+  --spread: 0;
+  position: relative;
+  height: 29.5rem;
+  perspective: 1600px;
+}
+.code-stage::before {
+  content: "";
+  position: absolute;
+  inset: 12% 6%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--primary) 45%, transparent), transparent);
+  filter: blur(40px);
+  opacity: 0.55;
+}
+.code-stage-rig {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(9deg - var(--tilt-x) * 7deg)) rotateY(calc(-15deg + var(--tilt-y) * 12deg));
+}
+@keyframes pane-float {
+  50% {
+    translate: 0 -7px;
+  }
+}
+.code-pane {
+  position: absolute;
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(22, 31, 46, 0.97), rgba(10, 15, 25, 0.97));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 30px 60px -24px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
+  color: #e6ecf3;
+  overflow: hidden;
+  /* Each keystroke re-lays out only its own pane, never the page */
+  contain: layout paint;
+  animation: pane-float 7s ease-in-out infinite;
+}
+.code-pane-browser {
+  top: 0;
+  right: -3%;
+  width: 72%;
+  opacity: 0.92;
+  transform: translateZ(calc(-110px - var(--spread) * 160px)) translateY(-4%);
+  animation-delay: -2s;
+}
+.code-pane-editor {
+  top: 13%;
+  left: 0;
+  width: 94%;
+  transform: translateZ(calc(var(--spread) * 30px));
+  border-color: color-mix(in oklab, #8da2ff 35%, transparent);
+}
+.code-pane-terminal {
+  bottom: 0;
+  right: -5%;
+  width: 58%;
+  transform: translateZ(calc(80px + var(--spread) * 180px));
+  animation-delay: -4s;
+}
+.code-pane-ai {
+  bottom: 3%;
+  left: -4%;
+  width: 46%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  transform: translateZ(calc(140px + var(--spread) * 240px));
+  border-color: color-mix(in oklab, #d9ae72 40%, transparent);
+  animation-delay: -1s;
+}
+@media (max-width: 1023px) {
+  .code-stage {
+    height: 28rem;
+    perspective: 1200px;
+  }
+  .code-stage-rig {
+    transform: rotateX(6deg) rotateY(-8deg);
+  }
+  /* Shallower depth: at phone width, perspective pushes near panes off the screen edge */
+  .code-pane-browser {
+    right: 0;
+    transform: translateZ(-50px) translateY(-4%);
+  }
+  .code-pane-terminal {
+    right: 0;
+    transform: translateZ(30px);
+  }
+  .code-pane-ai {
+    width: 44%;
+    left: 0;
+    transform: translateZ(45px);
+  }
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.code-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1.15em;
+  margin-left: 1px;
+  vertical-align: -0.22em;
+  background: #8da2ff;
+  animation: caret-blink 1s steps(1) infinite;
+}
+.code-caret-thin {
+  width: 2px;
+  background: #d9ae72;
 }
 
 /* Hero background: tech logos floating behind the content (see hero-backdrop.tsx).
@@ -319,10 +676,20 @@
   .tile-in,
   .scroll-rise,
   .scroll-draw,
+  .scroll-reveal,
+  .scroll-slide,
+  .scroll-chip,
+  .stagger-rows > *,
+  .scroll-scale,
+  .scroll-wipe,
+  .contact-glow::before,
+  .contact-glow::after,
   .eq-bar,
   .orbit-cw,
   .orbit-ccw,
-  .hero-floater {
+  .hero-floater,
+  .code-pane,
+  .code-caret {
     animation: none;
   }
 }

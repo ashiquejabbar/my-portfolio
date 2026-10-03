@@ -4,12 +4,12 @@ export default function Education({ t, sep }: { t: Dictionary["education"]; sep:
   return (
     <section id="education" aria-labelledby="education-title" className="py-14 border-t border-border">
       <div className="section-container grid gap-6 lg:grid-cols-12">
-        <h2 id="education-title" className="lg:col-span-4 text-xl font-semibold">
-          {t.title}
+        <h2 id="education-title" className="lg:col-span-4 text-xl font-semibold overflow-hidden pb-[0.08em]">
+          <span className="block scroll-rise">{t.title}</span>
         </h2>
         <ul className="lg:col-span-8 space-y-4">
           {t.items.map((edu) => (
-            <li key={edu.degree} className="sm:flex sm:items-baseline sm:justify-between sm:gap-6">
+            <li key={edu.degree} className="scroll-slide sm:flex sm:items-baseline sm:justify-between sm:gap-6">
               <p>
                 <span className="font-medium">{edu.degree}</span>
                 <span className="text-muted-foreground">

@@ -46,26 +46,23 @@ export const tools: Tool[] = [
   { label: "Google Gemini", mark: { icon: siGooglegemini } },
 ];
 
-const COLUMNS = 4;
-const START = 0.35;
-
 export const toolColor = (tool: Tool) => tool.color ?? `#${"icon" in tool.mark ? tool.mark.icon.hex : "2446E0"}`;
 
-export function MarkIcon({ mark, color }: { mark: Mark; color: string }) {
+export function MarkIcon({ mark, color, size = 26 }: { mark: Mark; color: string; size?: number }) {
   if ("icon" in mark) {
     return (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill={color} aria-hidden="true">
+      <svg viewBox="0 0 24 24" width={size} height={size} fill={color} aria-hidden="true">
         <path d={mark.icon.path} />
       </svg>
     );
   }
   if ("glyph" in mark) {
-    return <Sparkles size={26} color={color} aria-hidden="true" />;
+    return <Sparkles size={size} color={color} aria-hidden="true" />;
   }
   return (
     <span
-      className="font-heading text-[1.6rem] font-extrabold leading-none"
-      style={{ color }}
+      className="font-heading font-extrabold leading-none"
+      style={{ color, fontSize: size * 0.98 }}
       aria-hidden="true"
     >
       {mark.letter}
@@ -73,35 +70,23 @@ export function MarkIcon({ mark, color }: { mark: Mark; color: string }) {
   );
 }
 
-export default function StackGrid({ title }: { title: string }) {
+// Hero skills list: every tool as a logo + name pill, all visible at once so a recruiter
+// can read the whole stack at a glance. Sits above the code workspace; pills ripple in.
+export function StackRow({ title }: { title: string }) {
   return (
-    <div className="rounded-xl bg-card border border-border shadow-[var(--shadow-raised)] p-5 sm:p-6">
-      <h2 className="font-sans text-sm font-medium text-muted-foreground mb-4">
-        {title}
-      </h2>
-      <ul className="grid grid-cols-4 gap-x-2 gap-y-5">
-        {tools.map((tool, i) => {
-          const color = toolColor(tool);
-          // Diagonal ripple: tiles further along row + column come in a beat later
-          const delay = START + ((i % COLUMNS) + Math.floor(i / COLUMNS)) * 0.07;
-
-          return (
-            <li
-              key={tool.label}
-              className="tile-in group flex flex-col items-center gap-2 text-center"
-              style={{ animationDelay: `${delay}s` }}
-            >
-              <span className="grid place-items-center size-12 rounded-lg bg-background text-foreground transition-transform duration-200 ease-out group-hover:-translate-y-0.5">
-                <span className="grid place-items-center transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110">
-                  <MarkIcon mark={tool.mark} color={color} />
-                </span>
-              </span>
-              <span className="text-xs leading-tight text-muted-foreground group-hover:text-foreground transition-colors">
-                {tool.label}
-              </span>
-            </li>
-          );
-        })}
+    <div className="mb-8">
+      <h2 className="mb-2.5 font-sans text-sm font-medium text-muted-foreground">{title}</h2>
+      <ul className="flex flex-wrap gap-2">
+        {tools.map((tool, i) => (
+          <li
+            key={tool.label}
+            className="tile-in flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[0.8rem] font-medium leading-none text-foreground/85"
+            style={{ animationDelay: `${0.6 + i * 0.04}s` }}
+          >
+            <MarkIcon mark={tool.mark} color={toolColor(tool)} size={15} />
+            {tool.label}
+          </li>
+        ))}
       </ul>
     </div>
   );

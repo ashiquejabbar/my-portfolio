@@ -6,7 +6,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 export default function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <footer className="bg-panel text-panel-foreground/60 border-t border-panel-foreground/10 py-8 text-sm">
-      <div className="section-container flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+      <div className="scroll-reveal section-container flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="space-y-1">
           <p>
             © {new Date().getFullYear()} Ashique PJ. {dict.footer.builtWith}

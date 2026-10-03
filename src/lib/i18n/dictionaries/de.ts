@@ -49,16 +49,10 @@ const de = {
     intro:
       "Fünf Jahre React, Next.js und TypeScript: Unternehmensplattformen für den öffentlichen und privaten Sektor in Indien und im Nahen Osten – rollenbasierte Zugriffskontrolle mit biometrischer Verifizierung, eine KI-gestützte Immobiliensuche für den Markt in Dubai und eine Networking-App für Web und Mobile.",
     ai: "Außerdem integriere ich KI-Funktionen in Web-Apps mit den APIs von OpenAI, Claude und Google Gemini – etwa die KI-gestützte Suche und die Empfehlungen hinter kyna.ai.",
-    available: "Ab sofort verfügbar, mit Besuchsvisum in Dubai",
+    available: "Von Indien nach Dubai gezogen. Ab sofort verfügbar, mit Besuchsvisum",
     emailMe: "E-Mail schreiben",
     whatsappLabel: "Nachricht über WhatsApp",
     linkedinLabel: "LinkedIn-Profil",
-    proofPoints: [
-      { value: "5+", label: "Jahre mit React und Next.js" },
-      { value: "500+", label: "tägliche Nutzer auf einer Behördenplattform" },
-      { value: "11", label: "Benutzerrollen in einem RBAC-System" },
-      { value: "5+", label: "Kundenprojekte mit gemeinsamen UI-Bibliotheken" },
-    ],
     stackTitle: "Meine Werkzeuge",
   },
   pronounce: {
@@ -115,6 +109,7 @@ const de = {
     builtWith: "Technologien",
     visit: "{host} besuchen",
     private: "Internes Kundensystem, nicht öffentlich zugänglich.",
+    live: "Live",
     items: [
       {
         name: "IDMS",
@@ -227,7 +222,6 @@ const de = {
     nationalityValue: "Indisch",
   },
   hire: {
-    tabAlert: "(1) Verfügbar für ein Gespräch",
     label: "Verfügbarkeit für Gespräche",
     title: "Sie suchen einen Frontend-Entwickler?",
     body: "Ich bin ab sofort verfügbar und kann diese Woche zu einem Vorstellungsgespräch kommen – vor Ort in Dubai oder online.",
