@@ -18,6 +18,7 @@ const ar = {
     separator: "، ",
     skipToContent: "انتقل إلى المحتوى الرئيسي",
     downloadCv: "تنزيل السيرة الذاتية",
+    cvDownloaded: "تم التنزيل",
     cvLanguageNote: "(بالإنجليزية)",
     email: "البريد الإلكتروني",
   },

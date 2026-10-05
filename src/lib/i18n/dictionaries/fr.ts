@@ -17,6 +17,7 @@ const fr = {
     separator: ", ",
     skipToContent: "Aller au contenu principal",
     downloadCv: "Télécharger le CV",
+    cvDownloaded: "Téléchargé",
     cvLanguageNote: "(en anglais)",
     email: "E-mail",
   },

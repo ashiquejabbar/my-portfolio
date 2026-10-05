@@ -112,7 +112,7 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.97 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:end-4 z-[60] sm:w-[23rem] rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)] p-4"
+          className="fixed bottom-[5.5rem] inset-x-4 sm:inset-x-auto sm:end-4 z-[60] sm:w-[23rem] rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)] p-4"
         >
           <div className="flex items-start gap-3">
             <span className="relative grid place-items-center size-9 shrink-0 rounded-lg bg-dune-soft/20 text-dune" aria-hidden="true">

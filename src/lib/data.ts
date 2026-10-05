@@ -125,3 +125,5 @@ export const navLinks = [
 ] as const;
 
 export const CV_PATH = "/Ashique_PJ_Dubai_CV.pdf";
+// Shown in the CV button's tooltip; update it when the PDF changes
+export const CV_SIZE = "219 KB";

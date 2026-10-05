@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import { Download, Mail, Menu, X } from "lucide-react";
-import { CV_PATH, contactInfo, navLinks } from "@/lib/data";
+import { Check, Download, Mail, Menu, X } from "lucide-react";
+import { CV_PATH, CV_SIZE, contactInfo, navLinks } from "@/lib/data";
 import ThemeToggle from "@/components/theme-toggle";
 import IntroShowcase from "@/components/intro-showcase";
 import LanguageSwitcher from "@/components/language-switcher";
@@ -15,6 +15,62 @@ const sectionIds = navLinks.map((link) => link.href.slice(1));
 const ACTIVE_LINE = 0.4;
 // Fallback for browsers without the scrollend event: unlock after this much quiet
 const UNLOCK_AFTER_MS = 500;
+
+// CV download link. After a click the icon turns into a tick and the label says "Downloaded" for a
+// moment (also announced to screen readers), so it's clear something happened. The tooltip gives
+// the file type and size. `compact` shows only the icon below the lg breakpoint.
+function CvButton({ common, className, compact = false }: { common: Dictionary["common"]; className: string; compact?: boolean }) {
+  const [done, setDone] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const info = `PDF, ${CV_SIZE}${common.cvLanguageNote ? ` ${common.cvLanguageNote}` : ""}`;
+  return (
+    <a
+      href={CV_PATH}
+      download="ashique_pj_cv.pdf"
+      title={info}
+      aria-label={compact ? `${common.downloadCv} (${info})` : undefined}
+      onClick={() => {
+        setDone(true);
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => setDone(false), 2500);
+      }}
+      className={`group ${className}`}
+    >
+      <span className="relative grid size-4 place-items-center overflow-hidden" aria-hidden="true">
+        <AnimatePresence initial={false} mode="popLayout">
+          <motion.span
+            key={done ? "done" : "idle"}
+            initial={{ y: done ? 0 : -14, scale: done ? 0.4 : 1, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            exit={{ y: done ? 0 : 14, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            className="grid place-items-center"
+          >
+            {done ? (
+              <Check size={16} strokeWidth={2.5} />
+            ) : (
+              <Download size={15} className="transition-transform duration-200 group-hover:translate-y-0.5" />
+            )}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+      {/* Both labels share one grid cell, so the button keeps the width of the longer one */}
+      <span className={`grid ${compact ? "max-lg:sr-only" : ""}`}>
+        <span className={`col-start-1 row-start-1 ${done ? "invisible" : ""}`} aria-hidden={done}>
+          {common.downloadCv}
+        </span>
+        <span className={`col-start-1 row-start-1 ${done ? "" : "invisible"}`} aria-live="polite">
+          {done ? common.cvDownloaded : ""}
+        </span>
+        {/* Reserves the width of "Downloaded" while it isn't showing */}
+        <span className="col-start-1 row-start-1 invisible" aria-hidden="true">
+          {common.cvDownloaded}
+        </span>
+      </span>
+    </a>
+  );
+}
 
 // Floating glass navigation bar: logo with an "available" dot on the left; section links,
 // quick controls and a CV button on the right; a thin line that fills as the page is read.
@@ -179,14 +235,12 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
           <IntroShowcase t={dict.intro} common={dict.common} />
           <LanguageSwitcher locale={locale} t={dict.language} />
           <ThemeToggle t={dict.theme} />
-          <a
-            href={CV_PATH}
-            download="ashique_pj_cv.pdf"
-            className="ms-1 hidden lg:inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
-          >
-            <Download size={15} aria-hidden="true" />
-            {dict.common.downloadCv}
-          </a>
+          {/* Icon only on tablets (the phone menu has its own), full label from lg */}
+          <CvButton
+            common={dict.common}
+            compact
+            className="ms-1 hidden md:inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-primary max-lg:w-9 lg:px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          />
           <button
             type="button"
             className="md:hidden grid size-9 place-items-center rounded-lg hover:bg-muted"
@@ -242,14 +296,10 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
               ))}
             </ul>
             <div className="mt-2 grid grid-cols-2 gap-2 border-t border-border p-2 pt-3">
-              <a
-                href={CV_PATH}
-                download="ashique_pj_cv.pdf"
+              <CvButton
+                common={dict.common}
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-primary-foreground"
-              >
-                <Download size={16} aria-hidden="true" />
-                {dict.common.downloadCv}
-              </a>
+              />
               <a
                 href={`mailto:${contactInfo.email}`}
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-foreground/20 text-sm font-medium"

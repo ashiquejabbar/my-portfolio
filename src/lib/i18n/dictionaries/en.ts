@@ -18,6 +18,8 @@ const en = {
     separator: ", ",
     skipToContent: "Skip to main content",
     downloadCv: "Download CV",
+    // Shown on the CV button for a moment after it is clicked
+    cvDownloaded: "Downloaded",
     // Empty in English; other languages say the CV itself is in English
     cvLanguageNote: "",
     email: "Email",

@@ -389,6 +389,41 @@
   }
 }
 
+/* "Tools I work with" (skills.tsx). Products carry their logo on a solid chip; practices
+   (RBAC, RTL layouts, SEO …) are quieter outline chips, so the two read apart at a glance. */
+.skill-chip {
+  border-color: color-mix(in oklab, var(--foreground) 14%, transparent);
+  color: color-mix(in oklab, var(--foreground) 72%, transparent);
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background-color 0.2s;
+}
+.skill-chip[data-tool] {
+  background: var(--card);
+  color: color-mix(in oklab, var(--foreground) 90%, transparent);
+}
+/* Brand colour, a shade deeper on the light theme so pale marks (React, Webpack) stay visible */
+.skill-mark {
+  color: color-mix(in oklab, var(--brand) 78%, var(--foreground));
+}
+:root[data-theme="dark"] .skill-mark {
+  color: var(--brand);
+}
+.skill-chip[data-ink] .skill-mark {
+  color: currentColor;
+}
+/* With a mouse, a tool chip takes on its brand colour */
+@media (hover: hover) and (pointer: fine) {
+  .skill-chip[data-tool]:hover {
+    border-color: color-mix(in oklab, var(--brand, var(--primary)) 55%, transparent);
+    background: color-mix(in oklab, var(--brand, var(--primary)) 10%, var(--card));
+  }
+  .skill-chip[data-ink]:hover {
+    border-color: color-mix(in oklab, var(--foreground) 40%, transparent);
+  }
+}
+
 /* Projects: each row is a 3D tilt card (projects.tsx). It turns towards the pointer (--rx/--ry, set
    by JS), and on hover its layers lift to different depths.
    The card itself must not clip: overflow would flatten the 3D. */
