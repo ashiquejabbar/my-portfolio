@@ -538,6 +538,106 @@
   box-shadow: 0 12px 32px -18px rgba(0, 0, 0, 0.45);
 }
 
+/* Navbar name (navbar.tsx): letters rise in one by one on load; on hover the colour ripples
+   across them to blue (no movement). */
+@keyframes name-char-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+}
+.nav-name-char {
+  display: inline-block;
+  animation: name-char-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(120ms + var(--i) * 40ms);
+  transition: color 250ms ease-out;
+  transition-delay: calc(var(--i) * 25ms);
+}
+.nav-name:hover .nav-name-char,
+.nav-name:focus-visible .nav-name-char {
+  color: var(--primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-name-char {
+    animation: none;
+  }
+}
+
+/* Hero contact buttons (hero.tsx). Hover lifts, press sinks. Uses `translate`/`scale` rather than
+   `transform`, which the fade-rise entrance animation holds. */
+.hero-cta {
+  position: relative;
+  overflow: hidden;
+  transition:
+    translate 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    scale 120ms ease-out,
+    box-shadow 220ms ease-out,
+    border-color 200ms ease-out,
+    color 200ms ease-out,
+    background-color 200ms ease-out;
+}
+.hero-cta:hover {
+  translate: 0 -2px;
+  box-shadow: 0 10px 22px -14px rgba(0, 0, 0, 0.45);
+}
+.hero-cta:active {
+  translate: 0;
+  scale: 0.97;
+}
+/* Primary: a cobalt glow and a light sweep across the face */
+.hero-cta-primary:hover {
+  box-shadow: 0 12px 28px -12px color-mix(in oklab, var(--primary) 70%, transparent);
+}
+.hero-cta-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  translate: -110% 0;
+  pointer-events: none;
+}
+.hero-cta-primary:hover::after {
+  translate: 110% 0;
+  transition: translate 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-cta-mail {
+  transition: rotate 300ms cubic-bezier(0.34, 1.56, 0.64, 1), translate 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hero-cta-primary:hover .hero-cta-mail {
+  rotate: -12deg;
+  translate: 0 -1px;
+}
+/* Social icons take their brand colour on hover (--brand set inline) */
+.hero-cta-brand:hover {
+  color: var(--brand);
+  border-color: color-mix(in oklab, var(--brand) 55%, transparent);
+  background-color: color-mix(in oklab, var(--brand) 8%, transparent);
+}
+/* LinkedIn blue is too dark to read on the night background */
+:root[data-theme="dark"] .hero-cta-brand:hover {
+  color: color-mix(in oklab, var(--brand) 70%, white);
+}
+.hero-cta-brand svg {
+  transition: scale 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hero-cta-brand:hover svg {
+  scale: 1.12;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta,
+  .hero-cta:hover,
+  .hero-cta:active,
+  .hero-cta-primary:hover .hero-cta-mail,
+  .hero-cta-brand:hover svg {
+    translate: none;
+    scale: none;
+    rotate: none;
+  }
+  .hero-cta-primary::after {
+    display: none;
+  }
+}
+
 /* Hero 3D workspace (see code-stage.tsx). Always-dark panes, stacked in depth.
    --tilt-x / --tilt-y (-1–1) follow the pointer; --spread (0–1) fans the panes apart on scroll. */
 .code-stage {
@@ -668,6 +768,20 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+}
+/* Dark mode only: a soft cobalt light source behind the 3D workspace, like a rim light */
+:root[data-theme="dark"] .hero-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(38% 52% at 74% 48%, color-mix(in oklab, var(--primary) 26%, transparent), transparent 70%),
+    radial-gradient(60% 70% at 70% 45%, color-mix(in oklab, #2446e0 14%, transparent), transparent 75%);
+}
+@media (max-width: 1023px) {
+  :root[data-theme="dark"] .hero-backdrop::before {
+    background: radial-gradient(70% 40% at 50% 72%, color-mix(in oklab, var(--primary) 20%, transparent), transparent 70%);
+  }
 }
 @keyframes float-bob {
   0%,

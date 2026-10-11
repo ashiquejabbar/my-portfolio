@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { Download, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
-import { CV_PATH, personalInfo, contactInfo } from "@/lib/data";
+import { personalInfo, contactInfo } from "@/lib/data";
+import CvButton from "@/components/cv-button";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import HeroBackdrop from "@/components/hero-backdrop";
 import CodeStage from "@/components/code-stage";
@@ -25,6 +26,10 @@ function Reveal({
     </div>
   );
 }
+
+// Shared shape of the contact buttons, and the outline style of the secondary ones
+const cta = "hero-cta inline-flex items-center justify-center h-11 rounded-md font-medium";
+const outline = "border border-foreground/20 hover:border-foreground/50";
 
 export default function Hero({ dict }: { dict: Dictionary }) {
   const t = dict.hero;
@@ -75,31 +80,30 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             </p>
           </Reveal>
 
-          <Reveal delay={0.6} className="mt-7 flex flex-wrap gap-3">
+          {/* Each button rises in on its own beat; hover/press motion lives in globals.css (.hero-cta) */}
+          <div className="mt-7 flex flex-wrap gap-3">
             <a
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/85 transition-colors"
+              className={`${cta} hero-cta-primary fade-rise group gap-2 px-5 bg-primary text-primary-foreground`}
+              style={{ animationDelay: "0.6s" }}
             >
-              <Mail size={17} aria-hidden="true" />
+              <Mail size={17} aria-hidden="true" className="hero-cta-mail" />
               {t.emailMe}
             </a>
-            <a
-              href={CV_PATH}
-              download="ashique_pj_cv.pdf"
-              className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-foreground/20 text-foreground font-medium hover:border-foreground/50 transition-colors"
-            >
-              <Download size={17} aria-hidden="true" />
-              {dict.common.downloadCv}
-              {dict.common.cvLanguageNote && (
-                <span className="font-normal text-muted-foreground">{dict.common.cvLanguageNote}</span>
-              )}
-            </a>
+            <CvButton
+              common={dict.common}
+              showNote
+              iconSize={17}
+              className={`${cta} ${outline} fade-rise gap-2 px-5 text-foreground [animation-delay:0.68s]`}
+            />
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.whatsappLabel}
-              className="grid place-items-center size-11 rounded-md border border-foreground/20 text-foreground hover:border-foreground/50 transition-colors"
+              title="WhatsApp"
+              className={`${cta} ${outline} hero-cta-brand fade-rise size-11 text-foreground`}
+              style={{ "--brand": "#25d366", animationDelay: "0.76s" } as React.CSSProperties}
             >
               <BrandIcon icon={siWhatsapp} />
             </a>
@@ -108,11 +112,13 @@ export default function Hero({ dict }: { dict: Dictionary }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.linkedinLabel}
-              className="grid place-items-center size-11 rounded-md border border-foreground/20 text-foreground hover:border-foreground/50 transition-colors"
+              title="LinkedIn"
+              className={`${cta} ${outline} hero-cta-brand fade-rise size-11 text-foreground`}
+              style={{ "--brand": "#0a66c2", animationDelay: "0.84s" } as React.CSSProperties}
             >
               <LinkedInIcon />
             </a>
-          </Reveal>
+          </div>
         </div>
 
         <Reveal delay={0.25} className="lg:col-span-5 lg:pt-3">

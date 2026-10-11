@@ -2,75 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import { Check, Download, Mail, Menu, X } from "lucide-react";
-import { CV_PATH, CV_SIZE, contactInfo, navLinks } from "@/lib/data";
+import { Mail, Menu, X } from "lucide-react";
+import { contactInfo, navLinks } from "@/lib/data";
+import CvButton from "@/components/cv-button";
 import ThemeToggle from "@/components/theme-toggle";
 import IntroShowcase from "@/components/intro-showcase";
 import LanguageSwitcher from "@/components/language-switcher";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
-const sectionIds = navLinks.map((link) => link.href.slice(1));
+const NAME = "Ashique PJ";
+const sectionIds =navLinks.map((link) => link.href.slice(1));
 // A section counts as current once its top passes this share of the screen height
 const ACTIVE_LINE = 0.4;
 // Fallback for browsers without the scrollend event: unlock after this much quiet
 const UNLOCK_AFTER_MS = 500;
-
-// CV download link. After a click the icon turns into a tick and the label says "Downloaded" for a
-// moment (also announced to screen readers), so it's clear something happened. The tooltip gives
-// the file type and size. `compact` shows only the icon below the lg breakpoint.
-function CvButton({ common, className, compact = false }: { common: Dictionary["common"]; className: string; compact?: boolean }) {
-  const [done, setDone] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  useEffect(() => () => clearTimeout(timer.current), []);
-  const info = `PDF, ${CV_SIZE}${common.cvLanguageNote ? ` ${common.cvLanguageNote}` : ""}`;
-  return (
-    <a
-      href={CV_PATH}
-      download="ashique_pj_cv.pdf"
-      title={info}
-      aria-label={compact ? `${common.downloadCv} (${info})` : undefined}
-      onClick={() => {
-        setDone(true);
-        clearTimeout(timer.current);
-        timer.current = setTimeout(() => setDone(false), 2500);
-      }}
-      className={`group ${className}`}
-    >
-      <span className="relative grid size-4 place-items-center overflow-hidden" aria-hidden="true">
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.span
-            key={done ? "done" : "idle"}
-            initial={{ y: done ? 0 : -14, scale: done ? 0.4 : 1, opacity: 0 }}
-            animate={{ y: 0, scale: 1, opacity: 1 }}
-            exit={{ y: done ? 0 : 14, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            className="grid place-items-center"
-          >
-            {done ? (
-              <Check size={16} strokeWidth={2.5} />
-            ) : (
-              <Download size={15} className="transition-transform duration-200 group-hover:translate-y-0.5" />
-            )}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-      {/* Both labels share one grid cell, so the button keeps the width of the longer one */}
-      <span className={`grid ${compact ? "max-lg:sr-only" : ""}`}>
-        <span className={`col-start-1 row-start-1 ${done ? "invisible" : ""}`} aria-hidden={done}>
-          {common.downloadCv}
-        </span>
-        <span className={`col-start-1 row-start-1 ${done ? "" : "invisible"}`} aria-live="polite">
-          {done ? common.cvDownloaded : ""}
-        </span>
-        {/* Reserves the width of "Downloaded" while it isn't showing */}
-        <span className="col-start-1 row-start-1 invisible" aria-hidden="true">
-          {common.cvDownloaded}
-        </span>
-      </span>
-    </a>
-  );
-}
 
 // Floating glass navigation bar: logo with an "available" dot on the left; section links,
 // quick controls and a CV button on the right; a thin line that fills as the page is read.
@@ -158,10 +104,28 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // The open mobile menu closes on a tap outside the bar, or when the window grows to the
+  // desktop layout (where the menu is hidden but would still be open)
+  const headerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const close = () => setIsMobileOpen(false);
+    const onPointerDown = (e: PointerEvent) => {
+      if (!headerRef.current?.contains(e.target as Node)) close();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    desktop.addEventListener("change", close);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      desktop.removeEventListener("change", close);
+    };
+  }, [isMobileOpen]);
+
   const solid = isScrolled || isMobileOpen;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4">
       <nav
         aria-label={t.main}
         className={`nav-glass backdrop-blur-md backdrop-saturate-150 relative mx-auto flex h-14 max-w-[72rem] items-center gap-2 rounded-2xl ps-3 pe-2 sm:ps-4 transition-[background-color,box-shadow] duration-300 ${
@@ -170,11 +134,18 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
       >
         <a
           href="#home"
-          className="me-auto flex shrink-0 items-center gap-2 sm:gap-2.5 whitespace-nowrap font-heading text-base sm:text-lg font-semibold"
+          className="nav-name group me-auto flex shrink-0 items-center gap-2 sm:gap-2.5 whitespace-nowrap font-heading text-base sm:text-lg font-semibold"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG, no optimisation needed */}
-          <img src="/icon.svg" alt="" width={30} height={30} className="size-7 sm:size-[30px] rounded-[8px]" />
-          <span>Ashique PJ</span>
+          {/* Letters rise in one by one on load and ripple on hover (globals.css .nav-name).
+              Split for the animation only: screen readers get the plain name. */}
+          <span className="sr-only">{NAME}</span>
+          <span aria-hidden="true" className="flex">
+            {[...NAME].map((ch, i) => (
+              <span key={i} className="nav-name-char" style={{ "--i": i } as React.CSSProperties}>
+                {ch === " " ? " " : ch}
+              </span>
+            ))}
+          </span>
           <span className="relative flex size-2" title={dict.hero.available}>
             <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60 motion-reduce:hidden" />
             <span className="relative size-2 rounded-full bg-emerald-500" />
