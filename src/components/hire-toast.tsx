@@ -106,6 +106,7 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
     <AnimatePresence>
       {open && (
         <motion.aside
+          data-hire-toast
           role="status"
           aria-label={t.label}
           initial={{ opacity: 0, y: 24, scale: 0.97 }}

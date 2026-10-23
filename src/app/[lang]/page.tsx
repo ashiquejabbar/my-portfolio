@@ -8,6 +8,7 @@ import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import TranslationNotice from "@/components/translation-notice";
 import HireToast from "@/components/hire-toast";
+import CvChat from "@/components/cv-chat";
 import { defaultLocale } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 
@@ -29,6 +30,7 @@ export default async function Home() {
       <Footer locale={locale} dict={dict} />
       {locale !== defaultLocale && <TranslationNotice locale={locale} t={dict.language} />}
       <HireToast t={dict.hire} />
+      <CvChat t={dict.chat} locale={locale} />
     </>
   );
 }

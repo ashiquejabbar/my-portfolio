@@ -42,6 +42,7 @@ export default function TranslationNotice({ locale, t }: { locale: Locale; t: Di
     <AnimatePresence>
       {open && (
         <motion.aside
+          data-translation-notice
           role="status"
           aria-label={t.noticeTitle}
           initial={{ opacity: 0, y: 16 }}

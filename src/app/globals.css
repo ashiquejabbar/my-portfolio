@@ -862,3 +862,17 @@
     scroll-behavior: auto;
   }
 }
+
+/* CV chat (see cv-chat.tsx): keep the floating cards from piling up in the bottom corner.
+   The hire card waits while the chat is open, and the hint bubble never sits under the hire card */
+html[data-chat-open] [data-hire-toast],
+body:has([data-hire-toast]) [data-chat-hint] {
+  display: none;
+}
+/* Phones: the translation notice spans the screen bottom, so the chat button and hint wait until it's closed */
+@media (max-width: 639px) {
+  body:has([data-translation-notice]) [data-chat-button],
+  body:has([data-translation-notice]) [data-chat-hint] {
+    display: none;
+  }
+}
