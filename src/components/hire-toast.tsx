@@ -19,8 +19,8 @@ const PREVIEW_PARAM = "hire-preview";
 // The email opens pre-filled in English: that's the language Ashique reads
 const interviewMail =
   `mailto:${contactInfo.email}` +
-  `?subject=${encodeURIComponent("Interview request – Frontend Developer")}` +
-  `&body=${encodeURIComponent("Hi Ashique,\n\nWe would like to schedule an interview with you for a frontend role.\n\nSuggested times:\n\n")}`;
+  `?subject=${encodeURIComponent("Interview request – Full Stack & AI Developer")}` +
+  `&body=${encodeURIComponent("Hi Ashique,\n\nWe would like to schedule an interview with you for a full stack & AI role.\n\nSuggested times:\n\n")}`;
 
 // Exit intent: seconds on the page before moving the mouse to the tab bar shows the card
 const EXIT_INTENT_AFTER_SECONDS = 20;

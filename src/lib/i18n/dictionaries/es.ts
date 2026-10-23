@@ -3,14 +3,14 @@ import type { Dictionary } from "./en";
 // Neutral international Spanish; achievements in first-person past ("Diseñé…"), visitors addressed as tú.
 const es = {
   meta: {
-    title: "Ashique PJ — Desarrollador Frontend en Dubái, EAU | React y Next.js",
+    title: "Ashique PJ — Desarrollador Full Stack y de IA en Dubái, EAU | Next.js SSR, LLM y Node.js",
     description:
-      "Desarrollador Frontend en Dubái (EAU) con más de 5 años de experiencia en React.js, Next.js y TypeScript. Plataformas para empresas y gobierno, RBAC e integraciones de IA con OpenAI, Claude y Gemini. Disponible para incorporación inmediata.",
-    ogTitle: "Ashique PJ — Desarrollador Frontend en Dubái, EAU",
+      "Desarrollador Full Stack y de IA en Dubái (EAU) con más de 5 años de experiencia en React.js, Next.js, TypeScript y Node.js. Aplicaciones web con IA usando las API de OpenAI, Claude y Gemini, backends con Node.js y MongoDB, y plataformas para empresas y gobierno con RBAC. Disponible para incorporación inmediata.",
+    ogTitle: "Ashique PJ — Desarrollador Full Stack y de IA en Dubái, EAU",
     ogDescription:
-      "Más de 5 años de React, Next.js y TypeScript en plataformas empresariales y gubernamentales. Disponible para incorporarse de inmediato en Dubái.",
-    ogImageAlt: "Ashique PJ, Desarrollador Frontend en Dubái",
-    ogTagline: "Desarrollador frontend en Dubái. React, Next.js e integración de IA",
+      "Más de 5 años de React, Next.js, Node.js y TypeScript en plataformas empresariales y gubernamentales. Disponible para incorporarse de inmediato en Dubái.",
+    ogImageAlt: "Ashique PJ, Desarrollador Full Stack y de IA en Dubái",
+    ogTagline: "Desarrollador full stack y de IA en Dubái. React, Next.js, Node.js e integración de LLM",
     ogAvailable: "Disponible de inmediato en Dubái, EAU",
   },
   common: {
@@ -45,11 +45,11 @@ const es = {
     toDark: "Cambiar al tema oscuro",
   },
   hero: {
-    headline: ["Construyo las interfaces", "en las que confían", "las empresas."],
-    roleLine: "Desarrollador frontend en Dubái, EAU. React, Next.js e integración de IA",
+    headline: ["Construyo las apps web", "en las que confían", "las empresas."],
+    roleLine: "Desarrollador full stack (frontend y backend) en Dubái, EAU. React.js, Next.js, Node.js e integración de IA/LLM",
     intro:
-      "Cinco años de React, Next.js y TypeScript creando plataformas empresariales para los sectores público y privado en la India y Oriente Medio: control de acceso por roles con verificación biométrica, un buscador inmobiliario con IA para el mercado de Dubái y una app de networking para web y móvil.",
-    ai: "También integro funciones de IA en aplicaciones web con las API de OpenAI, Claude y Google Gemini, como la búsqueda y las recomendaciones inteligentes de kyna.ai.",
+      "Cinco años de React, Next.js, TypeScript y Node.js creando plataformas empresariales para los sectores público y privado en la India y Oriente Medio: control de acceso por roles con verificación biométrica, un buscador inmobiliario con IA para el mercado de Dubái y una app de networking para web y móvil.",
+    ai: "Desarrollo funciones de IA generativa para aplicaciones web con las API de OpenAI, Claude y Google Gemini: diseño de prompts, salida JSON estructurada, respuestas en streaming y endpoints en Node.js que mantienen las claves de API en el servidor. Por ejemplo, la búsqueda inmobiliaria en lenguaje natural de kyna.ai y la reescritura con IA del resumen de perfil en Orbin.",
     available: "Me trasladé de la India a Dubái. Disponible de inmediato, con visado de visita",
     emailMe: "Escríbeme",
     whatsappLabel: "Enviar mensaje por WhatsApp",
@@ -79,18 +79,22 @@ const es = {
     showAll: "Mostrar los {count}",
     roles: [
       {
-        title: "Desarrollador React",
+        title: "Desarrollador Full Stack",
         location: "India (clientes en EAU y Oriente Medio)",
         period: "sept. 2022 – abr. 2026",
         highlights: [
+          "Desarrollé aplicaciones Next.js en producción (App Router, SSR/SSG) con TypeScript, usando renderizado del lado del servidor para el SEO y cargas iniciales rápidas, como el buscador inmobiliario con IA de kyna.ai.",
+          "Integré las API de LLM de OpenAI, Claude y Google Gemini en productos de clientes, con prompts específicos para cada proyecto, salida JSON estructurada y respuestas de IA en streaming hacia interfaces en Next.js y React.js.",
           "Diseñé el RBAC de plataformas gubernamentales de gestión documental con hasta 11 roles de usuario, verificación biométrica (iris, huella dactilar y reconocimiento facial) y flujos de aprobación de varios niveles, con más de 500 usuarios diarios.",
+          "Desarrollé APIs REST con Node.js (Express) y CRUD completo sobre MongoDB (diseño de esquemas con Mongoose), PostgreSQL y Supabase, conectando el frontend con proveedores de IA y manteniendo las claves de API en el servidor.",
+          "Implementé autenticación y autorización por roles con Passport.js, JWT, OAuth 2.0 y Supabase, validé peticiones y formularios con Zod y Yup, y gestioné la subida de archivos.",
           "Desarrollé interfaces bilingües árabe/inglés con cambio completo de diseño RTL/LTR para clientes gubernamentales y empresas de los EAU.",
+          "Desarrollé apps en React Native para iOS y Android junto a las aplicaciones web en React.js y Next.js.",
           "Creé librerías de componentes reutilizables con React.js y TypeScript (Material-UI, Tailwind CSS, shadcn/ui) compartidas en más de 5 proyectos de clientes, lo que aceleró la entrega de interfaces y mantuvo un diseño coherente.",
-          "Implementé una arquitectura de Micro Frontends con Webpack Module Federation, dividiendo aplicaciones monolíticas en módulos desplegables de forma independiente para que los equipos pudieran desarrollar y publicar en paralelo.",
           "Optimicé el rendimiento de carga con code splitting, lazy loading, memoización y ajustes de Webpack, reduciendo el tamaño del bundle inicial y mejorando las Core Web Vitals.",
-          "Integré APIs de autenticación con JWT, OAuth 2.0 y Supabase: flujos de inicio de sesión, rutas protegidas y acceso a la interfaz según el rol.",
-          "Conecté APIs REST con caché de TanStack Query, actualizaciones optimistas de la interfaz y funciones con WebSocket para notificaciones en tiempo real, chat y flujos de trabajo colaborativos.",
-          "Configuré pipelines de CI/CD con GitHub Actions para automatizar las pruebas y el despliegue.",
+          "Implementé una arquitectura de Micro Frontends con Webpack Module Federation, dividiendo aplicaciones monolíticas en módulos desplegables de forma independiente para que los equipos pudieran desarrollar y publicar en paralelo.",
+          "Envié correo transaccional (notificaciones, verificación e informes) con Nodemailer a través de SMTP, desplegué servicios en AWS (EC2) detrás de un proxy inverso Nginx y usé ngrok para probar webhooks.",
+          "Conecté APIs REST con caché de TanStack Query, actualizaciones optimistas de la interfaz y funciones con WebSocket para notificaciones en tiempo real y chat, con CI/CD mediante GitHub Actions.",
         ],
       },
       {
@@ -113,6 +117,16 @@ const es = {
     live: "En vivo",
     items: [
       {
+        name: "kyna.ai",
+        tagline: "Buscador inmobiliario con IA",
+        description: "Búsqueda inmobiliaria con IA para el mercado inmobiliario de Dubái.",
+        context: "Dubái, EAU",
+        highlights: [
+          "Desarrollé una plataforma de búsqueda inmobiliaria impulsada por IA para el mercado de Dubái, que usa la API de OpenAI para convertir consultas en lenguaje natural en propiedades coincidentes y recomendaciones, con renderizado del lado del servidor optimizado para SEO.",
+          "Integré APIs de anuncios inmobiliarios y un sistema de gestión de leads para socios comerciales, lo que permite a los agentes encontrar propiedades en tiempo real.",
+        ],
+      },
+      {
         name: "IDMS",
         tagline: "Sistema de gestión documental gubernamental",
         description: "Gestión documental bilingüe para operaciones gubernamentales.",
@@ -133,22 +147,13 @@ const es = {
         ],
       },
       {
-        name: "kyna.ai",
-        tagline: "Buscador inmobiliario con IA",
-        description: "Búsqueda inmobiliaria con IA para el mercado inmobiliario de Dubái.",
-        context: "Dubái, EAU",
-        highlights: [
-          "Desarrollé una plataforma de búsqueda inmobiliaria impulsada por IA para el mercado de Dubái, con un motor de recomendaciones inteligente y renderizado del lado del servidor optimizado para SEO.",
-          "Integré APIs de anuncios inmobiliarios y un sistema de gestión de leads para socios comerciales, lo que permite a los agentes encontrar propiedades en tiempo real.",
-        ],
-      },
-      {
         name: "Orbin",
         tagline: "Plataforma de networking profesional",
         description: "Plataforma de networking al estilo de LinkedIn para web y móvil.",
         context: "",
         highlights: [
-          "Construí una plataforma de networking al estilo de LinkedIn para web y móvil con reserva de consultas, mensajería en tiempo real y notificaciones push.",
+          "Construí una plataforma de networking al estilo de LinkedIn para web y móvil (React Native en iOS y Android) con reserva de consultas, mensajería en tiempo real y notificaciones push.",
+          "Añadí una reescritura opcional del resumen de perfil con la API de OpenAI, para que los usuarios puedan mejorar su resumen cuando lo deseen.",
           "Reduje las llamadas redundantes a la API con la caché de TanStack Query y notificaciones basadas en WebSocket, mejorando la capacidad de respuesta de la app.",
         ],
       },
@@ -171,13 +176,18 @@ const es = {
       ui: "Librerías de UI",
       state: "Estado y datos",
       security: "Seguridad",
-      ai: "Integración de IA",
+      ai: "IA / LLM",
       backend: "Backend",
       devops: "DevOps y herramientas",
       testing: "Pruebas",
       uiux: "UI/UX",
     },
     terms: {
+      "React Native (iOS & Android)": "React Native (iOS & Android)",
+      "REST API Design & Integration (CRUD)": "Diseño e integración de APIs REST (CRUD)",
+      "Third-Party API Integration": "Integración de API de terceros",
+      "File Uploads (Multer)": "Subida de archivos (Multer)",
+      "Authorization Middleware": "Middleware de autorización",
       "Micro Frontends": "Micro Frontends",
       "RESTful APIs": "APIs RESTful",
       "JWT Authentication": "Autenticación JWT",
@@ -190,6 +200,11 @@ const es = {
       "Responsive Design": "Diseño responsive",
       "WCAG/ARIA Accessibility": "Accesibilidad WCAG/ARIA",
       "Semantic HTML": "HTML semántico",
+      "Generative AI": "IA generativa",
+      "LLM Integration": "Integración de LLM",
+      "Prompt Engineering": "Ingeniería de prompts",
+      "Structured JSON Output": "Salida JSON estructurada",
+      "Streaming Responses": "Respuestas en streaming",
     },
   },
   education: {
@@ -197,14 +212,14 @@ const es = {
     items: [
       {
         degree: "Licenciatura en Aplicaciones Informáticas (BCA)",
-        institution: "Universidad MG, Kerala, India",
+        institution: "Universidad MG, Kerala, India · Título legalizado",
         year: "2017 – 2020",
       },
       { degree: "Desarrollador Python certificado", institution: "Nordic Academy", year: "2021" },
     ],
   },
   contact: {
-    title: "¿Buscas un desarrollador frontend en Dubái?",
+    title: "¿Buscas un desarrollador full stack y de IA en Dubái?",
     lead: "Puedo empezar de inmediato. El correo es la forma más rápida de contactarme.",
     copyEmail: "Copiar correo",
     emailCopied: "Correo copiado",
@@ -218,13 +233,13 @@ const es = {
     status: "Situación",
     visaStatus: "Visado de visita de EAU — Disponible de inmediato",
     languages: "Idiomas",
-    languageList: "Inglés, malayalam (nativo)",
+    languageList: "Inglés (profesional), malayalam (nativo)",
     nationality: "Nacionalidad",
     nationalityValue: "India",
   },
   hire: {
     label: "Disponibilidad para entrevistas",
-    title: "¿Buscas un desarrollador frontend?",
+    title: "¿Buscas un desarrollador full stack y de IA?",
     body: "Estoy disponible para incorporarme de inmediato y puedo hacer una entrevista esta semana, en persona en Dubái o en línea.",
     cta: "Programar una entrevista",
     whatsapp: "WhatsApp",
@@ -236,12 +251,12 @@ const es = {
   intro: {
     play: "Ver la intro",
     close: "Cerrar la intro",
-    dialogLabel: "Intro: {name}, Desarrollador Frontend",
+    dialogLabel: "Intro: {name}, Desarrollador Full Stack y de IA",
     badge: "Incorporación inmediata · Dubái, EAU",
-    role: "Desarrollador Frontend — Especialista en React.js y Next.js",
-    skillsLabel: "Habilidades frontend",
+    role: "Desarrollador Full Stack (Frontend y Backend) — React.js, Next.js, Node.js e integración de IA/LLM",
+    skillsLabel: "Habilidades clave",
     techLabel: "Tecnologías con las que trabajo",
-    skills: ["TypeScript", "Tailwind CSS", "Micro Frontends", "RTL árabe/inglés", "Integración de IA"],
+    skills: ["TypeScript", "React Native", "MongoDB", "RTL árabe/inglés", "Integración de IA"],
     copy: "Copiar",
     copied: "¡Copiado!",
     copyLabel: "Copiar dirección de correo",

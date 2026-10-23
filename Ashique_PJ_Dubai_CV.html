@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashique PJ - Frontend Developer CV</title>
+    <title>Ashique PJ - Full Stack Developer (Frontend and Backend) - React.js, Next.js, Node.js &amp; AI/LLM CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -270,8 +270,17 @@
             break-after: avoid;
         }
 
-        .job, .project, .edu {
+        .project, .edu {
             break-inside: avoid;
+        }
+
+        /* A job is too long to keep whole; break between bullets, never inside one or after its header */
+        .job li {
+            break-inside: avoid;
+        }
+
+        .job-top, .job-company {
+            break-after: avoid;
         }
 
         /* Keep hyphenated words on one line so ATS text extraction doesn't merge them */
@@ -297,7 +306,7 @@
         <header class="header">
             <div class="header-info">
                 <h1>ASHIQUE P J</h1>
-                <div class="role">Frontend Developer — React.js and Next.js Specialist</div>
+                <div class="role">Full Stack Developer (Frontend and Backend) — React.js, Next.js, Node.js &amp; AI/LLM Integration</div>
                 <div class="contact">
                     <span style="color: #1a237e;">Dubai, United Arab Emirates</span>
                     <span class="dot">|</span>
@@ -320,7 +329,7 @@
         <section class="section">
             <h2 class="section-heading">Professional Summary</h2>
             <p class="summary">
-                Frontend Developer with 5+ years of experience specializing in React.js, Next.js, and TypeScript. Delivered enterprise platforms for government and <span class="nw">private-sector</span> clients in the UAE and Middle East, with bilingual Arabic/English (RTL) interfaces, REST API integration, secure JWT/OAuth authentication, and <span class="nw">role-based</span> access control. Built the user interface for an <span class="nw">11-role</span> government document platform with iris, fingerprint, and facial recognition, used by 500+ people daily. Integrates AI into web applications using the OpenAI API, including <span class="nw">AI-driven</span> property search and recommendations for the Dubai market, and <span class="nw">real-time</span> virtual try-on with MediaPipe FaceMesh.
+                Full Stack Developer with 5+ years of experience, specializing in server-rendered Next.js and LLM-powered products. Builds SEO-friendly Next.js (App Router, SSR/SSG) apps with React and TypeScript, and integrates any LLM provider, including OpenAI, Claude, and Google Gemini, from prompt design and structured, streamed output to the interface. Also ships React Native apps for iOS and Android and Node.js (Express) and MongoDB APIs on AWS behind Nginx. Built the <span class="nw">natural-language</span> property search behind kyna.ai in Dubai, and bilingual Arabic/English (RTL) platforms for UAE government and enterprise clients, including an <span class="nw">11-role</span> document system with biometric verification used by 500+ people daily.
             </p>
         </section>
 
@@ -330,7 +339,15 @@
             <div class="skills-list">
                 <div class="skill-row">
                     <span class="label">Frontend:</span>
-                    <span class="value">React.js, Next.js (SSR/SSG), TypeScript, JavaScript (ES6+), HTML5, CSS3, React Native, Micro Frontends (Module Federation)</span>
+                    <span class="value">Next.js (App Router, SSR/SSG), React.js, TypeScript, JavaScript (ES6+), HTML5, CSS3, React Native (iOS &amp; Android), Micro Frontends (Module Federation)</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">AI / LLM:</span>
+                    <span class="value">Generative AI, LLM Integration, OpenAI API (GPT), Claude API (Anthropic), Google Gemini API, Prompt Engineering, Structured JSON Output, Streaming Responses, Secure AI API Endpoints (Node.js), Computer Vision (MediaPipe FaceMesh)</span>
+                </div>
+                <div class="skill-row">
+                    <span class="label">Backend:</span>
+                    <span class="value">Node.js, Express, REST API Design &amp; Integration (CRUD), Third-Party API Integration, MongoDB (Mongoose Schema Design), PostgreSQL, Supabase, Firebase, Zod, Yup, File Uploads (Multer), Nodemailer (SMTP), Python, Django, MySQL</span>
                 </div>
                 <div class="skill-row">
                     <span class="label">UI Libraries:</span>
@@ -342,27 +359,19 @@
                 </div>
                 <div class="skill-row">
                     <span class="label">Security:</span>
-                    <span class="value">JWT Authentication, OAuth 2.0, Role-Based Access Control (RBAC), Biometric SDK Integration</span>
+                    <span class="value">JWT Authentication, Passport.js, OAuth 2.0, Role-Based Access Control (RBAC), Authorization Middleware, Biometric SDK Integration</span>
                 </div>
                 <div class="skill-row">
                     <span class="label">Testing:</span>
                     <span class="value">Playwright, End-to-End Testing, Cross-Browser Testing</span>
                 </div>
                 <div class="skill-row">
-                    <span class="label">Backend:</span>
-                    <span class="value">Node.js, Python, Django, PostgreSQL, MongoDB, MySQL, Firebase, Supabase</span>
-                </div>
-                <div class="skill-row">
                     <span class="label">DevOps and Tools:</span>
-                    <span class="value">Git, GitHub, GitHub Actions, CI/CD Pipelines, Docker, AWS (EC2), Webpack</span>
+                    <span class="value">AWS (EC2) Hosting, Nginx (Reverse Proxy), Docker, ngrok, Git, GitHub, GitHub Actions, CI/CD Pipelines, Webpack</span>
                 </div>
                 <div class="skill-row">
                     <span class="label">UI/UX:</span>
                     <span class="value">Arabic/English RTL Layouts, Responsive Design, WCAG/ARIA Accessibility, Semantic HTML, SEO</span>
-                </div>
-                <div class="skill-row">
-                    <span class="label">AI Integration:</span>
-                    <span class="value">OpenAI API, MediaPipe FaceMesh</span>
                 </div>
             </div>
         </section>
@@ -373,25 +382,27 @@
 
             <div class="job">
                 <div class="job-top">
-                    <span class="job-title">React Developer</span>
+                    <span class="job-title">Full Stack Developer (React.js, Next.js, Node.js, LLM)</span>
                     <span class="job-period">Sep 2022 – Apr 2026</span>
                 </div>
                 <div class="job-company">Floges Software Solutions, India | Clients in UAE and Middle East (Government and Private Sector)</div>
                 <ul>
+                    <li>Built production Next.js (App Router, SSR/SSG) and React.js applications with TypeScript, using <span class="nw">server-side</span> rendering for SEO and fast first loads, including bilingual Arabic/English interfaces with full RTL/LTR switching for UAE clients, and React Native apps for iOS and Android.</li>
+                    <li>Integrated OpenAI, Claude, and Google Gemini LLM APIs into client products, designing <span class="nw">project-specific</span> prompts, enforcing structured JSON output, and streaming AI responses into React.js and Next.js interfaces.</li>
                     <li>Architected RBAC for government document management platforms with up to 11 user roles, biometric verification (iris, fingerprint, facial recognition), and <span class="nw">multi-level</span> approval workflows, serving 500+ daily users.</li>
-                    <li>Built bilingual Arabic/English interfaces with full RTL/LTR layout switching for UAE government and enterprise clients.</li>
+                    <li>Built Node.js (Express) REST APIs with full CRUD over MongoDB (Mongoose schema design), PostgreSQL, and Supabase, connecting the frontend to AI providers and keeping API keys and prompt logic <span class="nw">server-side</span>.</li>
+                    <li>Implemented authentication and <span class="nw">role-based</span> authorization with Passport.js, JWT, and OAuth 2.0, validated requests and forms with Zod and Yup, and handled file uploads.</li>
                     <li>Created reusable component libraries with React.js and TypeScript (Material-UI, Tailwind CSS, shadcn/ui) shared across 5+ client projects, speeding up UI delivery and keeping design consistent.</li>
-                    <li>Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.</li>
                     <li>Optimized page load performance using code splitting, lazy loading, memoization, and Webpack tuning, reducing initial bundle size and improving Core Web Vitals.</li>
-                    <li>Integrated authentication APIs using JWT, OAuth 2.0, and Supabase, handling login flows, protected routes, and <span class="nw">role-based</span> UI access.</li>
-                    <li>Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications, chat, and collaborative workflows.</li>
-                    <li>Set up CI/CD pipelines with GitHub Actions to automate testing and deployment.</li>
+                    <li>Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.</li>
+                    <li>Sent transactional email with Nodemailer (SMTP), deployed services on AWS (EC2) behind Nginx, and used ngrok for webhook testing.</li>
+                    <li>Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications and chat, with CI/CD via GitHub Actions.</li>
                 </ul>
             </div>
 
             <div class="job">
                 <div class="job-top">
-                    <span class="job-title">Python Developer</span>
+                    <span class="job-title">Python Developer (React.js, Python)</span>
                     <span class="job-period">Mar 2021 – Aug 2022</span>
                 </div>
                 <div class="job-company">Infox Technologies, India</div>
@@ -405,6 +416,15 @@
         <!-- KEY PROJECTS -->
         <section class="section">
             <h2 class="section-heading">Projects</h2>
+
+            <div class="project">
+                <div class="project-header">kyna.ai - AI Property Finder <a href="https://kyna.ai">(kyna.ai)</a></div>
+                <div class="project-stack">Next.js (SSR/SSG), TypeScript, Tailwind CSS, Node.js, OpenAI API | Dubai, UAE</div>
+                <ul>
+                    <li>Developed an <span class="nw">AI-driven</span> property search platform for the Dubai real estate market, using the OpenAI API to turn <span class="nw">natural-language</span> queries into property matches and recommendations, with <span class="nw">SEO-optimized</span> server-side rendering.</li>
+                    <li>Integrated property listing APIs and a lead management system for channel partners, enabling <span class="nw">real-time</span> property matching for agents.</li>
+                </ul>
+            </div>
 
             <div class="project">
                 <div class="project-header">IDMS - Government Document Management System</div>
@@ -425,19 +445,11 @@
             </div>
 
             <div class="project">
-                <div class="project-header">kyna.ai - AI Property Finder <a href="https://kyna.ai">(kyna.ai)</a></div>
-                <div class="project-stack">Next.js (SSR/SSG), TypeScript, Tailwind CSS, OpenAI API | Dubai, UAE</div>
-                <ul>
-                    <li>Developed an <span class="nw">AI-driven</span> property search platform for the Dubai real estate market with an intelligent recommendation engine and <span class="nw">SEO-optimized</span> server-side rendering.</li>
-                    <li>Integrated property listing APIs and a lead management system for channel partners, enabling <span class="nw">real-time</span> property matching for agents.</li>
-                </ul>
-            </div>
-
-            <div class="project">
                 <div class="project-header">Orbin - Professional Networking Platform <a href="https://theorbin.com">(theorbin.com)</a></div>
-                <div class="project-stack">Next.js, React Native, TypeScript, WebSockets, TanStack Query</div>
+                <div class="project-stack">Next.js, React Native, TypeScript, OpenAI API, WebSockets, TanStack Query</div>
                 <ul>
-                    <li>Built a <span class="nw">LinkedIn-style</span> networking platform for web and mobile with consultation booking, <span class="nw">real-time</span> messaging, and push notifications.</li>
+                    <li>Built a <span class="nw">LinkedIn-style</span> networking platform for web and mobile (React Native on iOS and Android) with consultation booking, <span class="nw">real-time</span> messaging, and push notifications.</li>
+                    <li>Added an optional AI rewrite of the profile summary with the OpenAI API, so users can polish their summary whenever they want.</li>
                     <li>Reduced redundant API calls with TanStack Query caching and <span class="nw">WebSocket-based</span> notifications, improving app responsiveness.</li>
                 </ul>
             </div>
@@ -461,7 +473,7 @@
                     <span class="edu-name">Bachelor of Computer Applications (BCA)</span>
                     <span class="edu-year">2017 – 2020</span>
                 </div>
-                <div class="edu-school">MG University, Kerala, India</div>
+                <div class="edu-school">MG University, Kerala, India | Degree attested</div>
             </div>
 
             <div class="edu">
@@ -478,8 +490,8 @@
             <h2 class="section-heading">Additional Information</h2>
             <div style="font-size: 9pt; color: #333; line-height: 1.7;">
                 <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Nationality</span> Indian</div>
-                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Visa Status</span> UAE Visit Visa — Available to join immediately</div>
-                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Languages</span> English, Malayalam (Native)</div>
+                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Visa Status</span> UAE Visit Visa — Relocated to Dubai, available to join immediately</div>
+                <div><span style="font-weight: 600; color: #1a237e; margin-right: 10px;">Languages</span> English (Professional), Malayalam (Native)</div>
             </div>
         </section>
 

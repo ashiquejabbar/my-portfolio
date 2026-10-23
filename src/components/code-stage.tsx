@@ -16,11 +16,11 @@ const code: Line[] = [
   [["// developer.config.ts", "com"]],
   [["export ", "kw"], ["const ", "kw"], ["developer", "fn"], [" = ", "pun"], ["defineProfile", "fn"], ["({", "pun"]],
   [["  name", "prop"], [": ", "pun"], [`"${personalInfo.name}"`, "str"], [",", "pun"]],
-  [["  role", "prop"], [": ", "pun"], ['"Frontend Developer"', "str"], [",", "pun"]],
+  [["  role", "prop"], [": ", "pun"], ['"Full Stack & AI Developer"', "str"], [",", "pun"]],
   [["  based", "prop"], [": ", "pun"], ['"Dubai, UAE"', "str"], [",", "pun"]],
   [["  focus", "prop"], [": [", "pun"]],
-  [['    "Enterprise UI"', "str"], [", ", "pun"], ['"AI features"', "str"], [",", "pun"]],
-  [['    "Performance"', "str"], [", ", "pun"], ['"API integration"', "str"], [",", "pun"]],
+  [['    "Next.js SSR"', "str"], [", ", "pun"], ['"LLM features"', "str"], [",", "pun"]],
+  [['    "Node.js APIs"', "str"], [", ", "pun"], ['"Performance"', "str"], [",", "pun"]],
   [["  ],", "pun"]],
   [["  experience", "prop"], [": ", "pun"], ["5", "bool"], [", ", "pun"], ["// years", "com"]],
   [["  available", "prop"], [": ", "pun"], ["true", "bool"], [",", "pun"]],
@@ -29,11 +29,12 @@ const code: Line[] = [
 
 const terminal = [
   { text: "$ npx hire ashique", tone: "cmd" },
-  { text: "✓ resolved 5+ yrs React · Next.js", tone: "ok" },
+  { text: "✓ full stack · frontend + backend", tone: "ok" },
+  { text: "✓ React · Next.js · Node.js · AI/LLM", tone: "ok" },
   { text: "✓ immediate joiner · UAE", tone: "ok" },
 ] as const;
 
-const aiTokens = ["Building", " accessible,", " fast", " interfaces", " with", " AI", " inside."];
+const aiTokens = ["SSR", " apps", " with", " AI", " inside."];
 
 const total = code.reduce((n, l) => n + l.reduce((m, [t]) => m + t.length, 0), 0);
 const CHAR_MS = 28;

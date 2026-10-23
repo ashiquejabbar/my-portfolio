@@ -3,14 +3,14 @@ import type { Dictionary } from "./en";
 // German CV style: achievements as nouns ("Konzeption…"); recruiters are addressed formally (Sie).
 const de = {
   meta: {
-    title: "Ashique PJ — Frontend-Entwickler in Dubai, VAE | React & Next.js",
+    title: "Ashique PJ — Full-Stack- & KI-Entwickler in Dubai, VAE | Next.js-SSR, LLMs & Node.js",
     description:
-      "Frontend-Entwickler in Dubai (VAE) mit über 5 Jahren Erfahrung in React.js, Next.js und TypeScript. Plattformen für Unternehmen und Behörden, RBAC sowie KI-Integrationen mit OpenAI, Claude und Gemini. Ab sofort verfügbar.",
-    ogTitle: "Ashique PJ — Frontend-Entwickler in Dubai, VAE",
+      "Full-Stack- & KI-Entwickler in Dubai (VAE) mit über 5 Jahren Erfahrung in React.js, Next.js, TypeScript und Node.js. KI-gestützte Web-Apps mit den APIs von OpenAI, Claude und Gemini, Backends mit Node.js und MongoDB sowie Plattformen für Unternehmen und Behörden mit RBAC. Ab sofort verfügbar.",
+    ogTitle: "Ashique PJ — Full-Stack- & KI-Entwickler in Dubai, VAE",
     ogDescription:
-      "Über 5 Jahre React, Next.js und TypeScript auf Unternehmens- und Behördenplattformen. Ab sofort in Dubai verfügbar.",
-    ogImageAlt: "Ashique PJ, Frontend-Entwickler in Dubai",
-    ogTagline: "Frontend-Entwickler in Dubai. React, Next.js und KI-Integration",
+      "Über 5 Jahre React, Next.js, Node.js und TypeScript auf Unternehmens- und Behördenplattformen. Ab sofort in Dubai verfügbar.",
+    ogImageAlt: "Ashique PJ, Full-Stack- & KI-Entwickler in Dubai",
+    ogTagline: "Full-Stack- & KI-Entwickler in Dubai. React, Next.js, Node.js und LLM-Integration",
     ogAvailable: "Ab sofort verfügbar in Dubai, VAE",
   },
   common: {
@@ -45,11 +45,11 @@ const de = {
     toDark: "Zum dunklen Design wechseln",
   },
   hero: {
-    headline: ["Ich baue die Oberflächen,", "auf die sich Unternehmen", "verlassen."],
-    roleLine: "Frontend-Entwickler in Dubai, VAE. React, Next.js und KI-Integration",
+    headline: ["Ich baue die Web-Apps,", "auf die sich Unternehmen", "verlassen."],
+    roleLine: "Full-Stack-Entwickler (Frontend und Backend) in Dubai, VAE. React.js, Next.js, Node.js und KI/LLM-Integration",
     intro:
-      "Fünf Jahre React, Next.js und TypeScript: Unternehmensplattformen für den öffentlichen und privaten Sektor in Indien und im Nahen Osten – rollenbasierte Zugriffskontrolle mit biometrischer Verifizierung, eine KI-gestützte Immobiliensuche für den Markt in Dubai und eine Networking-App für Web und Mobile.",
-    ai: "Außerdem integriere ich KI-Funktionen in Web-Apps mit den APIs von OpenAI, Claude und Google Gemini – etwa die KI-gestützte Suche und die Empfehlungen hinter kyna.ai.",
+      "Fünf Jahre React, Next.js, TypeScript und Node.js: Unternehmensplattformen für den öffentlichen und privaten Sektor in Indien und im Nahen Osten – rollenbasierte Zugriffskontrolle mit biometrischer Verifizierung, eine KI-gestützte Immobiliensuche für den Markt in Dubai und eine Networking-App für Web und Mobile.",
+    ai: "Ich entwickle Funktionen mit generativer KI für Web-Apps mit den APIs von OpenAI, Claude und Google Gemini: Prompt-Design, strukturierte JSON-Ausgabe, Streaming-Antworten und Node.js-Endpunkte, die API-Schlüssel auf dem Server halten. Beispiele sind die Immobiliensuche in natürlicher Sprache hinter kyna.ai und die KI-Überarbeitung von Profilzusammenfassungen in Orbin.",
     available: "Von Indien nach Dubai gezogen. Ab sofort verfügbar, mit Besuchsvisum",
     emailMe: "E-Mail schreiben",
     whatsappLabel: "Nachricht über WhatsApp",
@@ -79,18 +79,22 @@ const de = {
     showAll: "Alle {count} anzeigen",
     roles: [
       {
-        title: "React-Entwickler",
+        title: "Full-Stack-Entwickler",
         location: "Indien (Kunden in den VAE und im Nahen Osten)",
         period: "Sep. 2022 – Apr. 2026",
         highlights: [
+          "Entwicklung produktiver Next.js-Anwendungen (App Router, SSR/SSG) mit TypeScript – serverseitiges Rendering für SEO und schnelle erste Ladezeiten, etwa bei der KI-Immobiliensuche von kyna.ai.",
+          "Integration der LLM-APIs von OpenAI, Claude und Google Gemini in Kundenprodukte, mit projektspezifischen Prompts, strukturierter JSON-Ausgabe und gestreamten KI-Antworten in Next.js- und React.js-Oberflächen.",
           "Konzeption der rollenbasierten Zugriffskontrolle (RBAC) für behördliche Dokumentenmanagement-Plattformen mit bis zu 11 Benutzerrollen, biometrischer Verifizierung (Iris, Fingerabdruck, Gesichtserkennung) und mehrstufigen Freigabeprozessen für über 500 tägliche Nutzer.",
+          "Entwicklung von REST-APIs mit Node.js (Express) und vollständigem CRUD auf MongoDB (Mongoose-Schemadesign), PostgreSQL und Supabase, die das Frontend mit KI-Anbietern verbinden – API-Schlüssel bleiben serverseitig.",
+          "Umsetzung von Authentifizierung und rollenbasierter Autorisierung mit Passport.js, JWT, OAuth 2.0 und Supabase, Validierung von Anfragen und Formularen mit Zod und Yup sowie Datei-Uploads.",
           "Entwicklung zweisprachiger Oberflächen (Arabisch/Englisch) mit vollständigem RTL/LTR-Layoutwechsel für Behörden- und Unternehmenskunden in den VAE.",
+          "Entwicklung von React-Native-Apps für iOS und Android parallel zu den Web-Apps mit React.js und Next.js.",
           "Aufbau wiederverwendbarer Komponentenbibliotheken mit React.js und TypeScript (Material-UI, Tailwind CSS, shadcn/ui) für über 5 Kundenprojekte – für schnellere UI-Umsetzung und ein einheitliches Design.",
-          "Einführung einer Micro-Frontend-Architektur mit Webpack Module Federation: Aufteilung monolithischer Anwendungen in unabhängig deploybare Module, damit Teams parallel entwickeln und releasen konnten.",
           "Optimierung der Ladezeiten durch Code-Splitting, Lazy Loading, Memoization und Webpack-Tuning – kleineres initiales Bundle und bessere Core Web Vitals.",
-          "Integration von Authentifizierungs-APIs mit JWT, OAuth 2.0 und Supabase, inklusive Login-Abläufen, geschützten Routen und rollenbasiertem UI-Zugriff.",
-          "Anbindung von REST-APIs mit TanStack-Query-Caching, optimistischen UI-Updates und WebSocket-Funktionen für Live-Benachrichtigungen, Chat und kollaborative Workflows.",
-          "Einrichtung von CI/CD-Pipelines mit GitHub Actions zur Automatisierung von Tests und Deployment.",
+          "Einführung einer Micro-Frontend-Architektur mit Webpack Module Federation: Aufteilung monolithischer Anwendungen in unabhängig deploybare Module, damit Teams parallel entwickeln und releasen konnten.",
+          "Versand transaktionaler E-Mails (Benachrichtigungen, Verifizierung, Berichte) mit Nodemailer über SMTP, Deployment von Services auf AWS (EC2) hinter einem Nginx-Reverse-Proxy und Webhook-Tests mit ngrok.",
+          "Anbindung von REST-APIs mit TanStack-Query-Caching, optimistischen UI-Updates und WebSocket-Funktionen für Live-Benachrichtigungen und Chat, mit CI/CD über GitHub Actions.",
         ],
       },
       {
@@ -113,6 +117,16 @@ const de = {
     live: "Live",
     items: [
       {
+        name: "kyna.ai",
+        tagline: "KI-gestützte Immobiliensuche",
+        description: "KI-gestützte Immobiliensuche für den Immobilienmarkt in Dubai.",
+        context: "Dubai, VAE",
+        highlights: [
+          "Entwicklung einer KI-gestützten Immobiliensuchplattform für den Markt in Dubai, die mit der OpenAI API Suchanfragen in natürlicher Sprache in passende Immobilien und Empfehlungen umwandelt, mit SEO-optimiertem Server-Side Rendering.",
+          "Integration von Immobilien-APIs und eines Lead-Management-Systems für Vertriebspartner, sodass Makler passende Immobilien in Echtzeit finden.",
+        ],
+      },
+      {
         name: "IDMS",
         tagline: "Dokumentenmanagementsystem für Behörden",
         description: "Zweisprachiges Dokumentenmanagement für Behördenprozesse.",
@@ -133,22 +147,13 @@ const de = {
         ],
       },
       {
-        name: "kyna.ai",
-        tagline: "KI-gestützte Immobiliensuche",
-        description: "KI-gestützte Immobiliensuche für den Immobilienmarkt in Dubai.",
-        context: "Dubai, VAE",
-        highlights: [
-          "Entwicklung einer KI-gestützten Immobiliensuchplattform für den Markt in Dubai mit intelligenter Empfehlungs-Engine und SEO-optimiertem Server-Side Rendering.",
-          "Integration von Immobilien-APIs und eines Lead-Management-Systems für Vertriebspartner, sodass Makler passende Immobilien in Echtzeit finden.",
-        ],
-      },
-      {
         name: "Orbin",
         tagline: "Plattform für berufliches Networking",
         description: "Networking-Plattform im Stil von LinkedIn für Web und Mobile.",
         context: "",
         highlights: [
-          "Entwicklung einer Networking-Plattform im Stil von LinkedIn für Web und Mobile mit Buchung von Beratungsterminen, Echtzeit-Messaging und Push-Benachrichtigungen.",
+          "Entwicklung einer Networking-Plattform im Stil von LinkedIn für Web und Mobile (React Native für iOS und Android) mit Buchung von Beratungsterminen, Echtzeit-Messaging und Push-Benachrichtigungen.",
+          "Optionale KI-Überarbeitung der Profilzusammenfassung mit der OpenAI API, damit Mitglieder ihre Zusammenfassung bei Bedarf verbessern lassen können.",
           "Weniger redundante API-Aufrufe durch TanStack-Query-Caching und WebSocket-basierte Benachrichtigungen – für eine reaktionsschnellere App.",
         ],
       },
@@ -171,13 +176,18 @@ const de = {
       ui: "UI-Bibliotheken",
       state: "State und Daten",
       security: "Sicherheit",
-      ai: "KI-Integration",
+      ai: "KI / LLM",
       backend: "Backend",
       devops: "DevOps und Tools",
       testing: "Testing",
       uiux: "UI/UX",
     },
     terms: {
+      "React Native (iOS & Android)": "React Native (iOS & Android)",
+      "REST API Design & Integration (CRUD)": "REST-API-Design & -Integration (CRUD)",
+      "Third-Party API Integration": "Integration von Drittanbieter-APIs",
+      "File Uploads (Multer)": "Datei-Uploads (Multer)",
+      "Authorization Middleware": "Autorisierungs-Middleware",
       "Micro Frontends": "Micro Frontends",
       "RESTful APIs": "RESTful APIs",
       "JWT Authentication": "JWT-Authentifizierung",
@@ -190,6 +200,11 @@ const de = {
       "Responsive Design": "Responsive Design",
       "WCAG/ARIA Accessibility": "Barrierefreiheit (WCAG/ARIA)",
       "Semantic HTML": "Semantisches HTML",
+      "Generative AI": "Generative KI",
+      "LLM Integration": "LLM-Integration",
+      "Prompt Engineering": "Prompt Engineering",
+      "Structured JSON Output": "Strukturierte JSON-Ausgabe",
+      "Streaming Responses": "Streaming-Antworten",
     },
   },
   education: {
@@ -197,14 +212,14 @@ const de = {
     items: [
       {
         degree: "Bachelor of Computer Applications (BCA)",
-        institution: "MG University, Kerala, Indien",
+        institution: "MG University, Kerala, Indien · Abschluss beglaubigt",
         year: "2017 – 2020",
       },
       { degree: "Zertifizierter Python-Entwickler", institution: "Nordic Academy", year: "2021" },
     ],
   },
   contact: {
-    title: "Sie suchen einen Frontend-Entwickler in Dubai?",
+    title: "Sie suchen einen Full-Stack- & KI-Entwickler in Dubai?",
     lead: "Ich kann sofort anfangen. Am schnellsten erreichen Sie mich per E-Mail.",
     copyEmail: "E-Mail kopieren",
     emailCopied: "E-Mail kopiert",
@@ -218,13 +233,13 @@ const de = {
     status: "Status",
     visaStatus: "Besuchsvisum VAE — ab sofort verfügbar",
     languages: "Sprachen",
-    languageList: "Englisch, Malayalam (Muttersprache)",
+    languageList: "Englisch (verhandlungssicher), Malayalam (Muttersprache)",
     nationality: "Nationalität",
     nationalityValue: "Indisch",
   },
   hire: {
     label: "Verfügbarkeit für Gespräche",
-    title: "Sie suchen einen Frontend-Entwickler?",
+    title: "Sie suchen einen Full-Stack- & KI-Entwickler?",
     body: "Ich bin ab sofort verfügbar und kann diese Woche zu einem Vorstellungsgespräch kommen – vor Ort in Dubai oder online.",
     cta: "Gespräch vereinbaren",
     whatsapp: "WhatsApp",
@@ -236,12 +251,12 @@ const de = {
   intro: {
     play: "Intro abspielen",
     close: "Intro schließen",
-    dialogLabel: "Intro: {name}, Frontend-Entwickler",
+    dialogLabel: "Intro: {name}, Full-Stack- & KI-Entwickler",
     badge: "Ab sofort verfügbar · Dubai, VAE",
-    role: "Frontend-Entwickler — Spezialist für React.js und Next.js",
-    skillsLabel: "Frontend-Kenntnisse",
+    role: "Full-Stack-Entwickler (Frontend und Backend) — React.js, Next.js, Node.js & KI/LLM-Integration",
+    skillsLabel: "Kernkompetenzen",
     techLabel: "Technologien, mit denen ich arbeite",
-    skills: ["TypeScript", "Tailwind CSS", "Micro Frontends", "RTL Arabisch/Englisch", "KI-Integration"],
+    skills: ["TypeScript", "React Native", "MongoDB", "RTL Arabisch/Englisch", "KI-Integration"],
     copy: "Kopieren",
     copied: "Kopiert!",
     copyLabel: "E-Mail-Adresse kopieren",

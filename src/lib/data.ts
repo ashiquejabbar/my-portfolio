@@ -1,4 +1,4 @@
-// Content mirrors Ashique_PJ_Dubai_CV (latest CV). Claude and Gemini under AI Integration are website-only.
+// Content mirrors Ashique_PJ_Dubai_CV (latest CV).
 // This file holds what is the same in every language; wording lives in src/lib/i18n/dictionaries/.
 
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
@@ -34,15 +34,50 @@ export const skills: Skill[] = [
   {
     category: "frontend",
     items: [
-      "React.js",
       "Next.js (SSR/SSG)",
+      "React.js",
       "TypeScript",
       "JavaScript (ES6+)",
       "HTML5",
       "CSS3",
-      "React Native",
+      "React Native (iOS & Android)",
       "Micro Frontends",
       "Module Federation",
+    ],
+  },
+  {
+    category: "ai",
+    items: [
+      "Generative AI",
+      "LLM Integration",
+      "OpenAI API",
+      "Claude API (Anthropic)",
+      "Google Gemini API",
+      "Prompt Engineering",
+      "Structured JSON Output",
+      "Streaming Responses",
+      "MediaPipe FaceMesh",
+    ],
+  },
+  {
+    category: "backend",
+    items: [
+      "Node.js",
+      "Express",
+      "REST API Design & Integration (CRUD)",
+      "Third-Party API Integration",
+      "MongoDB",
+      "Mongoose",
+      "PostgreSQL",
+      "Supabase",
+      "Firebase",
+      "Zod",
+      "Yup",
+      "File Uploads (Multer)",
+      "Nodemailer (SMTP)",
+      "Python",
+      "Django",
+      "MySQL",
     ],
   },
   {
@@ -66,22 +101,16 @@ export const skills: Skill[] = [
     category: "security",
     items: [
       "JWT Authentication",
+      "Passport.js",
       "OAuth 2.0",
       "Role-Based Access Control (RBAC)",
+      "Authorization Middleware",
       "Biometric SDK Integration",
     ],
   },
   {
-    category: "ai",
-    items: ["OpenAI API", "Claude API (Anthropic)", "Google Gemini API", "MediaPipe FaceMesh"],
-  },
-  {
-    category: "backend",
-    items: ["Node.js", "Python", "Django", "PostgreSQL", "MongoDB", "MySQL", "Firebase", "Supabase"],
-  },
-  {
     category: "devops",
-    items: ["Git", "GitHub", "GitHub Actions", "CI/CD Pipelines", "Docker", "AWS (EC2)", "Webpack"],
+    items: ["AWS (EC2)", "Nginx", "Docker", "ngrok", "Git", "GitHub", "GitHub Actions", "CI/CD Pipelines", "Webpack"],
   },
   {
     category: "testing",
@@ -107,11 +136,11 @@ export const experiences = [
 
 // Same order as Dictionary["projects"]["items"]
 export const projects: { stack: string[]; url?: string }[] = [
+  { stack: ["Next.js (SSR/SSG)", "TypeScript", "Tailwind CSS", "Node.js", "OpenAI API"], url: "https://kyna.ai" },
   { stack: ["React.js", "TypeScript", "Zustand", "Material-UI", "Biometric SDKs"] },
   { stack: ["React.js", "TypeScript", "Zustand", "Material-UI"] },
-  { stack: ["Next.js (SSR/SSG)", "TypeScript", "Tailwind CSS", "OpenAI API"], url: "https://kyna.ai" },
   {
-    stack: ["Next.js", "React Native", "TypeScript", "WebSockets", "TanStack Query"],
+    stack: ["Next.js", "React Native", "TypeScript", "OpenAI API", "WebSockets", "TanStack Query"],
     url: "https://theorbin.com",
   },
   { stack: ["React.js", "Node.js", "TypeScript", "MediaPipe FaceMesh"] },
@@ -126,4 +155,4 @@ export const navLinks = [
 
 export const CV_PATH = "/Ashique_PJ_Dubai_CV.pdf";
 // Shown in the CV button's tooltip; update it when the PDF changes
-export const CV_SIZE = "219 KB";
+export const CV_SIZE = "236 KB";

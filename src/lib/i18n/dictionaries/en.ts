@@ -3,14 +3,14 @@
 
 const en = {
   meta: {
-    title: "Ashique PJ — Frontend Developer in Dubai, UAE | React & Next.js",
+    title: "Ashique PJ — Full Stack & AI Developer in Dubai, UAE | Next.js SSR, LLMs & Node.js",
     description:
-      "Frontend Developer in Dubai, UAE with 5+ years of React.js, Next.js and TypeScript. Enterprise and government platforms, RBAC, and AI integrations with OpenAI, Claude and Gemini. Available to join immediately.",
-    ogTitle: "Ashique PJ — Frontend Developer in Dubai, UAE",
+      "Full Stack & AI Developer in Dubai, UAE. 5+ years building server-rendered Next.js (SSR/SSG) apps with React and TypeScript and LLM-powered features with the OpenAI, Claude and Gemini APIs, backed by Node.js and MongoDB. Enterprise and government platforms with RBAC. Available to join immediately.",
+    ogTitle: "Ashique PJ — Full Stack & AI Developer in Dubai, UAE",
     ogDescription:
-      "5+ years of React, Next.js and TypeScript on enterprise and government platforms. Available to join immediately in Dubai.",
-    ogImageAlt: "Ashique PJ, Frontend Developer in Dubai",
-    ogTagline: "Frontend developer in Dubai. React, Next.js and AI integration",
+      "Server-rendered Next.js and LLM integration, with 5+ years of React, Node.js and TypeScript on enterprise and government platforms. Available to join immediately in Dubai.",
+    ogImageAlt: "Ashique PJ, Full Stack & AI Developer in Dubai",
+    ogTagline: "Full stack & AI developer in Dubai. React, Next.js, Node.js and LLM integration",
     ogAvailable: "Available to join immediately in Dubai, UAE",
   },
   common: {
@@ -49,11 +49,11 @@ const en = {
     toDark: "Switch to dark theme",
   },
   hero: {
-    headline: ["I build the interfaces", "enterprise teams", "rely on."],
-    roleLine: "Frontend developer in Dubai, UAE. React, Next.js and AI integration",
+    headline: ["I build the web apps", "enterprise teams", "rely on."],
+    roleLine: "Full stack developer (frontend and backend) in Dubai, UAE. React.js, Next.js, Node.js and AI/LLM integration",
     intro:
-      "Five years of React, Next.js and TypeScript, building enterprise platforms for government and private sectors across India and the Middle East: role-based access with biometric verification, an AI property search for the Dubai market, and a networking app across web and mobile.",
-    ai: "I also build AI features into web apps using the OpenAI, Claude and Google Gemini APIs, like the AI-driven search and recommendations behind kyna.ai.",
+      "Five years of Next.js, React, TypeScript and Node.js, building enterprise platforms for government and private sectors across India and the Middle East: role-based access with biometric verification, an AI property search for the Dubai market, and a networking app across web and mobile.",
+    ai: "I build generative AI features into web apps with the OpenAI, Claude and Google Gemini APIs: prompt design, structured JSON output, streaming responses and Node.js endpoints that keep API keys on the server. Examples include the natural-language property search behind kyna.ai and the AI profile-summary rewrite in Orbin.",
     available: "Relocated from India to Dubai. Available to join immediately, on a visit visa",
     emailMe: "Email me",
     whatsappLabel: "Message on WhatsApp",
@@ -84,18 +84,22 @@ const en = {
     // Same order as `experiences` in src/lib/data.ts
     roles: [
       {
-        title: "React Developer",
+        title: "Full Stack Developer",
         location: "India (clients in UAE and Middle East)",
         period: "Sep 2022 – Apr 2026",
         highlights: [
+          "Built production Next.js (App Router, SSR/SSG) applications with TypeScript, using server-side rendering for SEO and fast first loads, including the AI property search behind kyna.ai.",
+          "Integrated OpenAI, Claude, and Google Gemini LLM APIs into client products, designing project-specific prompts, enforcing structured JSON output, and streaming AI responses into Next.js and React.js interfaces.",
           "Architected RBAC for government document management platforms with up to 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows, serving 500+ daily users.",
+          "Built Node.js (Express) REST APIs with full CRUD over MongoDB (Mongoose schema design), PostgreSQL, and Supabase, connecting the frontend to AI providers and keeping API keys server-side.",
+          "Implemented authentication and role-based authorization with Passport.js, JWT, OAuth 2.0, and Supabase, validated requests and forms with Zod and Yup, and handled file uploads.",
           "Built bilingual Arabic/English interfaces with full RTL/LTR layout switching for UAE government and enterprise clients.",
+          "Built React Native apps for iOS and Android alongside the React.js and Next.js web apps.",
           "Created reusable component libraries with React.js and TypeScript (Material-UI, Tailwind CSS, shadcn/ui) shared across 5+ client projects, speeding up UI delivery and keeping design consistent.",
-          "Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.",
           "Optimized page load performance using code splitting, lazy loading, memoization, and Webpack tuning, reducing initial bundle size and improving Core Web Vitals.",
-          "Integrated authentication APIs using JWT, OAuth 2.0, and Supabase, handling login flows, protected routes, and role-based UI access.",
-          "Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications, chat, and collaborative workflows.",
-          "Set up CI/CD pipelines with GitHub Actions to automate testing and deployment.",
+          "Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.",
+          "Sent transactional email (notifications, verification, reports) with Nodemailer over SMTP, deployed services on AWS (EC2) behind an Nginx reverse proxy, and used ngrok for webhook testing.",
+          "Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications and chat, with CI/CD via GitHub Actions.",
         ],
       },
       {
@@ -120,6 +124,16 @@ const en = {
     // Same order as `projects` in src/lib/data.ts
     items: [
       {
+        name: "kyna.ai",
+        tagline: "AI Property Finder",
+        description: "AI-driven property search for the Dubai real estate market.",
+        context: "Dubai, UAE",
+        highlights: [
+          "Developed an AI-driven property search platform for the Dubai real estate market, using the OpenAI API to turn natural-language queries into property matches and recommendations, with SEO-optimized server-side rendering.",
+          "Integrated property listing APIs and a lead management system for channel partners, enabling real-time property matching for agents.",
+        ],
+      },
+      {
         name: "IDMS",
         tagline: "Government Document Management System",
         description: "Bilingual document management for government operations.",
@@ -140,22 +154,13 @@ const en = {
         ],
       },
       {
-        name: "kyna.ai",
-        tagline: "AI Property Finder",
-        description: "AI-driven property search for the Dubai real estate market.",
-        context: "Dubai, UAE",
-        highlights: [
-          "Developed an AI-driven property search platform for the Dubai real estate market with an intelligent recommendation engine and SEO-optimized server-side rendering.",
-          "Integrated property listing APIs and a lead management system for channel partners, enabling real-time property matching for agents.",
-        ],
-      },
-      {
         name: "Orbin",
         tagline: "Professional Networking Platform",
         description: "LinkedIn-style networking platform across web and mobile.",
         context: "",
         highlights: [
-          "Built a LinkedIn-style networking platform for web and mobile with consultation booking, real-time messaging, and push notifications.",
+          "Built a LinkedIn-style networking platform for web and mobile (React Native on iOS and Android) with consultation booking, real-time messaging, and push notifications.",
+          "Added an optional AI rewrite of the profile summary with the OpenAI API, so users can polish their summary whenever they want.",
           "Reduced redundant API calls with TanStack Query caching and WebSocket-based notifications, improving app responsiveness.",
         ],
       },
@@ -179,7 +184,7 @@ const en = {
       ui: "UI Libraries",
       state: "State and Data",
       security: "Security",
-      ai: "AI Integration",
+      ai: "AI / LLM",
       backend: "Backend",
       devops: "DevOps and Tools",
       testing: "Testing",
@@ -188,6 +193,11 @@ const en = {
     // Skill names that are words rather than product names; anything not listed shows as-is
     terms: {
       "Micro Frontends": "Micro Frontends",
+      "React Native (iOS & Android)": "React Native (iOS & Android)",
+      "REST API Design & Integration (CRUD)": "REST API Design & Integration (CRUD)",
+      "Third-Party API Integration": "Third-Party API Integration",
+      "File Uploads (Multer)": "File Uploads (Multer)",
+      "Authorization Middleware": "Authorization Middleware",
       "RESTful APIs": "RESTful APIs",
       "JWT Authentication": "JWT Authentication",
       "Role-Based Access Control (RBAC)": "Role-Based Access Control (RBAC)",
@@ -199,6 +209,11 @@ const en = {
       "Responsive Design": "Responsive Design",
       "WCAG/ARIA Accessibility": "WCAG/ARIA Accessibility",
       "Semantic HTML": "Semantic HTML",
+      "Generative AI": "Generative AI",
+      "LLM Integration": "LLM Integration",
+      "Prompt Engineering": "Prompt Engineering",
+      "Structured JSON Output": "Structured JSON Output",
+      "Streaming Responses": "Streaming Responses",
     },
   },
   education: {
@@ -206,14 +221,14 @@ const en = {
     items: [
       {
         degree: "Bachelor of Computer Applications (BCA)",
-        institution: "MG University, Kerala, India",
+        institution: "MG University, Kerala, India · Degree attested",
         year: "2017 – 2020",
       },
       { degree: "Certified Python Developer", institution: "Nordic Academy", year: "2021" },
     ],
   },
   contact: {
-    title: "Hiring a frontend developer in Dubai?",
+    title: "Hiring a full stack & AI developer in Dubai?",
     lead: "I can start immediately. Email is the quickest way to reach me.",
     copyEmail: "Copy email",
     emailCopied: "Email copied",
@@ -227,13 +242,13 @@ const en = {
     status: "Status",
     visaStatus: "UAE Visit Visa — Available to join immediately",
     languages: "Languages",
-    languageList: "English, Malayalam (Native)",
+    languageList: "English (Professional), Malayalam (Native)",
     nationality: "Nationality",
     nationalityValue: "Indian",
   },
   hire: {
     label: "Interview availability",
-    title: "Hiring a frontend developer?",
+    title: "Hiring a full stack & AI developer?",
     body: "I’m available to join immediately and can interview this week, in person in Dubai or online.",
     cta: "Schedule an interview",
     whatsapp: "WhatsApp",
@@ -245,13 +260,13 @@ const en = {
   intro: {
     play: "Play intro",
     close: "Close intro",
-    dialogLabel: "Intro: {name}, Frontend Developer",
+    dialogLabel: "Intro: {name}, Full Stack & AI Developer",
     badge: "Immediate joiner · Dubai, UAE",
-    role: "Frontend Developer — React.js and Next.js Specialist",
-    skillsLabel: "Frontend skills",
+    role: "Full Stack Developer (Frontend and Backend) — React.js, Next.js, Node.js & AI/LLM Integration",
+    skillsLabel: "Core skills",
     techLabel: "Tech I work with",
-    // The role line already names React.js and Next.js, so the chips show the other frontend strengths
-    skills: ["TypeScript", "Tailwind CSS", "Micro Frontends", "Arabic/English RTL", "AI Integration"],
+    // The role line already names React.js, Next.js, Node.js and AI, so the chips show the other strengths
+    skills: ["TypeScript", "React Native", "MongoDB", "Arabic/English RTL", "AI Integration"],
     copy: "Copy",
     copied: "Copied!",
     copyLabel: "Copy email address",
