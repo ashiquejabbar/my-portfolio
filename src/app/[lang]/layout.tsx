@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const { meta } = await getDictionary(lang);
   // Ready-made files (public/og/), not generated per request: WhatsApp drops images that load slowly.
   // Bump ?v= when the images change, so apps that cached the old one fetch it again.
-  const shareImage = { url: `/og/${lang}.jpg?v=4`, width: 1200, height: 630, alt: meta.ogImageAlt, type: "image/jpeg" };
+  const shareImage = { url: `/og/${lang}.jpg?v=5`, width: 1200, height: 630, alt: meta.ogImageAlt, type: "image/jpeg" };
 
   return {
     metadataBase: new URL("https://ashiquedev.netlify.app"),
