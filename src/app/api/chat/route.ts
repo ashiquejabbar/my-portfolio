@@ -2,15 +2,19 @@
 // so GEMINI_API_KEY never reaches the browser. Streams the answer back as plain text.
 
 import { buildCvPrompt } from "@/lib/cv-context";
-import { chatModels, isChatModel } from "@/lib/chat-models";
+import { backupModels, chatModels, isChatModel, thinkingLevel } from "@/lib/chat-models";
 import { defaultLocale, isLocale } from "@/lib/i18n/config";
 
 // Override with GEMINI_MODEL in the Netlify environment when Google releases a newer Flash model
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
-// Used when MODEL is out of free quota or unavailable
-const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.8-flash";
+// Optional extra backup, tried before the built-in ones
+const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL;
 const MAX_TURNS = 12;
 const MAX_CHARS = 1000;
+// How long one model may take to start answering, and the total wait before giving up, so the
+// visitor isn't left hanging and the Netlify function doesn't time out
+const ATTEMPT_TIMEOUT_MS = 6000;
+const TOTAL_WAIT_MS = 9000;
 
 // Light per-IP guard against someone burning the free-tier quota. Kept in memory, so it resets
 // whenever the function cold-starts; Google's own quota is the hard limit.
@@ -55,10 +59,11 @@ export async function POST(request: Request) {
   const messages = parseMessages(body.messages);
   if (!messages) return Response.json({ error: "invalid" }, { status: 400 });
   const locale = typeof body.locale === "string" && isLocale(body.locale) ? body.locale : defaultLocale;
-  // The visitor's pick from the model menu, with the other menu model as backup; otherwise the env defaults
-  const picked = isChatModel(body.model) ? body.model : null;
-  const primary = picked ?? MODEL;
-  const fallback = picked ? (chatModels.find((m) => m.id !== picked)?.id ?? FALLBACK_MODEL) : FALLBACK_MODEL;
+  // The visitor's pick from the model menu (or the env default), then the backups, then the other menu model
+  const picked = isChatModel(body.model) ? body.model : MODEL;
+  const models = [
+    ...new Set([picked, FALLBACK_MODEL, ...backupModels.map((m) => m.id), ...chatModels.map((m) => m.id)]),
+  ].filter((m): m is string => !!m);
 
   const ip = request.headers.get("x-nf-client-connection-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0] ?? "local";
   if (rateLimited(ip)) return Response.json({ error: "rate_limited" }, { status: 429 });
@@ -69,26 +74,46 @@ export async function POST(request: Request) {
     return Response.json({ error: "unavailable" }, { status: 500 });
   }
 
-  const payload = JSON.stringify({
-    systemInstruction: { parts: [{ text: buildCvPrompt(locale) }] },
-    contents: messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
-    generationConfig: { temperature: 0.3, maxOutputTokens: 800 },
-  });
-  const callGemini = (model: string) =>
-    fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: payload,
-    }).catch((error: unknown) => {
-      console.error(`[chat] Gemini request failed (${model})`, error);
+  const systemInstruction = { parts: [{ text: buildCvPrompt(locale) }] };
+  const contents = messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] }));
+  const callGemini = async (model: string, timeoutMs: number) => {
+    // Give up on a model that hasn't started answering in time (an overloaded one can take a minute);
+    // the timer stops once the response arrives, so it never cuts off an answer that is streaming
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          systemInstruction,
+          contents,
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 800,
+            thinkingConfig: { thinkingLevel: thinkingLevel(model) },
+          },
+        }),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      console.error(`[chat] Gemini request failed or timed out (${model})`, error);
       return null;
-    });
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+  // Daily quota used up, model retired or busy ("high demand" 503s are common): move on to the next model
+  const retryable = (res: Response | null) => !res || res.status === 429 || res.status === 404 || res.status >= 500;
 
-  let upstream = await callGemini(primary);
-  // Quota used up, model retired or Google having a bad moment: try the fallback model once
-  if (!upstream || upstream.status === 429 || upstream.status === 404 || upstream.status >= 500) {
-    if (upstream) console.error(`[chat] ${primary} returned ${upstream.status}, trying ${fallback}`);
-    upstream = await callGemini(fallback);
+  const deadline = Date.now() + TOTAL_WAIT_MS;
+  let upstream: Response | null = null;
+  for (const model of models) {
+    const left = deadline - Date.now();
+    if (left < 500) break;
+    upstream = await callGemini(model, Math.min(ATTEMPT_TIMEOUT_MS, left));
+    if (!retryable(upstream)) break;
+    if (upstream) console.error(`[chat] ${model} returned ${upstream.status}`);
   }
 
   if (!upstream?.ok || !upstream.body) {
