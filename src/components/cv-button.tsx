@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Download } from "lucide-react";
-import { CV_PATH, CV_SIZE } from "@/lib/data";
+import { CV_FILENAME, CV_PATH, CV_SIZE } from "@/lib/data";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 // CV download link, shared by the navbar and the hero. After a click the icon turns into a tick
@@ -30,7 +30,7 @@ export default function CvButton({
   return (
     <a
       href={CV_PATH}
-      download="ashique_pj_cv.pdf"
+      download={CV_FILENAME}
       title={info}
       aria-label={compact ? `${common.downloadCv} (${info})` : undefined}
       onClick={() => {

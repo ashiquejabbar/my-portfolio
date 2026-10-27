@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { sendGAEvent } from "@next/third-parties/google";
 import { Bot, Download, Mail, MessageCircle, RotateCcw, SendHorizontal, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
-import { CV_PATH, contactInfo } from "@/lib/data";
+import { CV_FILENAME, CV_PATH, contactInfo } from "@/lib/data";
 import { BrandIcon, whatsappUrl } from "@/components/brand-icons";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import type { Locale } from "@/lib/i18n/config";
@@ -350,7 +350,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
                       <BrandIcon icon={siWhatsapp} />
                       {t.whatsapp}
                     </a>
-                    <a href={CV_PATH} download="ashique_pj_cv.pdf" onClick={() => track("chat_contact", { method: "cv" })} className={contactLink}>
+                    <a href={CV_PATH} download={CV_FILENAME} onClick={() => track("chat_contact", { method: "cv" })} className={contactLink}>
                       <Download size={14} aria-hidden="true" />
                       {t.downloadCv}
                     </a>

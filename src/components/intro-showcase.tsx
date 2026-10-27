@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Download, Mail, Phone, Sparkles, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 
-import { CV_PATH, contactInfo, personalInfo } from "@/lib/data";
+import { CV_FILENAME, CV_PATH, contactInfo, personalInfo } from "@/lib/data";
 import { format } from "@/lib/i18n/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
@@ -258,7 +258,7 @@ function IntroContent({ t, common }: { t: IntroText; common: Dictionary["common"
             </div>
             <a
               href={CV_PATH}
-              download="ashique_pj_cv.pdf"
+              download={CV_FILENAME}
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
             >
               <Download size={17} aria-hidden="true" />

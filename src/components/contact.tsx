@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Download } from "lucide-react";
-import { CV_PATH, contactInfo } from "@/lib/data";
+import { CV_FILENAME, CV_PATH, contactInfo } from "@/lib/data";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 export default function Contact({
@@ -77,7 +77,7 @@ export default function Contact({
             </button>
             <a
               href={CV_PATH}
-              download="ashique_pj_cv.pdf"
+              download={CV_FILENAME}
               className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-panel-foreground/30 font-medium hover:border-panel-foreground/70 transition-colors focus-visible:outline-panel-accent"
             >
               <Download size={17} aria-hidden="true" />
