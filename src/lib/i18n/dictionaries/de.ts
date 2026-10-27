@@ -127,8 +127,8 @@ const de = {
         ],
       },
       {
-        name: "IDMS",
-        tagline: "Dokumentenmanagementsystem für Behörden",
+        name: "Dokumentenmanagement-Plattform für Behörden",
+        tagline: "Naher Osten",
         description: "Zweisprachiges Dokumentenmanagement für Behördenprozesse.",
         context: "Behördenprojekt im Nahen Osten",
         highlights: [
@@ -137,8 +137,8 @@ const de = {
         ],
       },
       {
-        name: "Sinyar",
-        tagline: "Zugriffsverwaltungssystem",
+        name: "Zugriffsverwaltungssystem für Unternehmen",
+        tagline: "Abu Dhabi",
         description: "Zugriffsverwaltung für Unternehmens- und Mitarbeiterprozesse.",
         context: "Abu Dhabi, VAE",
         highlights: [

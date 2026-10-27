@@ -134,8 +134,8 @@ const en = {
         ],
       },
       {
-        name: "IDMS",
-        tagline: "Government Document Management System",
+        name: "Government Document Management Platform",
+        tagline: "Middle East",
         description: "Bilingual document management for government operations.",
         context: "Middle East government project",
         highlights: [
@@ -144,8 +144,8 @@ const en = {
         ],
       },
       {
-        name: "Sinyar",
-        tagline: "Access Management System",
+        name: "Enterprise Access Management System",
+        tagline: "Abu Dhabi",
         description: "Access management for company and employee workflows.",
         context: "Abu Dhabi, UAE",
         highlights: [

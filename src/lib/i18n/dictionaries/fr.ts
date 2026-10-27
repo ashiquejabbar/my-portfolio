@@ -127,8 +127,8 @@ const fr = {
         ],
       },
       {
-        name: "IDMS",
-        tagline: "Système gouvernemental de gestion documentaire",
+        name: "Plateforme gouvernementale de gestion documentaire",
+        tagline: "Moyen-Orient",
         description: "Gestion documentaire bilingue pour les opérations gouvernementales.",
         context: "Projet gouvernemental au Moyen-Orient",
         highlights: [
@@ -137,8 +137,8 @@ const fr = {
         ],
       },
       {
-        name: "Sinyar",
-        tagline: "Système de gestion des accès",
+        name: "Système d’entreprise de gestion des accès",
+        tagline: "Abou Dhabi",
         description: "Gestion des accès pour les processus des entreprises et de leurs employés.",
         context: "Abou Dhabi, EAU",
         highlights: [

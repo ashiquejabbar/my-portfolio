@@ -127,8 +127,8 @@ const es = {
         ],
       },
       {
-        name: "IDMS",
-        tagline: "Sistema de gestión documental gubernamental",
+        name: "Plataforma gubernamental de gestión documental",
+        tagline: "Oriente Medio",
         description: "Gestión documental bilingüe para operaciones gubernamentales.",
         context: "Proyecto gubernamental en Oriente Medio",
         highlights: [
@@ -137,8 +137,8 @@ const es = {
         ],
       },
       {
-        name: "Sinyar",
-        tagline: "Sistema de gestión de accesos",
+        name: "Sistema empresarial de gestión de accesos",
+        tagline: "Abu Dabi",
         description: "Gestión de accesos para los flujos de trabajo de empresas y empleados.",
         context: "Abu Dabi, EAU",
         highlights: [
