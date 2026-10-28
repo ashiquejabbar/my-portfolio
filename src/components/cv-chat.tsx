@@ -1,26 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { sendGAEvent } from "@next/third-parties/google";
-import { Bot, Download, Mail, MessageCircle, RotateCcw, SendHorizontal, X } from "lucide-react";
+import { Bot, Download, LoaderCircle, Mail, MessageCircle, Mic, Phone, RotateCcw, SendHorizontal, Square, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 import { CV_FILENAME, CV_PATH, contactInfo } from "@/lib/data";
 import { BrandIcon, whatsappUrl } from "@/components/brand-icons";
+import CvCall from "@/components/cv-call";
+import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import type { Locale } from "@/lib/i18n/config";
 import { chatModels, type ChatModelId } from "@/lib/chat-models";
-
-interface ChatMessage {
-  role: "user" | "model";
-  text: string;
-}
+import { ChatError, MAX_CHARS, streamAnswer, track, type ChatMessage } from "@/lib/chat-client";
+import { VoiceError, audioContext, openMic, recordUtterance, transcribe, voiceSupported, type Recording } from "@/lib/voice";
 
 // The conversation survives page reloads and language switches within this visit
 const STORAGE_KEY = "cv-chat";
-// Same limits as src/app/api/chat/route.ts
-const MAX_TURNS = 12;
-const MAX_CHARS = 1000;
 // The hint bubble above the button: shown once per visit
 const HINT_KEY = "cv-chat-hinted";
 const HINT_AFTER_MS = 10_000;
@@ -59,14 +54,8 @@ function saveMessages(messages: ChatMessage[]) {
   }
 }
 
-// Google Analytics events (GA loads in src/app/[lang]/layout.tsx). Only counts, never the chat text.
-function track(name: string, params: Record<string, string | number> = {}) {
-  try {
-    sendGAEvent("event", name, params);
-  } catch {
-    // GA blocked or not loaded: nothing to do
-  }
-}
+// Mic and call buttons only where the browser can record (known after hydration)
+const noSubscribe = () => () => {};
 
 // The model sometimes adds **bold**; the panel shows plain text
 const plain = (text: string) => text.replace(/\*\*(.+?)\*\*/g, "$1");
@@ -105,6 +94,7 @@ function Answer({ text }: { text: string }) {
 
 // "Ask about my CV" button, bottom corner, below the hire card (src/components/hire-toast.tsx).
 // Answers come from Gemini through /api/chat, using only the CV (src/lib/cv-context.ts).
+// Beside it a voice call button (src/components/cv-call.tsx); the mic in the input dictates a question.
 export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -113,6 +103,10 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
   const [error, setError] = useState("");
   const [model, setModel] = useState<ChatModelId>(chatModels[0].id);
   const [hint, setHint] = useState(false);
+  const [mode, setMode] = useState<"chat" | "call">("chat");
+  const [dictation, setDictation] = useState<"idle" | "recording" | "transcribing">("idle");
+  const canVoice = useSyncExternalStore(noSubscribe, voiceSupported, () => false);
+  const recordingRef = useRef<Recording | null>(null);
   const panelRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -145,7 +139,10 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
     // Touch screens: no autofocus, so the keyboard doesn't cover the suggestions straight away
     if (window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        setMode("chat");
+      }
     };
     window.addEventListener("keydown", onKey);
 
@@ -168,6 +165,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
     }
 
     return () => {
+      recordingRef.current?.cancel();
       delete document.documentElement.dataset.chatOpen;
       window.removeEventListener("keydown", onKey);
       if (phone) {
@@ -188,28 +186,13 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
     setBusy(true);
     track("chat_question", { locale, model, turn: history.filter((m) => m.role === "user").length });
 
-    let answer = "";
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // Older turns drop off: an odd count keeps the history starting with a question
-        body: JSON.stringify({ messages: history.slice(-(MAX_TURNS - 1)), locale, model }),
+      const answer = await streamAnswer(history, { locale, model }, (text) =>
+        setMessages([...history, { role: "model", text }]),
+      ).catch((e) => {
+        if (e instanceof ChatError) track("chat_error", { status: e.status });
+        throw new Error(e instanceof ChatError && e.status === 429 ? t.rateLimited : t.error);
       });
-      if (!res.ok || !res.body) {
-        track("chat_error", { status: res.status });
-        throw new Error(res.status === 429 ? t.rateLimited : t.error);
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      setMessages([...history, { role: "model", text: "" }]);
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        answer += decoder.decode(value, { stream: true });
-        setMessages([...history, { role: "model", text: answer }]);
-      }
       if (!answer.trim()) throw new Error(t.error);
       saveMessages([...history, { role: "model", text: answer }]);
     } catch (e) {
@@ -222,6 +205,82 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
     }
   };
 
+  // Mic button: records one question and Groq Whisper puts it in the input, ready to send.
+  // A second tap stops early; otherwise it stops by itself after a pause.
+  const dictate = async () => {
+    if (recordingRef.current) return recordingRef.current.finish();
+    if (dictation !== "idle") return;
+    // Started from the tap, so Safari lets the recording use it
+    audioContext();
+    setError("");
+    let stream: MediaStream;
+    try {
+      stream = await openMic();
+    } catch {
+      setError(t.micDenied);
+      return;
+    }
+    track("chat_mic");
+    let deadMic = false;
+    const recording = recordUtterance(stream, {
+      silenceMs: 1500,
+      waitMs: 8000,
+      maxMs: 30_000,
+      onDeadMic: () => {
+        deadMic = true;
+        recording.cancel();
+      },
+    });
+    recordingRef.current = recording;
+    setDictation("recording");
+    try {
+      const audio = await recording.done;
+      recordingRef.current = null;
+      if (!audio) {
+        // Closing the chat cancels too: no message then
+        if (panelRef.current) setError(deadMic ? t.micSilent : t.noSpeech);
+        return;
+      }
+      setDictation("transcribing");
+      const text = await transcribe(audio, locale);
+      if (text) setInput((prev) => (prev.trim() ? `${prev.trim()} ${text}` : text).slice(0, MAX_CHARS));
+    } catch (e) {
+      setError(e instanceof VoiceError && e.status === 429 ? t.rateLimited : t.voiceBusy);
+    } finally {
+      recordingRef.current = null;
+      stream.getTracks().forEach((track) => track.stop());
+      setDictation("idle");
+      inputRef.current?.focus();
+    }
+  };
+
+  const startCall = (from: "button" | "header") => {
+    // Started from the tap, so Safari plays the spoken answers
+    audioContext();
+    recordingRef.current?.cancel();
+    setHint(false);
+    setError("");
+    if (!open && messages.length === 0) setMessages(loadMessages());
+    track("call_open", { from });
+    setMode("call");
+    setOpen(true);
+  };
+
+  const endCall = (message?: string) => {
+    setMode("chat");
+    if (message) setError(message);
+  };
+
+  const onCallMessages = (history: ChatMessage[]) => {
+    setMessages(history);
+    saveMessages(history);
+  };
+
+  const close = () => {
+    setOpen(false);
+    setMode("chat");
+  };
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     ask(input);
@@ -230,7 +289,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
   const toggle = (from: "button" | "hint") => {
     setHint(false);
     if (open) {
-      setOpen(false);
+      close();
       return;
     }
     // Saved history is read on first open: sessionStorage only exists in the browser
@@ -277,7 +336,18 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
                 <p className="font-semibold leading-snug">{t.title}</p>
                 <p className="text-xs text-muted-foreground leading-snug">{t.subtitle}</p>
               </div>
-              {messages.length > 0 && !busy && (
+              {canVoice && mode === "chat" && !busy && (
+                <button
+                  type="button"
+                  onClick={() => startCall("header")}
+                  aria-label={t.call}
+                  title={t.call}
+                  className="-m-1 grid place-items-center size-8 shrink-0 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  <Phone size={15} aria-hidden="true" />
+                </button>
+              )}
+              {messages.length > 0 && !busy && mode === "chat" && (
                 <button
                   type="button"
                   onClick={clear}
@@ -290,7 +360,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
               )}
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 aria-label={t.close}
                 className="-m-1 grid place-items-center size-8 shrink-0 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
@@ -298,6 +368,10 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
               </button>
             </header>
 
+            {mode === "call" ? (
+              <CvCall t={t} locale={locale} model={model} history={messages} onMessages={onCallMessages} onEnd={endCall} />
+            ) : (
+            <>
             <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 text-sm" aria-live="polite">
               <p className="rounded-lg bg-muted px-3 py-2 leading-relaxed">{t.greeting}</p>
               {messages.length === 0 && (
@@ -367,12 +441,33 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
 
             <form onSubmit={onSubmit} className="border-t border-border p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               <div className="flex items-center gap-2">
+                {canVoice && (
+                  <button
+                    type="button"
+                    onClick={dictate}
+                    disabled={busy || dictation === "transcribing"}
+                    aria-label={dictation === "recording" ? t.stopDictating : t.dictate}
+                    title={dictation === "recording" ? t.stopDictating : t.dictate}
+                    className={cn(
+                      "grid place-items-center size-10 shrink-0 rounded-md border border-border hover:bg-muted disabled:opacity-50 transition-colors",
+                      dictation === "recording" && "text-destructive",
+                    )}
+                  >
+                    {dictation === "transcribing" ? (
+                      <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
+                    ) : dictation === "recording" ? (
+                      <Square size={14} className="animate-pulse fill-current" aria-hidden="true" />
+                    ) : (
+                      <Mic size={16} aria-hidden="true" />
+                    )}
+                  </button>
+                )}
                 <input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   maxLength={MAX_CHARS}
-                  placeholder={t.placeholder}
+                  placeholder={dictation === "recording" ? t.listening : dictation === "transcribing" ? t.transcribing : t.placeholder}
                   aria-label={t.placeholder}
                   className="h-10 min-w-0 flex-1 rounded-md border border-border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
@@ -407,6 +502,8 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
               </label>
               <p className="mt-1.5 text-[11px] text-muted-foreground">{t.disclaimer}</p>
             </form>
+            </>
+            )}
           </motion.section>
         )}
       </AnimatePresence>
@@ -436,18 +533,30 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
         )}
       </AnimatePresence>
 
-      <button
-        type="button"
-        data-chat-button
-        onClick={() => toggle("button")}
-        aria-expanded={open}
-        aria-label={open ? t.close : t.open}
-        className="fixed bottom-4 end-4 z-[55] flex items-center gap-2 h-12 rounded-full bg-primary px-4 text-primary-foreground text-sm font-medium shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
-      >
-        {open ? <X size={18} aria-hidden="true" /> : <MessageCircle size={18} aria-hidden="true" />}
-        <span className="sm:hidden">{t.openShort}</span>
-        <span className="hidden sm:inline">{t.open}</span>
-      </button>
+      <div data-chat-button className="fixed bottom-4 end-4 z-[55] flex items-center gap-2">
+        {canVoice && !open && (
+          <button
+            type="button"
+            onClick={() => startCall("button")}
+            aria-label={t.call}
+            title={t.call}
+            className="grid place-items-center size-12 rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
+          >
+            <Phone size={18} aria-hidden="true" />
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => toggle("button")}
+          aria-expanded={open}
+          aria-label={open ? t.close : t.open}
+          className="flex items-center gap-2 h-12 rounded-full bg-primary px-4 text-primary-foreground text-sm font-medium shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
+        >
+          {open ? <X size={18} aria-hidden="true" /> : <MessageCircle size={18} aria-hidden="true" />}
+          <span className="sm:hidden">{t.openShort}</span>
+          <span className="hidden sm:inline">{t.open}</span>
+        </button>
+      </div>
     </>
   );
 }

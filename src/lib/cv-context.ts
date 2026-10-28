@@ -72,3 +72,11 @@ Rules:
 CV:
 ${cvText()}`;
 }
+
+// Added to the prompt on a voice call (src/components/cv-call.tsx): every answer is read aloud
+export const voiceStyle = `
+
+This is a live voice call and your answer is read aloud. This overrides the formatting rule above:
+- Answer in 1-3 short, natural spoken sentences. No lists, bullets, markdown, emojis or links.
+- Give an email address or phone number only when asked for contact details.
+- If the question is unclear or seems cut off, ask the visitor to repeat it.`;

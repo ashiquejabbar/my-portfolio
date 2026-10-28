@@ -1,9 +1,12 @@
 // CV chat endpoint (src/components/cv-chat.tsx). Runs on the server (a Netlify function in production),
-// so GEMINI_API_KEY never reaches the browser. Streams the answer back as plain text.
+// so GEMINI_API_KEY and GROQ_API_KEY never reach the browser. Streams the answer back as plain text.
+// Voice calls (src/components/cv-call.tsx) try Groq first, which starts answering much sooner, then Gemini.
 
-import { buildCvPrompt } from "@/lib/cv-context";
+import { buildCvPrompt, voiceStyle } from "@/lib/cv-context";
 import { backupModels, chatModels, isChatModel, thinkingLevel } from "@/lib/chat-models";
+import { GROQ_URL, callModels } from "@/lib/groq";
 import { defaultLocale, isLocale } from "@/lib/i18n/config";
+import { clientIp, rateLimited } from "@/lib/rate-limit";
 
 // Override with GEMINI_MODEL in the Netlify environment when Google releases a newer Flash model
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
@@ -15,25 +18,18 @@ const MAX_CHARS = 1000;
 // visitor isn't left hanging and the Netlify function doesn't time out
 const ATTEMPT_TIMEOUT_MS = 6000;
 const TOTAL_WAIT_MS = 9000;
-
-// Light per-IP guard against someone burning the free-tier quota. Kept in memory, so it resets
-// whenever the function cold-starts; Google's own quota is the hard limit.
-const WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS = 20;
-const hits = new Map<string, number[]>();
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 5000) hits.clear();
-  return recent.length > MAX_REQUESTS;
-}
 
 interface ChatMessage {
   role: "user" | "model";
   text: string;
+}
+
+// One model to try: how to call it, and how to pull the answer text out of one of its SSE events
+interface Attempt {
+  name: string;
+  call: (signal: AbortSignal) => Promise<Response>;
+  text: (data: unknown) => string;
 }
 
 function parseMessages(value: unknown): ChatMessage[] | null {
@@ -50,7 +46,7 @@ function parseMessages(value: unknown): ChatMessage[] | null {
 }
 
 export async function POST(request: Request) {
-  let body: { messages?: unknown; locale?: unknown; model?: unknown };
+  let body: { messages?: unknown; locale?: unknown; model?: unknown; voice?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -59,45 +55,87 @@ export async function POST(request: Request) {
   const messages = parseMessages(body.messages);
   if (!messages) return Response.json({ error: "invalid" }, { status: 400 });
   const locale = typeof body.locale === "string" && isLocale(body.locale) ? body.locale : defaultLocale;
+  const voice = body.voice === true;
   // The visitor's pick from the model menu (or the env default), then the backups, then the other menu model
   const picked = isChatModel(body.model) ? body.model : MODEL;
   const models = [
     ...new Set([picked, FALLBACK_MODEL, ...backupModels.map((m) => m.id), ...chatModels.map((m) => m.id)]),
   ].filter((m): m is string => !!m);
 
-  const ip = request.headers.get("x-nf-client-connection-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0] ?? "local";
-  if (rateLimited(ip)) return Response.json({ error: "rate_limited" }, { status: 429 });
+  // A call asks a question every few seconds, so it gets more room
+  if (rateLimited(voice ? "call" : "chat", clientIp(request), voice ? MAX_REQUESTS * 2 : MAX_REQUESTS)) {
+    return Response.json({ error: "rate_limited" }, { status: 429 });
+  }
 
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const groqKey = process.env.GROQ_API_KEY;
+  if (!apiKey && !(voice && groqKey)) {
     console.error("[chat] GEMINI_API_KEY is not set");
     return Response.json({ error: "unavailable" }, { status: 500 });
   }
 
-  const systemInstruction = { parts: [{ text: buildCvPrompt(locale) }] };
-  const contents = messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] }));
-  const callGemini = async (model: string, timeoutMs: number) => {
+  const prompt = buildCvPrompt(locale) + (voice ? voiceStyle : "");
+  // Short spoken answers, plus room for the Groq models' brief reasoning
+  const maxTokens = voice ? 500 : 800;
+
+  const groq = ({ id, reasoning }: (typeof callModels)[number]): Attempt => ({
+    name: id,
+    call: (signal) =>
+      fetch(`${GROQ_URL}/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${groqKey}` },
+        body: JSON.stringify({
+          model: id,
+          reasoning_effort: reasoning,
+          messages: [
+            { role: "system", content: prompt },
+            ...messages.map((m) => ({ role: m.role === "model" ? "assistant" : "user", content: m.text })),
+          ],
+          stream: true,
+          temperature: 0.3,
+          max_completion_tokens: maxTokens,
+        }),
+        signal,
+      }),
+    text: (data) => (data as { choices?: { delta?: { content?: string } }[] }).choices?.[0]?.delta?.content ?? "",
+  });
+
+  const gemini = (model: string): Attempt => ({
+    name: model,
+    call: (signal) =>
+      fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey ?? "" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: prompt }] },
+          contents: messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: maxTokens,
+            thinkingConfig: { thinkingLevel: thinkingLevel(model) },
+          },
+        }),
+        signal,
+      }),
+    text: (data) => {
+      const parts: { text?: string; thought?: boolean }[] =
+        (data as { candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[] }).candidates?.[0]?.content
+          ?.parts ?? [];
+      return parts.filter((p) => !p.thought).map((p) => p.text ?? "").join("");
+    },
+  });
+
+  const attempts = [...(voice && groqKey ? callModels.map(groq) : []), ...(apiKey ? models.map(gemini) : [])];
+
+  const tryModel = async (attempt: Attempt, timeoutMs: number) => {
     // Give up on a model that hasn't started answering in time (an overloaded one can take a minute);
     // the timer stops once the response arrives, so it never cuts off an answer that is streaming
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      return await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-        body: JSON.stringify({
-          systemInstruction,
-          contents,
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 800,
-            thinkingConfig: { thinkingLevel: thinkingLevel(model) },
-          },
-        }),
-        signal: controller.signal,
-      });
+      return await attempt.call(controller.signal);
     } catch (error) {
-      console.error(`[chat] Gemini request failed or timed out (${model})`, error);
+      console.error(`[chat] request failed or timed out (${attempt.name})`, error);
       return null;
     } finally {
       clearTimeout(timer);
@@ -108,21 +146,24 @@ export async function POST(request: Request) {
 
   const deadline = Date.now() + TOTAL_WAIT_MS;
   let upstream: Response | null = null;
-  for (const model of models) {
+  let used: Attempt | undefined;
+  for (const attempt of attempts) {
     const left = deadline - Date.now();
     if (left < 500) break;
-    upstream = await callGemini(model, Math.min(ATTEMPT_TIMEOUT_MS, left));
+    used = attempt;
+    upstream = await tryModel(attempt, Math.min(ATTEMPT_TIMEOUT_MS, left));
     if (!retryable(upstream)) break;
-    if (upstream) console.error(`[chat] ${model} returned ${upstream.status}`);
+    if (upstream) console.error(`[chat] ${attempt.name} returned ${upstream.status}`);
   }
 
-  if (!upstream?.ok || !upstream.body) {
-    if (upstream) console.error("[chat] Gemini error", upstream.status, await upstream.text());
+  if (!upstream?.ok || !upstream.body || !used) {
+    if (upstream) console.error("[chat] model error", upstream.status, await upstream.text());
     const status = upstream?.status === 429 ? 429 : 502;
     return Response.json({ error: status === 429 ? "rate_limited" : "unavailable" }, { status });
   }
 
-  // Gemini sends Server-Sent Events ("data: {json}" lines); pass on just the text parts
+  // Both providers send Server-Sent Events ("data: {json}" lines); pass on just the answer text
+  const extract = used.text;
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
   let buffer = "";
@@ -135,12 +176,10 @@ export async function POST(request: Request) {
         for (const line of lines) {
           if (!line.startsWith("data:")) continue;
           try {
-            const data = JSON.parse(line.slice(5));
-            const parts: { text?: string; thought?: boolean }[] = data.candidates?.[0]?.content?.parts ?? [];
-            const text = parts.filter((p) => !p.thought).map((p) => p.text ?? "").join("");
+            const text = extract(JSON.parse(line.slice(5)));
             if (text) controller.enqueue(encoder.encode(text));
           } catch {
-            // Partial or non-JSON line: skip it
+            // Partial or non-JSON line (Groq ends with "data: [DONE]"): skip it
           }
         }
       },
