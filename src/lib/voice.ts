@@ -4,8 +4,10 @@
 
 import type { Locale } from "@/lib/i18n/config";
 
-// Same as TTS_MAX_CHARS in src/lib/groq.ts (server only)
-const SENTENCE_MAX_CHARS = 200;
+// TTS_MAX_CHARS in src/lib/groq.ts (server only), minus room for the voice style direction it adds
+const SENTENCE_MAX_CHARS = 190;
+const SENTENCE_PAUSE_MS = 250;
+const GROQ_VOICE_RATE = 0.95;
 // Browser voice language per page language
 const speechLang: Record<Locale, string> = { en: "en-US", ar: "ar-SA", fr: "fr-FR", de: "de-DE", es: "es-ES" };
 
@@ -185,6 +187,23 @@ export function sentenceSplitter(onSentence: (sentence: string) => void) {
   };
 }
 
+// Browser voices that sound female and natural, by name across Windows, Edge, Chrome, macOS and iOS.
+// Edge's "Natural" voices and Google's online ones sound the most like a real person.
+const FEMALE_VOICE = /female|zira|aria|jenny|ava|emma|michelle|sonia|libby|natasha|samantha|karen|moira|tessa|victoria|allison|susan|hazel|google (us english|deutsch|español|français)|katja|amala|hedda|elvira|helena|laura|denise|julie|hortense|eloise|zariyah|salma|hoda|fatima|amira|laila|mariam/i;
+const MALE_VOICE = /\bmale\b|david|mark|guy|ryan|christopher|eric|roger|steffan|andrew|brian|daniel|alex\b|fred|thomas|stefan|conrad|killian|alvaro|pablo|henri|paul|hamed|naayf|shakir|majed/i;
+
+function femaleVoice(locale: Locale): SpeechSynthesisVoice | undefined {
+  const score = (v: SpeechSynthesisVoice) =>
+    (FEMALE_VOICE.test(v.name) ? 4 : 0) +
+    (/natural|neural/i.test(v.name) ? 3 : 0) +
+    (v.localService ? 0 : 1) -
+    (MALE_VOICE.test(v.name) ? 10 : 0);
+  return speechSynthesis
+    .getVoices()
+    .filter((v) => v.lang.toLowerCase().startsWith(locale))
+    .sort((a, b) => score(b) - score(a))[0];
+}
+
 // Reads sentences aloud one after another: Groq's voice where /api/speak has one for the language,
 // otherwise the browser's. Each sentence's audio is fetched as soon as it is queued, so the next one
 // is usually ready by the time the current one ends.
@@ -194,6 +213,8 @@ export function createSpeaker(locale: Locale, onSpeaking: () => void) {
   // Off for the rest of the call once /api/speak says there is no Groq voice (or it failed)
   let groqVoice = true;
   let playing: AudioBufferSourceNode | null = null;
+  // Chrome loads its voice list on first request; ask now so it's ready by the first answer
+  if ("speechSynthesis" in window) speechSynthesis.getVoices();
 
   const fetchAudio = async (text: string): Promise<AudioBuffer | null> => {
     if (!groqVoice) return null;
@@ -218,6 +239,8 @@ export function createSpeaker(locale: Locale, onSpeaking: () => void) {
       const ctx = audioContext();
       const node = ctx.createBufferSource();
       node.buffer = buffer;
+      // Played back slightly slower, which also lowers the pitch a little: a deeper, smoother voice
+      node.playbackRate.value = GROQ_VOICE_RATE;
       node.connect(ctx.destination);
       node.onended = () => {
         playing = null;
@@ -232,6 +255,11 @@ export function createSpeaker(locale: Locale, onSpeaking: () => void) {
       if (!("speechSynthesis" in window)) return resolve();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = speechLang[locale];
+      const voice = femaleVoice(locale);
+      if (voice) utterance.voice = voice;
+      // Unhurried and smooth: a little slower and slightly lower, which sounds warmer and less robotic
+      utterance.rate = 0.9;
+      utterance.pitch = 0.92;
       utterance.onend = () => resolve();
       utterance.onerror = () => resolve();
       speechSynthesis.speak(utterance);
@@ -246,6 +274,8 @@ export function createSpeaker(locale: Locale, onSpeaking: () => void) {
         if (silenced) return;
         onSpeaking();
         await (buffer ? playAudio(buffer) : playBrowserVoice(text));
+        // A short breath between sentences, so it never sounds rushed
+        if (!silenced) await new Promise((r) => setTimeout(r, SENTENCE_PAUSE_MS));
       });
     },
     // Resolves once everything queued has been spoken (or stopped)

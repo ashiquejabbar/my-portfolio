@@ -2,7 +2,7 @@
 // from Groq, or 204 when there is no Groq voice for the language or Groq fails: the browser then
 // reads the sentence with its built-in voice, so the call carries on either way.
 
-import { GROQ_URL, TTS_MAX_CHARS, ttsVoices } from "@/lib/groq";
+import { GROQ_URL, TTS_MAX_CHARS, ttsStyle, ttsVoices } from "@/lib/groq";
 import { isLocale } from "@/lib/i18n/config";
 import { clientIp, rateLimited } from "@/lib/rate-limit";
 
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const res = await fetch(`${GROQ_URL}/audio/speech`, {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ ...voice, input: text, response_format: "wav" }),
+      body: JSON.stringify({ ...voice, input: ttsStyle ? `${ttsStyle} ${text}` : text, response_format: "wav" }),
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     if (!res.ok || !res.body) {

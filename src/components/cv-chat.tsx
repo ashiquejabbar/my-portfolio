@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Download, LoaderCircle, Mail, MessageCircle, Mic, Phone, RotateCcw, SendHorizontal, Square, X } from "lucide-react";
+import { Bot, Download, LoaderCircle, Mail, MessageCircle, Mic, Phone, RotateCcw, SendHorizontal, Sparkles, Square, X } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 import { CV_FILENAME, CV_PATH, contactInfo } from "@/lib/data";
 import { BrandIcon, whatsappUrl } from "@/components/brand-icons";
@@ -61,6 +61,25 @@ const noSubscribe = () => () => {};
 const plain = (text: string) => text.replace(/\*\*(.+?)\*\*/g, "$1");
 const BULLET = /^\s*(?:[-*•]|\d+\.)\s+/;
 
+// How new things in the panel arrive: a short rise with a soft ease-out
+const RISE = { duration: 0.24, ease: [0.22, 1, 0.36, 1] } as const;
+
+// "Typing…" as three dots bouncing in turn
+function TypingDots() {
+  return (
+    <span className="flex items-center gap-1" aria-hidden="true">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="size-1.5 rounded-full bg-current"
+          animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+        />
+      ))}
+    </span>
+  );
+}
+
 // An answer as paragraphs, with runs of "- " lines shown as a bulleted list
 function Answer({ text }: { text: string }) {
   const blocks: (string | string[])[] = [];
@@ -107,6 +126,28 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
   const [dictation, setDictation] = useState<"idle" | "recording" | "transcribing">("idle");
   const canVoice = useSyncExternalStore(noSubscribe, voiceSupported, () => false);
   const recordingRef = useRef<Recording | null>(null);
+  const micRef = useRef<HTMLButtonElement>(null);
+  const [menu, setMenu] = useState(false);
+  const launcherRef = useRef<HTMLDivElement>(null);
+  const firstMenuItemRef = useRef<HTMLButtonElement>(null);
+
+  // The launcher menu closes on Escape or a click elsewhere; keyboard users land on its first item
+  useEffect(() => {
+    if (!menu) return;
+    firstMenuItemRef.current?.focus({ preventScroll: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenu(false);
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (!launcherRef.current?.contains(e.target as Node)) setMenu(false);
+    };
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [menu]);
   const panelRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -128,9 +169,19 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
     };
   }, []);
 
+  // Follows new messages smoothly, but leaves the visitor where they are if they've scrolled up to
+  // re-read something (unless they just asked a question)
+  const pinnedRef = useRef(true);
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
+    const list = listRef.current;
+    if (!list || (!pinnedRef.current && messages.at(-1)?.role !== "user")) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    list.scrollTo({ top: list.scrollHeight, behavior: smooth ? "smooth" : "auto" });
   }, [messages, busy, open]);
+  const onListScroll = () => {
+    const list = listRef.current;
+    if (list) pinnedRef.current = list.scrollHeight - list.scrollTop - list.clientHeight < 80;
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -226,6 +277,10 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
       silenceMs: 1500,
       waitMs: 8000,
       maxMs: 30_000,
+      // A glow around the mic that follows the voice, so the visitor sees they're being heard
+      onLevel: (level) => {
+        if (micRef.current) micRef.current.style.boxShadow = level > 0.05 ? `0 0 0 ${Math.round(2 + level * 5)}px var(--ring)` : "";
+      },
       onDeadMic: () => {
         deadMic = true;
         recording.cancel();
@@ -279,6 +334,8 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
   const close = () => {
     setOpen(false);
     setMode("chat");
+    // Reopening starts at the latest message again
+    pinnedRef.current = true;
   };
 
   const onSubmit = (e: FormEvent) => {
@@ -321,32 +378,26 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
             ref={panelRef}
             role="dialog"
             aria-label={t.title}
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            // Grows out of the launcher in the corner, and shrinks back into it
+            initial={{ opacity: 0, y: 16, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            exit={{ opacity: 0, y: 16, scale: 0.94 }}
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
             // Phones: full screen (height follows the keyboard, see the effect above). Larger screens: a card above the button
-            className="fixed inset-x-0 top-0 h-dvh sm:top-auto sm:inset-x-auto sm:bottom-20 sm:end-4 sm:w-[24rem] sm:h-[min(34rem,calc(100dvh-7rem))] z-[70] flex flex-col sm:rounded-xl sm:border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)]"
+            className="fixed inset-x-0 top-0 h-dvh sm:top-auto sm:inset-x-auto sm:bottom-24 sm:end-6 sm:w-[25rem] sm:h-[min(36rem,calc(100dvh-8rem))] z-[70] flex flex-col overflow-hidden origin-bottom-right rtl:origin-bottom-left sm:rounded-2xl sm:border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)]"
           >
-            <header className="flex items-center gap-3 border-b border-border px-4 py-3">
-              <span className="grid place-items-center size-8 shrink-0 rounded-lg bg-muted text-foreground" aria-hidden="true">
-                <Bot size={17} />
+            <header className="flex items-center gap-3 px-4 pt-3.5 pb-3">
+              <span className="relative grid place-items-center size-10 shrink-0 rounded-full bg-primary text-primary-foreground" aria-hidden="true">
+                <Bot size={19} />
+                <span className="absolute -bottom-0.5 -end-0.5 grid size-3.5 place-items-center rounded-full bg-popover">
+                  <span className="absolute size-2.5 animate-ping rounded-full bg-emerald-500/60 motion-reduce:hidden" />
+                  <span className="relative size-2.5 rounded-full bg-emerald-500" />
+                </span>
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-semibold leading-snug">{t.title}</p>
+                <h2 className="text-[15px] font-semibold leading-snug">{t.title}</h2>
                 <p className="text-xs text-muted-foreground leading-snug">{t.subtitle}</p>
               </div>
-              {canVoice && mode === "chat" && !busy && (
-                <button
-                  type="button"
-                  onClick={() => startCall("header")}
-                  aria-label={t.call}
-                  title={t.call}
-                  className="-m-1 grid place-items-center size-8 shrink-0 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                >
-                  <Phone size={15} aria-hidden="true" />
-                </button>
-              )}
               {messages.length > 0 && !busy && mode === "chat" && (
                 <button
                   type="button"
@@ -368,46 +419,103 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
               </button>
             </header>
 
+            {/* Chat or voice call: the same assistant, two ways to ask */}
+            <div className={cn("border-b border-border px-4", canVoice ? "pb-3" : "-mt-2.5")}>
+              {canVoice ? (
+                <div className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1 text-xs font-medium">
+                  {(["chat", "call"] as const).map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      aria-pressed={mode === m}
+                      disabled={busy || dictation !== "idle"}
+                      onClick={() => (m === "call" ? mode === "chat" && startCall("header") : endCall())}
+                      className={cn(
+                        "relative rounded-md py-1.5 transition-colors disabled:opacity-50",
+                        mode === m ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      {/* The highlight slides across to the picked option */}
+                      {mode === m && (
+                        <motion.span
+                          layoutId="chat-mode-highlight"
+                          className="absolute inset-0 rounded-md bg-background shadow-sm"
+                          transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                        />
+                      )}
+                      <span className="relative flex items-center justify-center gap-1.5">
+                        {m === "chat" ? <MessageCircle size={14} aria-hidden="true" /> : <Phone size={14} aria-hidden="true" />}
+                        {m === "chat" ? t.chatTab : t.callTab}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
             {mode === "call" ? (
               <CvCall t={t} locale={locale} model={model} history={messages} onMessages={onCallMessages} onEnd={endCall} />
             ) : (
             <>
-            <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 text-sm" aria-live="polite">
-              <p className="rounded-lg bg-muted px-3 py-2 leading-relaxed">{t.greeting}</p>
+            {/* Screen readers hear each finished answer once, not every streamed word */}
+            <p className="sr-only" aria-live="polite">
+              {!busy && messages.at(-1)?.role === "model" ? plain(messages.at(-1)!.text) : ""}
+            </p>
+            <div ref={listRef} onScroll={onListScroll} className="chat-scroll chat-fade flex-1 overflow-y-auto px-4 py-3 space-y-3 text-sm">
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ ...RISE, delay: 0.06 }}
+                className="me-8 rounded-2xl rounded-ss-md bg-muted px-3.5 py-2.5 leading-relaxed"
+              >
+                {t.greeting}
+              </motion.p>
               {messages.length === 0 && (
                 <div className="flex flex-wrap gap-2">
                   {t.suggestions.map((s, i) => (
-                    <button
+                    <motion.button
                       key={s}
                       type="button"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...RISE, delay: 0.12 + i * 0.05 }}
                       onClick={() => {
                         track("chat_suggestion", { index: i });
                         ask(s);
                       }}
-                      className="rounded-full border border-border px-3 py-1.5 text-start text-xs hover:bg-muted transition-colors"
+                      className="rounded-full border border-border px-3 py-1.5 text-start text-xs hover:bg-muted hover:border-ring/50 active:scale-[0.97] transition-[background-color,border-color,scale]"
                     >
                       {s}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               )}
               {messages.map((m, i) =>
                 m.role === "user" ? (
-                  <p
+                  <motion.p
                     key={i}
-                    className="w-fit max-w-[85%] ms-auto rounded-lg bg-primary text-primary-foreground px-3 py-2 whitespace-pre-wrap break-words"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={RISE}
+                    className="w-fit max-w-[85%] ms-auto rounded-2xl rounded-ee-md bg-primary text-primary-foreground px-3.5 py-2.5 whitespace-pre-wrap break-words"
                   >
                     {m.text}
-                  </p>
+                  </motion.p>
                 ) : (
-                  <div key={i} className="me-8 rounded-lg bg-muted px-3 py-2 leading-relaxed break-words">
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={RISE}
+                    className="me-8 rounded-2xl rounded-ss-md bg-muted px-3.5 py-2.5 leading-relaxed break-words"
+                  >
                     <Answer text={m.text} />
-                  </div>
+                  </motion.div>
                 ),
               )}
               {/* After the latest answer: a direct way to reach Ashique */}
               {!busy && messages.at(-1)?.role === "model" && (
-                <div className="me-8 text-xs">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, delay: 0.1 }} className="me-8 text-xs">
                   <p className="text-muted-foreground">{t.contactPrompt}</p>
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <a href={`mailto:${contactInfo.email}`} onClick={() => track("chat_contact", { method: "email" })} className={contactLink}>
@@ -429,34 +537,46 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
                       {t.downloadCv}
                     </a>
                   </div>
-                </div>
+                </motion.div>
               )}
               {waiting && (
-                <p className="me-8 w-fit rounded-lg bg-muted px-3 py-2 text-muted-foreground" aria-label={t.thinking}>
-                  <span className="animate-pulse">•••</span>
-                </p>
+                <motion.p
+                  role="status"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={RISE}
+                  className="me-8 flex h-10 w-fit items-center rounded-2xl rounded-ss-md bg-muted px-4 text-muted-foreground"
+                >
+                  <TypingDots />
+                  <span className="sr-only">{t.thinking}</span>
+                </motion.p>
               )}
-              {error && <p className="text-destructive">{error}</p>}
+              {error && (
+                <motion.p role="alert" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={RISE} className="text-destructive">
+                  {error}
+                </motion.p>
+              )}
             </div>
 
             <form onSubmit={onSubmit} className="border-t border-border p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 rounded-xl border border-border bg-background p-1 focus-within:ring-2 focus-within:ring-ring transition-shadow">
                 {canVoice && (
                   <button
+                    ref={micRef}
                     type="button"
                     onClick={dictate}
                     disabled={busy || dictation === "transcribing"}
                     aria-label={dictation === "recording" ? t.stopDictating : t.dictate}
                     title={dictation === "recording" ? t.stopDictating : t.dictate}
                     className={cn(
-                      "grid place-items-center size-10 shrink-0 rounded-md border border-border hover:bg-muted disabled:opacity-50 transition-colors",
-                      dictation === "recording" && "text-destructive",
+                      "grid place-items-center size-9 shrink-0 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-50 transition-[background-color,color,box-shadow]",
+                      dictation === "recording" && "bg-destructive/10 text-destructive hover:bg-destructive/15 hover:text-destructive",
                     )}
                   >
                     {dictation === "transcribing" ? (
-                      <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
+                      <LoaderCircle size={16} className="motion-safe:animate-spin" aria-hidden="true" />
                     ) : dictation === "recording" ? (
-                      <Square size={14} className="animate-pulse fill-current" aria-hidden="true" />
+                      <Square size={14} className="fill-current" aria-hidden="true" />
                     ) : (
                       <Mic size={16} aria-hidden="true" />
                     )}
@@ -464,23 +584,26 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
                 )}
                 <input
                   ref={inputRef}
+                  name="question"
+                  autoComplete="off"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   maxLength={MAX_CHARS}
                   placeholder={dictation === "recording" ? t.listening : dictation === "transcribing" ? t.transcribing : t.placeholder}
                   aria-label={t.placeholder}
-                  className="h-10 min-w-0 flex-1 rounded-md border border-border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  // The field around it shows the focus ring
+                  className={cn("h-9 min-w-0 flex-1 bg-transparent text-sm outline-none focus-visible:outline-none", canVoice ? "px-1" : "px-2.5")}
                 />
                 <button
                   type="submit"
                   disabled={busy || !input.trim()}
                   aria-label={t.send}
-                  className="grid place-items-center size-10 shrink-0 rounded-md bg-primary text-primary-foreground hover:bg-primary/85 disabled:opacity-50 transition-colors"
+                  className="grid place-items-center size-9 shrink-0 rounded-lg bg-primary text-primary-foreground hover:bg-primary/85 enabled:active:scale-90 disabled:opacity-40 transition-[background-color,opacity,scale]"
                 >
                   <SendHorizontal size={16} className="rtl:-scale-x-100" aria-hidden="true" />
                 </button>
               </div>
-              <label className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <label className="mt-2.5 flex items-center gap-1.5 text-xs text-muted-foreground">
                 {t.model}
                 <select
                   value={model}
@@ -509,14 +632,14 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
       </AnimatePresence>
 
       <AnimatePresence>
-        {hint && !open && (
+        {hint && !open && !menu && (
           <motion.div
             data-chat-hint
             initial={{ opacity: 0, y: 8, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed bottom-[4.75rem] end-4 z-[55] flex max-w-[16rem] items-start gap-1 rounded-xl border border-border bg-popover text-popover-foreground text-sm shadow-[var(--shadow-raised)] py-2 ps-3 pe-1"
+            className="fixed bottom-[5.5rem] end-4 sm:bottom-[6.25rem] sm:end-6 z-[55] flex max-w-[16rem] items-start gap-1 rounded-xl border border-border bg-popover text-popover-foreground text-sm shadow-[var(--shadow-raised)] py-2 ps-3 pe-1"
           >
             <button type="button" onClick={() => toggle("hint")} className="text-start leading-snug">
               {t.hint}
@@ -533,28 +656,76 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
         )}
       </AnimatePresence>
 
-      <div data-chat-button className="fixed bottom-4 end-4 z-[55] flex items-center gap-2">
-        {canVoice && !open && (
-          <button
-            type="button"
-            onClick={() => startCall("button")}
-            aria-label={t.call}
-            title={t.call}
-            className="grid place-items-center size-12 rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
-          >
-            <Phone size={18} aria-hidden="true" />
-          </button>
-        )}
+      {/* One "Ask AI" button; where voice works it opens a small menu: chat or voice call. Kept clear
+          of the screen edge (and the Netlify toolbar the site owner sees when logged in) */}
+      <div
+        ref={launcherRef}
+        data-chat-button
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] end-4 sm:bottom-8 sm:end-6 z-[55]"
+      >
+        <AnimatePresence>
+          {menu && !open && (
+            <motion.div
+              id="cv-chat-menu"
+              role="menu"
+              aria-label={t.open}
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+              className="absolute bottom-full end-0 mb-3 w-64 origin-bottom-right rtl:origin-bottom-left rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-[var(--shadow-raised)]"
+            >
+              {([
+                { key: "chat", icon: MessageCircle, label: t.chatMenu, hint: t.chatMenuHint },
+                { key: "call", icon: Phone, label: t.callTab, hint: t.callMenuHint },
+              ] as const).map(({ key, icon: Icon, label, hint }, i) => (
+                <button
+                  key={key}
+                  ref={i === 0 ? firstMenuItemRef : undefined}
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenu(false);
+                    if (key === "call") startCall("button");
+                    else toggle("button");
+                  }}
+                  className="flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-start hover:bg-muted transition-colors"
+                >
+                  <span className="grid place-items-center size-9 shrink-0 rounded-full bg-primary/12 text-primary" aria-hidden="true">
+                    <Icon size={17} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-medium leading-snug">{label}</span>
+                    <span className="block text-xs text-muted-foreground leading-snug">{hint}</span>
+                  </span>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <button
           type="button"
-          onClick={() => toggle("button")}
-          aria-expanded={open}
+          onClick={() => {
+            if (open) close();
+            else if (canVoice) {
+              setHint(false);
+              setMenu((m) => !m);
+            } else toggle("button");
+          }}
+          aria-expanded={open || menu}
+          aria-haspopup={canVoice && !open ? "menu" : undefined}
+          aria-controls={menu ? "cv-chat-menu" : undefined}
           aria-label={open ? t.close : t.open}
-          className="flex items-center gap-2 h-12 rounded-full bg-primary px-4 text-primary-foreground text-sm font-medium shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
+          className="flex h-12 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-[var(--shadow-raised)] hover:bg-primary/85 transition-colors"
         >
-          {open ? <X size={18} aria-hidden="true" /> : <MessageCircle size={18} aria-hidden="true" />}
-          <span className="sm:hidden">{t.openShort}</span>
-          <span className="hidden sm:inline">{t.open}</span>
+          {open || menu ? <X size={18} aria-hidden="true" /> : <Sparkles size={18} aria-hidden="true" />}
+          {!open && (
+            <>
+              <span className="sm:hidden">{t.openShort}</span>
+              <span className="hidden sm:inline">{t.open}</span>
+            </>
+          )}
         </button>
       </div>
     </>

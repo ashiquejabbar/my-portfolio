@@ -863,6 +863,34 @@
   }
 }
 
+/* Scroll areas inside the chat popup (cv-chat.tsx, cv-call.tsx): a thin bar in the theme's colours that
+   only darkens on hover, instead of the browser's chunky default */
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent) transparent;
+  overscroll-behavior: contain;
+}
+.chat-scroll:hover {
+  scrollbar-color: color-mix(in oklab, var(--muted-foreground) 60%, transparent) transparent;
+}
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--muted-foreground) 35%, transparent);
+}
+.chat-scroll:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--muted-foreground) 60%, transparent);
+}
+/* The message list fades out at its top and bottom edges, so text doesn't stop at a hard line */
+.chat-fade {
+  mask-image: linear-gradient(to bottom, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+}
+
 /* CV chat (see cv-chat.tsx): keep the floating cards from piling up in the bottom corner.
    The hire card waits while the chat is open, and the hint bubble never sits under the hire card */
 html[data-chat-open] [data-hire-toast],

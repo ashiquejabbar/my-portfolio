@@ -20,10 +20,14 @@ export const callModels = process.env.GROQ_CHAT_MODEL
   ? [{ id: process.env.GROQ_CHAT_MODEL, reasoning: "low" }, ...builtInCallModels]
   : builtInCallModels;
 
-// Orpheus voices (preview models, under 200 characters per request). Other languages get the
-// browser's built-in voice (src/lib/voice.ts).
+// Orpheus voices (preview models, under 200 characters per request): young, warm female voices.
+// English also has autumn and diana, Arabic lulwa and aisha. Other languages get the browser's
+// built-in voice (src/lib/voice.ts).
 export const ttsVoices: Partial<Record<Locale, { model: string; voice: string }>> = {
-  en: { model: "canopylabs/orpheus-v1-english", voice: process.env.GROQ_VOICE_EN || "troy" },
-  ar: { model: "canopylabs/orpheus-arabic-saudi", voice: process.env.GROQ_VOICE_AR || "fahad" },
+  en: { model: "canopylabs/orpheus-v1-english", voice: process.env.GROQ_VOICE_EN || "hannah" },
+  ar: { model: "canopylabs/orpheus-arabic-saudi", voice: process.env.GROQ_VOICE_AR || "noura" },
 };
 export const TTS_MAX_CHARS = 200;
+// Orpheus reads a bracketed direction as how to speak, not as words; a soft, smooth delivery.
+// Set GROQ_VOICE_STYLE to e.g. "[calm]" or "[warm]" to change it, or to "none" to turn it off.
+export const ttsStyle = process.env.GROQ_VOICE_STYLE === "none" ? "" : process.env.GROQ_VOICE_STYLE || "[softly]";
