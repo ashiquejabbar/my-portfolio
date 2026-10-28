@@ -384,7 +384,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
             exit={{ opacity: 0, y: 16, scale: 0.94 }}
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
             // Phones: full screen (height follows the keyboard, see the effect above). Larger screens: a card above the button
-            className="fixed inset-x-0 top-0 h-dvh sm:top-auto sm:inset-x-auto sm:bottom-24 sm:end-6 sm:w-[25rem] sm:h-[min(36rem,calc(100dvh-8rem))] z-[70] flex flex-col overflow-hidden origin-bottom-right rtl:origin-bottom-left sm:rounded-2xl sm:border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)]"
+            className="fixed inset-x-0 top-0 h-dvh sm:top-auto sm:inset-x-auto sm:bottom-[8.75rem] sm:end-6 sm:w-[25rem] sm:h-[min(36rem,calc(100dvh-10.5rem))] z-[70] flex flex-col overflow-hidden origin-bottom-right rtl:origin-bottom-left sm:rounded-2xl sm:border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)]"
           >
             <header className="flex items-center gap-3 px-4 pt-3.5 pb-3">
               <span className="relative grid place-items-center size-10 shrink-0 rounded-full bg-primary text-primary-foreground" aria-hidden="true">
@@ -639,7 +639,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed bottom-[5.5rem] end-4 sm:bottom-[6.25rem] sm:end-6 z-[55] flex max-w-[16rem] items-start gap-1 rounded-xl border border-border bg-popover text-popover-foreground text-sm shadow-[var(--shadow-raised)] py-2 ps-3 pe-1"
+            className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] end-4 sm:end-6 z-[55] flex max-w-[16rem] items-start gap-1 rounded-xl border border-border bg-popover text-popover-foreground text-sm shadow-[var(--shadow-raised)] py-2 ps-3 pe-1"
           >
             <button type="button" onClick={() => toggle("hint")} className="text-start leading-snug">
               {t.hint}
@@ -661,7 +661,7 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
       <div
         ref={launcherRef}
         data-chat-button
-        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] end-4 sm:bottom-8 sm:end-6 z-[55]"
+        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] end-4 sm:end-6 z-[55]"
       >
         <AnimatePresence>
           {menu && !open && (
