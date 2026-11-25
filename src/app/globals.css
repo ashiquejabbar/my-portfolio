@@ -490,7 +490,7 @@
   pointer-events: none;
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.tilt-card-inner:hover .tilt-watermark {
+.tilt-card-inner:not([data-open]):hover .tilt-watermark {
   transform: translateZ(10px);
 }
 /* Flat (and aligned) at rest; the layers lift off the card only while it's hovered */
@@ -498,11 +498,15 @@
 .tilt-layer-2 {
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.tilt-card-inner:hover .tilt-layer-1 {
+.tilt-card-inner:not([data-open]):hover .tilt-layer-1 {
   transform: translateZ(18px);
 }
-.tilt-card-inner:hover .tilt-layer-2 {
+.tilt-card-inner:not([data-open]):hover .tilt-layer-2 {
   transform: translateZ(32px);
+}
+/* The open card stays flat: at its height even a small tilt skews it and blurs the text */
+.tilt-card-inner[data-open] {
+  transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .tilt-card-inner {

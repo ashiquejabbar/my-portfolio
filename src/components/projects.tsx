@@ -40,7 +40,8 @@ const TILT_X = 5; // degrees
 const TILT_Y = 2.5;
 
 // A row that tilts towards the pointer. Values go straight to CSS
-// variables, so React never re-renders. Touch screens and reduced motion get a flat row.
+// variables, so React never re-renders. Touch screens and reduced motion get a flat row, and so
+// does the open row (see globals.css): a card that tall skews badly when tilted.
 function TiltRow({ children, accent, open }: { children: React.ReactNode; accent: string; open: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const onMove = (e: React.PointerEvent) => {
@@ -65,8 +66,27 @@ function TiltRow({ children, accent, open }: { children: React.ReactNode; accent
   );
 }
 
+// How long the open/close animation runs (seconds); the scroll fix below follows it
+const PANEL_DURATION = 0.3;
+
 export default function Projects({ t }: { t: Dictionary["projects"] }) {
   const [open, setOpen] = useState<number | null>(0);
+
+  // Opening a row closes the one that was open. When that one sits above (the first project is
+  // very tall), the page would shift up and leave the clicked row off screen, so keep the clicked
+  // row's header where it was, frame by frame, until the animation ends.
+  const toggle = (i: number, button: HTMLElement) => {
+    const top = button.getBoundingClientRect().top;
+    setOpen(open === i ? null : i);
+    let end = 0;
+    const hold = (now: number) => {
+      end ||= now + PANEL_DURATION * 1000 + 100;
+      const drift = button.getBoundingClientRect().top - top;
+      if (Math.abs(drift) >= 1) window.scrollBy({ top: drift, behavior: "instant" });
+      if (now < end) requestAnimationFrame(hold);
+    };
+    requestAnimationFrame(hold);
+  };
 
   return (
     <section id="projects" aria-labelledby="projects-title" className="py-20 md:py-28 border-t border-border">
@@ -92,7 +112,7 @@ export default function Projects({ t }: { t: Dictionary["projects"] }) {
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    onClick={() => setOpen(isOpen ? null : i)}
+                    onClick={(e) => toggle(i, e.currentTarget)}
                     className="group flex-1 flex items-center gap-4 px-5 py-5 sm:px-6 text-start"
                   >
                     {/* Code-style index: 01, 02 … */}
@@ -140,7 +160,7 @@ export default function Projects({ t }: { t: Dictionary["projects"] }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: PANEL_DURATION, ease: [0.22, 1, 0.36, 1] }}
                       className="tilt-layer-1 overflow-hidden"
                     >
                       <div className="px-5 pb-6 sm:px-6 sm:ps-[4.25rem] grid gap-6 md:grid-cols-12">
