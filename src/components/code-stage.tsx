@@ -16,7 +16,7 @@ const code: Line[] = [
   [["// developer.config.ts", "com"]],
   [["export ", "kw"], ["const ", "kw"], ["developer", "fn"], [" = ", "pun"], ["defineProfile", "fn"], ["({", "pun"]],
   [["  name", "prop"], [": ", "pun"], [`"${personalInfo.name}"`, "str"], [",", "pun"]],
-  [["  role", "prop"], [": ", "pun"], ['"Full Stack & AI Developer"', "str"], [",", "pun"]],
+  [["  role", "prop"], [": ", "pun"], ['"Full Stack & AI/LLM Developer"', "str"], [",", "pun"]],
   [["  based", "prop"], [": ", "pun"], ['"Dubai, UAE"', "str"], [",", "pun"]],
   [["  focus", "prop"], [": [", "pun"]],
   [['    "Next.js SSR"', "str"], [", ", "pun"], ['"LLM features"', "str"], [",", "pun"]],
@@ -209,7 +209,7 @@ export default function CodeStage() {
             <span className="ml-auto rounded bg-[#4fd18b]/15 px-1.5 py-0.5 font-mono text-[10px] text-[#4fd18b]">200</span>
           </WindowBar>
           <div className="grid grid-cols-3 gap-2 p-3">
-            <div className="col-span-3 h-14 rounded-md bg-gradient-to-r from-[#2446e0]/60 via-[#7b93ff]/40 to-[#d9ae72]/40" />
+            <div className="col-span-3 h-14 rounded-md bg-gradient-to-r from-[#4f46e5]/60 via-[#7c83ff]/40 to-[#a5abff]/30" />
             {[0, 1, 2].map((i) => (
               <div key={i} className="space-y-1.5 rounded-md bg-white/[0.04] p-2">
                 <div className="h-8 rounded bg-white/[0.07]" />
@@ -249,7 +249,7 @@ export default function CodeStage() {
 
         {/* Floating AI chip */}
         <div className="code-pane code-pane-ai">
-          <span className="grid size-7 shrink-0 place-items-center rounded-md bg-gradient-to-br from-[#d9ae72] to-[#c26a3d] text-[#0e1520]">
+          <span className="grid size-7 shrink-0 place-items-center rounded-md bg-gradient-to-br from-[#a5abff] to-[#4f46e5] text-white">
             <Sparkles size={14} />
           </span>
           <span className="min-w-0">

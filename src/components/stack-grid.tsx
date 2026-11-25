@@ -24,7 +24,6 @@ export type Tool = { label: string; mark: Mark; color?: string };
 // Brand marks that are black by default follow the text colour, so they work in both themes
 const INK = "currentColor";
 
-// Also used by the full-screen intro (intro-showcase.tsx)
 export const tools: Tool[] = [
   { label: "React", mark: { icon: siReact } },
   { label: "Next.js", mark: { icon: siNextdotjs }, color: INK },
@@ -42,7 +41,7 @@ export const tools: Tool[] = [
   { label: "MongoDB", mark: { icon: siMongodb } },
   // simple-icons doesn't ship the OpenAI mark, so a neutral glyph stands in
   { label: "OpenAI", mark: { glyph: "openai" }, color: INK },
-  { label: "Claude", mark: { icon: siClaude } },
+  { label: "Claude (Anthropic)", mark: { icon: siClaude } },
   { label: "Google Gemini", mark: { icon: siGooglegemini } },
 ];
 

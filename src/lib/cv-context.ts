@@ -7,10 +7,33 @@ import { contactInfo, experiences, personalInfo, projects, skills } from "@/lib/
 
 const list = (items: string[]) => items.map((item) => `- ${item}`).join("\n");
 
+// Full detail for the assistant. The page shows short versions (en.experience.roles[i].highlights),
+// so recruiters asking the AI still get the specifics. Same order as `experiences`.
+const roleDetails: string[][] = [
+  [
+    "Built production Next.js (App Router, SSR/SSG) applications with TypeScript, using server-side rendering for SEO and fast first loads, including the AI property search behind kyna.ai.",
+    "Integrated OpenAI, Claude, and Google Gemini LLM APIs into client products, designing project-specific prompts, enforcing structured JSON output, and streaming AI responses into Next.js and React.js interfaces.",
+    "Architected RBAC for government document management platforms with up to 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows, serving 500+ daily users.",
+    "Built Node.js (Express) REST APIs with full CRUD over MongoDB (Mongoose schema design), PostgreSQL, and Supabase, connecting the frontend to AI providers and keeping API keys server-side.",
+    "Implemented authentication and role-based authorization with Passport.js, JWT, OAuth 2.0, and Supabase, validated requests and forms with Zod and Yup, and handled file uploads.",
+    "Built bilingual Arabic/English interfaces with full RTL/LTR layout switching for UAE government and enterprise clients.",
+    "Built React Native apps for iOS and Android alongside the React.js and Next.js web apps.",
+    "Created reusable component libraries with React.js and TypeScript (Material-UI, Tailwind CSS, shadcn/ui) shared across 5+ client projects, speeding up UI delivery and keeping design consistent.",
+    "Optimized page load performance using code splitting, lazy loading, memoization, and Webpack tuning, reducing initial bundle size and improving Core Web Vitals.",
+    "Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.",
+    "Sent transactional email (notifications, verification, reports) with Nodemailer over SMTP, deployed services on AWS (EC2) behind an Nginx reverse proxy, and used ngrok for webhook testing.",
+    "Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications and chat, with CI/CD via GitHub Actions.",
+  ],
+  [
+    "Developed and maintained client web applications with React.js on the frontend and RESTful APIs with Python and Django on the backend.",
+    "Designed and optimized MySQL schemas and queries, improving query response times and data integrity.",
+  ],
+];
+
 function cvText(): string {
   const roles = en.experience.roles
     .map((role, i) =>
-      [`### ${role.title}, ${experiences[i].company} (${role.period}, ${role.location})`, list(role.highlights)].join("\n"),
+      [`### ${role.title}, ${experiences[i].company} (${role.period}, ${role.location})`, list(roleDetails[i] ?? role.highlights)].join("\n"),
     )
     .join("\n\n");
 
@@ -18,7 +41,12 @@ function cvText(): string {
     .map((item, i) => {
       const { stack, url } = projects[i];
       const head = `### ${item.name}: ${item.tagline}${item.context ? ` (${item.context})` : ""}${url ? ` ${url}` : ""}`;
-      return [head, item.description, list(item.highlights), `Stack: ${stack.join(", ")}`].join("\n");
+      // Projects with a longer case study also give the assistant the problem and steps
+      const extra = [
+        item.problem && `Problem: ${item.problem}`,
+        item.steps && `How it works:\n${item.steps.map((s, k) => `${k + 1}. ${s.title}: ${s.text}`).join("\n")}`,
+      ].filter(Boolean);
+      return [head, item.description, ...extra, list(item.highlights), `Stack: ${stack.join(", ")}`].join("\n");
     })
     .join("\n\n");
 

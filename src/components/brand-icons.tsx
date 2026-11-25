@@ -1,9 +1,8 @@
 import type { SimpleIcon } from "simple-icons";
 import { contactInfo } from "@/lib/data";
 
-// Shared by the hero and the intro overlay
+// Shared by the hero and the rest of the page
 export const whatsappUrl = `https://wa.me/${contactInfo.phone.replace(/\D/g, "")}`;
-export const phoneUrl = `tel:${contactInfo.phone.replace(/\s/g, "")}`;
 
 export function BrandIcon({ icon }: { icon: SimpleIcon }) {
   return (

@@ -2,7 +2,7 @@
 
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Mic, MicOff, PhoneOff } from "lucide-react";
+import { Mic, MicOff, PhoneOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ChatError, MAX_CHARS, streamAnswer, track, type ChatMessage } from "@/lib/chat-client";
 import { VoiceError, createSpeaker, openMic, recordUtterance, sentenceSplitter, transcribe, type Recording } from "@/lib/voice";
@@ -48,8 +48,7 @@ export default function CvCall({
   // The mic sends no sound at all (muted in the OS or with a mute key), not just a quiet room
   const [deadMic, setDeadMic] = useState(false);
   const mutedRef = useRef(false);
-  const ringRef = useRef<HTMLSpanElement>(null);
-  const outerRingRef = useRef<HTMLSpanElement>(null);
+  const stageRef = useRef<HTMLButtonElement>(null);
   const recordingRef = useRef<Recording | null>(null);
   const tappedRef = useRef("");
 
@@ -63,12 +62,10 @@ export default function CvCall({
   const streamRef = useRef<MediaStream | null>(null);
   const speakerRef = useRef<ReturnType<typeof createSpeaker> | null>(null);
 
-  // The listening ring follows the visitor's voice; set directly so it doesn't re-render 20 times a second
+  // The aura grows with the visitor's voice (--lvl, globals.css .call-aura); set directly so it doesn't
+  // re-render 20 times a second
   const showLevel = (level: number) => {
-    if (!reducedMotion()) {
-      if (ringRef.current) ringRef.current.style.transform = `scale(${1 + level * 0.35})`;
-      if (outerRingRef.current) outerRingRef.current.style.transform = `scale(${1 + level * 0.6})`;
-    }
+    if (!reducedMotion()) stageRef.current?.style.setProperty("--lvl", Math.min(1, level).toFixed(3));
     if (level > 0) setDeadMic(false);
   };
   // Our own mute button also silences the mic; that's expected, not a problem to report
@@ -187,7 +184,7 @@ export default function CvCall({
       {/* Like a phone call's top bar: who you're talking to, and how long the call has run */}
       <div className="flex items-center justify-between gap-3 px-4 pt-3 text-xs text-muted-foreground">
         <p className="inline-flex min-w-0 items-center gap-1.5">
-          <Bot size={13} className="shrink-0" aria-hidden="true" />
+          <span className="size-3 shrink-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,#e0e7ff,#7c83ff_45%,#4338ca)]" aria-hidden="true" />
           <span className="truncate">{t.callWho}</span>
         </p>
         <p className="inline-flex shrink-0 items-center gap-1.5 tabular-nums" dir="ltr">
@@ -198,36 +195,34 @@ export default function CvCall({
 
       <div className="chat-scroll flex flex-1 flex-col items-center justify-center gap-3 overflow-y-auto px-6 pt-2 pb-5 text-center text-sm">
         <button
+          ref={stageRef}
           type="button"
           // Tap while it talks to cut the answer short and ask the next question
           onClick={() => speakerRef.current?.stop()}
           disabled={status !== "speaking"}
           aria-label={status === "speaking" ? t.speaking : label}
-          className="relative mt-3 grid place-items-center size-24 shrink-0 rounded-full"
+          data-status={status}
+          className="call-stage relative mt-6 mb-2 grid place-items-center size-32 shrink-0 rounded-full"
         >
-          {/* Listening: two rings swell with the caller's voice (set in showLevel) */}
-          <span ref={outerRingRef} aria-hidden="true" className="absolute -inset-2 rounded-full bg-primary/10 transition-transform duration-150" />
-          <span ref={ringRef} aria-hidden="true" className="absolute inset-0 rounded-full bg-primary/20 transition-transform duration-100" />
-          {/* Speaking: soft waves ripple out from the avatar */}
+          {/* Rainbow aura: grows with the caller's voice, spins fast while thinking, breathes while speaking */}
+          <span className="call-aura" aria-hidden="true" />
+          {/* Speaking: soft waves ripple out from the orb */}
           {status === "speaking" &&
             [0, 1].map((i) => (
               <motion.span
                 key={i}
                 aria-hidden="true"
-                className="absolute inset-2 rounded-full border-2 border-primary/60"
+                className="absolute inset-3 rounded-full border-2 border-white/40"
                 initial={{ scale: 1, opacity: 0.7 }}
-                animate={{ scale: 1.5, opacity: 0 }}
+                animate={{ scale: 1.6, opacity: 0 }}
                 transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.9, ease: "easeOut" }}
               />
             ))}
-          <span
-            className={cn(
-              "relative grid place-items-center size-20 rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-raised)] transition-opacity",
-              (status === "thinking" || status === "connecting") && "opacity-70 motion-safe:animate-pulse",
-            )}
-            aria-hidden="true"
-          >
-            <Bot size={32} />
+          {/* Fluid orb: three colour blobs that slowly change shape */}
+          <span className="call-orb" aria-hidden="true">
+            <i />
+            <i />
+            <i />
           </span>
         </button>
 

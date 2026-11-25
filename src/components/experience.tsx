@@ -1,7 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { experiences } from "@/lib/data";
 import SectionHeading from "@/components/section-heading";
 import CoderScene from "@/components/coder-scene";
@@ -51,7 +58,7 @@ function Role({
         <span className="font-normal">{exp.company}</span>
       </h3>
 
-      <ul id={listId} className="mt-4 space-y-2.5 max-w-[68ch] text-muted-foreground">
+      <ul id={listId} className="mt-4 space-y-2 max-w-[68ch] text-[15px] leading-relaxed text-muted-foreground">
         {exp.highlights.slice(0, VISIBLE_HIGHLIGHTS).map((h) => (
           <li key={h} className="scroll-reveal ps-4 relative before:absolute before:start-0 before:top-[0.7em] before:w-2 before:h-px before:bg-muted-foreground/60">
             {h}
@@ -97,6 +104,8 @@ export default function Experience({ t, sep }: { t: Dictionary["experience"]; se
   });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const reduceMotion = useReducedMotion();
+  // Glowing dot that rides the end of the scroll line
+  const headTop = useTransform(progress, (v) => `calc(0.5rem + ${v} * (100% - 0.5rem))`);
 
   return (
     <section id="experience" aria-labelledby="experience-title" className="py-20 md:py-28 border-t border-border">
@@ -110,10 +119,19 @@ export default function Experience({ t, sep }: { t: Dictionary["experience"]; se
         <div className="relative ms-1 lg:col-span-8">
           <div className="absolute start-0 top-2 bottom-0 w-px bg-border" aria-hidden="true" />
           <motion.div
-            className="absolute start-0 top-2 bottom-0 w-px bg-primary origin-top"
+            className="exp-fill absolute start-0 top-2 bottom-0 w-px origin-top"
             style={{ scaleY: reduceMotion ? 1 : progress }}
             aria-hidden="true"
           />
+          {!reduceMotion && (
+            <motion.div
+              className="pointer-events-none absolute start-0 z-10 flex -translate-y-1/2 items-center"
+              style={{ top: headTop }}
+              aria-hidden="true"
+            >
+              <span className="exp-head block size-3 -translate-x-[5.5px] rtl:translate-x-[5.5px] rounded-full" />
+            </motion.div>
+          )}
           <ol ref={ref} className="relative">
             {experiences.map((exp, i) => (
               <Role key={exp.company} exp={{ ...exp, ...t.roles[i] }} t={t} sep={sep} />

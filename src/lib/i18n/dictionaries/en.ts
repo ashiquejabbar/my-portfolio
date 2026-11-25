@@ -3,14 +3,14 @@
 
 const en = {
   meta: {
-    title: "Ashique PJ — Full Stack & AI Developer in Dubai, UAE | Next.js SSR, LLMs & Node.js",
+    title: "Ashique PJ — Full Stack & AI/LLM Developer in Dubai, UAE | Next.js SSR, LLMs & Node.js",
     description:
-      "Full Stack & AI Developer in Dubai, UAE. 5+ years building server-rendered Next.js (SSR/SSG) apps with React and TypeScript and LLM-powered features with the OpenAI, Claude and Gemini APIs, backed by Node.js and MongoDB. Enterprise and government platforms with RBAC. Available to join immediately.",
-    ogTitle: "Ashique PJ — Full Stack & AI Developer in Dubai, UAE",
+      "Full Stack & AI/LLM Developer in Dubai, UAE. 5+ years building server-rendered Next.js (SSR/SSG) apps with React and TypeScript and LLM-powered features with the OpenAI, Claude and Gemini APIs, backed by Node.js and MongoDB. Enterprise and government platforms with RBAC. Available to join immediately.",
+    ogTitle: "Ashique PJ — Full Stack & AI/LLM Developer in Dubai, UAE",
     ogDescription:
       "Server-rendered Next.js and LLM integration, with 5+ years of React, Node.js and TypeScript on enterprise and government platforms. Available to join immediately in Dubai.",
-    ogImageAlt: "Ashique PJ, Full Stack & AI Developer in Dubai",
-    ogTagline: "Full stack & AI developer in Dubai. React, Next.js, Node.js and LLM integration",
+    ogImageAlt: "Ashique PJ, Full Stack & AI/LLM Developer in Dubai",
+    ogTagline: "Full stack & AI/LLM developer in Dubai. React, Next.js, Node.js and LLM integration",
     ogAvailable: "Available to join immediately in Dubai, UAE",
   },
   common: {
@@ -43,18 +43,27 @@ const en = {
     contact: "Contact",
     openMenu: "Open menu",
     closeMenu: "Close menu",
+    // Status chip next to the name, with the live time in Dubai
+    openToWork: "Open to work · UAE",
+    dubaiTime: "Local time in Dubai",
   },
   theme: {
     toLight: "Switch to light theme",
     toDark: "Switch to dark theme",
   },
   hero: {
-    headline: ["I build the web apps", "enterprise teams", "rely on."],
+    headline: ["I build enterprise", "web apps with", "AI built in."],
     roleLine: "Full stack developer (frontend and backend) in Dubai, UAE. React.js, Next.js, Node.js and AI/LLM integration",
     intro:
       "Five years of Next.js, React, TypeScript and Node.js, building enterprise platforms for government and private sectors across India and the Middle East: role-based access with biometric verification, an AI property search for the Dubai market, and a networking app across web and mobile.",
     ai: "I build generative AI features into web apps with the OpenAI, Claude and Google Gemini APIs: prompt design, structured JSON output, streaming responses and Node.js endpoints that keep API keys on the server. Examples include the natural-language property search behind kyna.ai and the AI profile-summary rewrite in Orbin.",
     available: "Relocated from India to Dubai. Available to join immediately, on a visit visa",
+    // Short hero paragraph; **double stars** mark the highlighted words.
+    // The longer intro and ai texts above stay: the AI chat reads them
+    summary:
+      "**Five years** of Next.js, React, TypeScript and Node.js on **enterprise and government platforms** across India and the Middle East. I add **AI features** with the OpenAI, Anthropic Claude and Google Gemini APIs, like the property search behind **kyna.ai** and a **procurement automation platform** for construction tenders.",
+    // Quick facts under the name, in this order: location, visa, start date, experience
+    facts: ["Dubai, UAE", "UAE visit visa", "Can join immediately", "5+ years experience"],
     emailMe: "Email me",
     whatsappLabel: "Message on WhatsApp",
     linkedinLabel: "LinkedIn profile",
@@ -88,18 +97,14 @@ const en = {
         location: "India (clients in UAE and Middle East)",
         period: "Sep 2022 – Apr 2026",
         highlights: [
-          "Built production Next.js (App Router, SSR/SSG) applications with TypeScript, using server-side rendering for SEO and fast first loads, including the AI property search behind kyna.ai.",
-          "Integrated OpenAI, Claude, and Google Gemini LLM APIs into client products, designing project-specific prompts, enforcing structured JSON output, and streaming AI responses into Next.js and React.js interfaces.",
-          "Architected RBAC for government document management platforms with up to 11 user roles, biometric verification (iris, fingerprint, facial recognition), and multi-level approval workflows, serving 500+ daily users.",
-          "Built Node.js (Express) REST APIs with full CRUD over MongoDB (Mongoose schema design), PostgreSQL, and Supabase, connecting the frontend to AI providers and keeping API keys server-side.",
-          "Implemented authentication and role-based authorization with Passport.js, JWT, OAuth 2.0, and Supabase, validated requests and forms with Zod and Yup, and handled file uploads.",
-          "Built bilingual Arabic/English interfaces with full RTL/LTR layout switching for UAE government and enterprise clients.",
-          "Built React Native apps for iOS and Android alongside the React.js and Next.js web apps.",
-          "Created reusable component libraries with React.js and TypeScript (Material-UI, Tailwind CSS, shadcn/ui) shared across 5+ client projects, speeding up UI delivery and keeping design consistent.",
-          "Optimized page load performance using code splitting, lazy loading, memoization, and Webpack tuning, reducing initial bundle size and improving Core Web Vitals.",
-          "Implemented Micro Frontend architecture with Webpack Module Federation, splitting monolithic applications into independently deployable modules so teams could develop and release in parallel.",
-          "Sent transactional email (notifications, verification, reports) with Nodemailer over SMTP, deployed services on AWS (EC2) behind an Nginx reverse proxy, and used ngrok for webhook testing.",
-          "Connected REST APIs with TanStack Query caching, optimistic UI updates, and WebSocket features for live notifications and chat, with CI/CD via GitHub Actions.",
+          "Developed full stack apps for UAE and Middle East clients: Next.js (SSR) and TypeScript frontends with Arabic/English (RTL) support, and secure Node.js REST APIs on MongoDB, PostgreSQL and Supabase (JWT, OAuth 2.0).",
+          "Integrated OpenAI, Claude and Gemini APIs into client products: custom prompts, structured JSON output and streamed responses.",
+          "Architected access control for government document platforms: 11 user roles, biometric login and multi-level approvals, used by 500+ people daily.",
+          "Deployed to AWS EC2 behind Nginx, with CI/CD pipelines on GitHub Actions.",
+          "Delivered real-time chat and notifications with WebSockets and TanStack Query.",
+          "Shipped React Native apps for iOS and Android alongside the web platforms.",
+          "Created a reusable component library shared across 5+ client projects, speeding up UI delivery.",
+          "Improved load times and Core Web Vitals with code splitting and lazy loading, and split large apps into micro frontends.",
         ],
       },
       {
@@ -107,8 +112,8 @@ const en = {
         location: "India",
         period: "Mar 2021 – Aug 2022",
         highlights: [
-          "Developed and maintained client web applications with React.js on the frontend and RESTful APIs with Python and Django on the backend.",
-          "Designed and optimized MySQL schemas and queries, improving query response times and data integrity.",
+          "Developed client web apps with React frontends and Python/Django REST APIs.",
+          "Designed and optimized MySQL schemas and queries, improving response times and data integrity.",
         ],
       },
     ],
@@ -121,8 +126,35 @@ const en = {
     private: "Private client system, not publicly available.",
     // Badge on projects with a public site
     live: "Live",
+    // Screenshot captions and the label on each screenshot
+    shots: { overview: "Dashboard: 5-step workflow and daily run", record: "One tile package with all 5 steps", lara: "Lara, the voice assistant, listening" },
+    demoData: "Demo data",
+    openFull: "opens full size",
+    // Headings of the longer case study (only projects with a `problem` show them)
+    caseLabels: { problem: "The problem", steps: "How it works", built: "What I built" },
     // Same order as `projects` in src/lib/data.ts
     items: [
+      {
+        name: "Procurement Automation Platform",
+        tagline: "Construction Tendering",
+        description: "AI and browser automation that runs a construction procurement team’s tendering workflow, from RFP documents to award letters.",
+        context: "Construction sector, Dubai",
+        problem: "The procurement team collected tender (RFP) documents from their project management system by hand, record by record. Then they wrote tile requirement lists, emailed suppliers, built comparison sheets in Excel and prepared the award documents. With thousands of tender records, this was slow, repetitive and easy to get wrong.",
+        steps: [
+          { title: "Collect RFP files", text: "A Playwright worker uses the user’s own browser sign-in, so no passwords are stored. It filters the procurement register by status and keywords and downloads only new or changed attachments into a cluster → project → package folder tree, every day at 07:00." },
+          { title: "AI tile selection list", text: "Claude reads the RFP PDFs, BOQ spreadsheets and drawings and fills a standard Excel template: tile name, finish, brand, size, unit and quantity, with images from the documents. Duplicate lines are merged and missing fields are marked “TBC”." },
+          { title: "Bidders and offers", text: "One email draft per bidder, with the tile list attached and the deadline taken from the tender record. A person always reviews the drafts; nothing is sent automatically. Offers are uploaded back into the package folder." },
+          { title: "Comparison sheet", text: "Claude reads the offers against the main-works BOQ and fills a comparison sheet with budget, PC budget and benchmark columns. In testing, the totals matched a hand-made sheet exactly." },
+          { title: "Final submission", text: "One click creates the final comparison, the winning offer priced and unpriced, an evaluation report and an award letter as Word files, after a sign-off checklist." },
+        ],
+        highlights: [
+          "Split architecture: a Fastify API with Zod validation and SQLite, and a Next.js front end that reaches the API only through a server-side proxy holding the API token.",
+          "“Lara” voice assistant (Ctrl+Space, 5 languages, 20+ actions): it asks for confirmation before any change and highlights the change on screen. Deleting is click-only, never by voice.",
+          "Background job queue with live progress, a notification bell, a full audit history (made by the user, the automation or Lara) and Ctrl+K search across records, files and spreadsheet rows.",
+          "Security first: read-only on the source system, scrypt password hashes, a separate process and data folder per user, rate-limited logins and HTTPS office-network access that is off by default.",
+          "Excel files built with exceljs, with an Excel automation fallback for workbooks the library can’t read. Light and dark themes with an animated dashboard (Motion, Recharts).",
+        ],
+      },
       {
         name: "kyna.ai",
         tagline: "AI Property Finder",
@@ -228,7 +260,7 @@ const en = {
     ],
   },
   contact: {
-    title: "Hiring a full stack & AI developer in Dubai?",
+    title: "Hiring a full stack & AI/LLM developer in Dubai?",
     lead: "I can start immediately. Email is the quickest way to reach me.",
     copyEmail: "Copy email",
     emailCopied: "Email copied",
@@ -248,7 +280,7 @@ const en = {
   },
   hire: {
     label: "Interview availability",
-    title: "Hiring a full stack & AI developer?",
+    title: "Hiring a full stack & AI/LLM developer?",
     body: "I’m available to join immediately and can interview this week, in person in Dubai or online.",
     cta: "Schedule an interview",
     whatsapp: "WhatsApp",
@@ -256,8 +288,8 @@ const en = {
   },
   chat: {
     // CV chat assistant (src/components/cv-chat.tsx)
-    open: "Ask AI about me",
-    openShort: "Ask AI",
+    open: "Hiring? Ask my AI",
+    openShort: "Ask my AI",
     hint: "👋 Hiring? Ask me anything about Ashique",
     title: "Ask about Ashique",
     subtitle: "AI assistant · knows his experience & skills",
@@ -295,7 +327,7 @@ const en = {
     tryAsking: "Ask out loud, or tap a question",
     listening: "Listening…",
     speaking: "Speaking…",
-    interruptHint: "Tap the avatar to interrupt",
+    interruptHint: "Tap the orb to interrupt",
     muted: "Muted",
     mute: "Mute",
     unmute: "Unmute",
@@ -305,20 +337,6 @@ const en = {
   },
   footer: {
     builtWith: "Built with Next.js.",
-  },
-  intro: {
-    play: "Play intro",
-    close: "Close intro",
-    dialogLabel: "Intro: {name}, Full Stack & AI Developer",
-    badge: "Immediate joiner · Dubai, UAE",
-    role: "Full Stack Developer (Frontend and Backend) — React.js, Next.js, Node.js & AI/LLM Integration",
-    skillsLabel: "Core skills",
-    techLabel: "Tech I work with",
-    // The role line already names React.js, Next.js, Node.js and AI, so the chips show the other strengths
-    skills: ["TypeScript", "React Native", "MongoDB", "Arabic/English RTL", "AI Integration"],
-    copy: "Copy",
-    copied: "Copied!",
-    copyLabel: "Copy email address",
   },
 };
 

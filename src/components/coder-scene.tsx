@@ -48,10 +48,10 @@ function randomCode(count: number): CodeLine[] {
 
 // Draws the editor on the laptop screen, with `typed` token widths revealed so far
 function drawScreen(ctx: CanvasRenderingContext2D, lines: CodeLine[], typed: number, caretOn: boolean) {
-  ctx.fillStyle = "#0e1520";
+  ctx.fillStyle = "#0b0b0f";
   ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
   // title bar
-  ctx.fillStyle = "#151e2b";
+  ctx.fillStyle = "#16161c";
   ctx.fillRect(0, 0, SCREEN_W, 30);
   ["#ff6b6b", "#f7c25c", "#4fd18b"].forEach((c, i) => {
     ctx.fillStyle = c;

@@ -3,14 +3,14 @@ import type { Dictionary } from "./en";
 // French CV style: achievements as nouns ("Conception de…").   = the non-breaking space French puts before ? ! :
 const fr = {
   meta: {
-    title: "Ashique PJ — Développeur Full Stack & IA à Dubaï, EAU | Next.js SSR, LLM & Node.js",
+    title: "Ashique PJ — Développeur Full Stack & IA/LLM à Dubaï, EAU | Next.js SSR, LLM & Node.js",
     description:
-      "Développeur Full Stack & IA à Dubaï (EAU) avec plus de 5 ans d’expérience en React.js, Next.js, TypeScript et Node.js. Applications web dotées d’IA avec les API OpenAI, Claude et Gemini, backends Node.js et MongoDB, et plateformes pour entreprises et administrations avec RBAC. Disponible immédiatement.",
-    ogTitle: "Ashique PJ — Développeur Full Stack & IA à Dubaï, EAU",
+      "Développeur Full Stack & IA/LLM à Dubaï (EAU) avec plus de 5 ans d’expérience en React.js, Next.js, TypeScript et Node.js. Applications web dotées d’IA avec les API OpenAI, Claude et Gemini, backends Node.js et MongoDB, et plateformes pour entreprises et administrations avec RBAC. Disponible immédiatement.",
+    ogTitle: "Ashique PJ — Développeur Full Stack & IA/LLM à Dubaï, EAU",
     ogDescription:
       "Plus de 5 ans de React, Next.js, Node.js et TypeScript sur des plateformes d’entreprise et gouvernementales. Disponible immédiatement à Dubaï.",
-    ogImageAlt: "Ashique PJ, Développeur Full Stack & IA à Dubaï",
-    ogTagline: "Développeur full stack & IA à Dubaï. React, Next.js, Node.js et intégration de LLM",
+    ogImageAlt: "Ashique PJ, Développeur Full Stack & IA/LLM à Dubaï",
+    ogTagline: "Développeur full stack & IA/LLM à Dubaï. React, Next.js, Node.js et intégration de LLM",
     ogAvailable: "Disponible immédiatement à Dubaï, EAU",
   },
   common: {
@@ -39,18 +39,23 @@ const fr = {
     contact: "Contact",
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
+    openToWork: "Disponible · EAU",
+    dubaiTime: "Heure locale à Dubaï",
   },
   theme: {
     toLight: "Passer au thème clair",
     toDark: "Passer au thème sombre",
   },
   hero: {
-    headline: ["Je conçois les apps web", "sur lesquelles comptent", "les entreprises."],
+    headline: ["Je crée des apps web", "d’entreprise avec", "l’IA intégrée."],
     roleLine: "Développeur full stack (frontend et backend) à Dubaï, EAU. React.js, Next.js, Node.js et intégration IA/LLM",
     intro:
       "Cinq ans de React, Next.js, TypeScript et Node.js à concevoir des plateformes d’entreprise pour les secteurs public et privé en Inde et au Moyen-Orient : contrôle d’accès par rôles avec vérification biométrique, recherche immobilière par IA pour le marché de Dubaï et application de réseau professionnel sur web et mobile.",
     ai: "Je développe des fonctionnalités d’IA générative pour des applications web avec les API OpenAI, Claude et Google Gemini\u00a0: conception des prompts, sortie JSON structurée, réponses en streaming et endpoints Node.js qui gardent les clés d’API côté serveur. Par exemple, la recherche immobilière en langage naturel de kyna.ai et la réécriture par IA du résumé de profil dans Orbin.",
     available: "Installé à Dubaï, venu d’Inde. Disponible immédiatement, avec un visa de visite",
+    summary:
+      "**Cinq ans** de Next.js, React, TypeScript et Node.js sur des **plateformes d’entreprise et gouvernementales** en Inde et au Moyen-Orient. J’intègre des **fonctionnalités d’IA** avec les API OpenAI, Anthropic Claude et Google Gemini, comme la recherche immobilière de **kyna.ai** et une **plateforme d’automatisation des achats** pour les appels d’offres de construction.",
+    facts: ["Dubaï, EAU", "Visa de visite EAU", "Disponible immédiatement", "Plus de 5 ans d’expérience"],
     emailMe: "M’écrire",
     whatsappLabel: "Écrire sur WhatsApp",
     linkedinLabel: "Profil LinkedIn",
@@ -83,18 +88,14 @@ const fr = {
         location: "Inde (clients aux EAU et au Moyen-Orient)",
         period: "sept. 2022 – avr. 2026",
         highlights: [
-          "Développement d’applications Next.js en production (App Router, SSR/SSG) avec TypeScript, en s’appuyant sur le rendu côté serveur pour le SEO et des premiers chargements rapides, comme la recherche immobilière par IA de kyna.ai.",
-          "Intégration des API LLM d’OpenAI, Claude et Google Gemini dans des produits clients, avec des prompts conçus pour chaque projet, une sortie JSON structurée et des réponses d’IA diffusées en streaming vers des interfaces Next.js et React.js.",
-          "Conception du RBAC de plateformes gouvernementales de gestion documentaire comptant jusqu’à 11 rôles utilisateur, avec vérification biométrique (iris, empreinte digitale, reconnaissance faciale) et circuits d’approbation à plusieurs niveaux, pour plus de 500 utilisateurs quotidiens.",
-          "Développement d’API REST en Node.js (Express) avec CRUD complet sur MongoDB (conception de schémas Mongoose), PostgreSQL et Supabase, reliant le frontend aux fournisseurs d’IA en gardant les clés d’API côté serveur.",
-          "Mise en place de l’authentification et de l’autorisation par rôles avec Passport.js, JWT, OAuth 2.0 et Supabase, validation des requêtes et formulaires avec Zod et Yup, et gestion de l’envoi de fichiers.",
-          "Développement d’interfaces bilingues arabe/anglais avec bascule complète RTL/LTR pour des clients gouvernementaux et des entreprises aux EAU.",
-          "Développement d’applications React Native pour iOS et Android, en parallèle des applications web React.js et Next.js.",
-          "Création de bibliothèques de composants réutilisables en React.js et TypeScript (Material-UI, Tailwind CSS, shadcn/ui), partagées entre plus de 5 projets clients, pour accélérer la livraison des interfaces et garantir la cohérence du design.",
-          "Optimisation des temps de chargement grâce au code splitting, au lazy loading, à la mémoïsation et au réglage de Webpack, réduisant la taille du bundle initial et améliorant les Core Web Vitals.",
-          "Mise en place d’une architecture Micro Frontends avec Webpack Module Federation, découpant des applications monolithiques en modules déployables indépendamment afin que les équipes puissent développer et livrer en parallèle.",
-          "Envoi d’e-mails transactionnels (notifications, vérification, rapports) avec Nodemailer via SMTP, déploiement de services sur AWS (EC2) derrière un reverse proxy Nginx et tests de webhooks avec ngrok.",
-          "Connexion d’API REST avec mise en cache via TanStack Query, mises à jour optimistes de l’interface et fonctionnalités WebSocket pour les notifications en temps réel et le chat, avec CI/CD via GitHub Actions.",
+          "Développé des apps full stack pour des clients aux EAU et au Moyen-Orient : frontends Next.js (SSR) et TypeScript en arabe/anglais (RTL), et API REST Node.js sécurisées sur MongoDB, PostgreSQL et Supabase (JWT, OAuth 2.0).",
+          "Intégré les API OpenAI, Claude et Gemini aux produits clients : prompts sur mesure, sortie JSON structurée et réponses en streaming.",
+          "Conçu le contrôle d’accès de plateformes documentaires gouvernementales : 11 rôles, connexion biométrique et validations à plusieurs niveaux, utilisées par plus de 500 personnes par jour.",
+          "Déployé sur AWS EC2 derrière Nginx, avec des pipelines CI/CD sur GitHub Actions.",
+          "Mis en place chat et notifications en temps réel avec WebSockets et TanStack Query.",
+          "Livré des apps React Native pour iOS et Android en plus des plateformes web.",
+          "Créé une bibliothèque de composants réutilisable sur plus de 5 projets clients, pour livrer les interfaces plus vite.",
+          "Amélioré les temps de chargement et les Core Web Vitals avec code splitting et lazy loading, et découpé les grandes apps en micro frontends.",
         ],
       },
       {
@@ -102,8 +103,8 @@ const fr = {
         location: "Inde",
         period: "mars 2021 – août 2022",
         highlights: [
-          "Développement et maintenance d’applications web clients avec React.js côté frontend et des API RESTful en Python et Django côté backend.",
-          "Conception et optimisation de schémas et de requêtes MySQL, améliorant les temps de réponse et l’intégrité des données.",
+          "Développé des apps web clients avec des frontends React et des API REST Python/Django.",
+          "Conçu et optimisé les schémas et requêtes MySQL, pour des réponses plus rapides et des données plus fiables.",
         ],
       },
     ],
@@ -115,7 +116,32 @@ const fr = {
     visit: "Visiter {host}",
     private: "Système client privé, non accessible au public.",
     live: "En ligne",
+    shots: { overview: "Tableau de bord : flux en 5 étapes et exécution quotidienne", record: "Un lot de carrelage avec ses 5 étapes", lara: "Lara, l’assistant vocal, à l’écoute" },
+    demoData: "Données de démonstration",
+    openFull: "s’ouvre en taille réelle",
+    caseLabels: { problem: "Le problème", steps: "Comment ça marche", built: "Ce que j’ai construit" },
     items: [
+      {
+        name: "Plateforme d’automatisation des achats",
+        tagline: "Appels d’offres dans la construction",
+        description: "Automatisation par IA et navigateur du processus d’appel d’offres d’une équipe achats du secteur de la construction, des documents RFP jusqu’aux lettres d’attribution.",
+        context: "Secteur de la construction, Dubaï",
+        problem: "L’équipe achats collectait à la main les documents d’appel d’offres (RFP) dans son système de gestion de projet, dossier par dossier. Elle rédigeait ensuite les listes de besoins en carrelage, écrivait aux fournisseurs, montait les tableaux comparatifs dans Excel et préparait les documents d’attribution. Avec des milliers de dossiers, ce travail était lent, répétitif et source d’erreurs.",
+        steps: [
+          { title: "Collecter les fichiers RFP", text: "Un worker Playwright utilise la session de navigateur de l’utilisateur, donc aucun mot de passe n’est stocké. Il filtre le registre des achats par statut et mots-clés et télécharge uniquement les pièces jointes nouvelles ou modifiées dans une arborescence cluster → projet → lot, chaque jour à 07:00." },
+          { title: "Liste de sélection du carrelage par IA", text: "Claude lit les PDF de RFP, les métrés (BOQ) et les plans, puis remplit un modèle Excel standard\u00a0: nom du carreau, finition, marque, format, unité et quantité, avec des images tirées des documents. Les lignes en double sont fusionnées et les champs manquants marqués «\u00a0TBC\u00a0»." },
+          { title: "Soumissionnaires et offres", text: "Un brouillon d’e-mail par soumissionnaire, avec la liste de carrelage jointe et la date limite reprise du dossier d’appel d’offres. Une personne relit toujours les brouillons\u00a0; rien n’est envoyé automatiquement. Les offres sont déposées dans le dossier du lot." },
+          { title: "Tableau comparatif", text: "Claude compare les offres au métré des travaux principaux et remplit un tableau comparatif avec les colonnes budget, budget PC et référence. Lors des tests, les totaux correspondaient exactement à un tableau fait à la main." },
+          { title: "Dossier final", text: "Un clic produit la comparaison finale, l’offre retenue avec et sans prix, un rapport d’évaluation et une lettre d’attribution au format Word, après une liste de contrôle de validation." },
+        ],
+        highlights: [
+          "Architecture séparée\u00a0: une API Fastify avec validation Zod et SQLite, et un front-end Next.js qui n’accède à l’API que via un proxy côté serveur détenant le jeton.",
+          "Assistant vocal «\u00a0Lara\u00a0» (Ctrl+Espace, 5 langues, plus de 20 actions)\u00a0: il demande confirmation avant toute modification et la met en évidence à l’écran. La suppression se fait uniquement par clic, jamais à la voix.",
+          "File de tâches en arrière-plan avec progression en direct, notifications, historique d’audit complet (utilisateur, automatisation ou Lara) et recherche Ctrl+K dans les dossiers, fichiers et lignes de tableurs.",
+          "La sécurité d’abord\u00a0: lecture seule sur le système source, hachage des mots de passe scrypt, un processus et un dossier de données par utilisateur, tentatives de connexion limitées et accès HTTPS au réseau du bureau désactivé par défaut.",
+          "Fichiers Excel générés avec exceljs, avec une automatisation Excel en secours pour les classeurs que la bibliothèque ne sait pas lire. Thèmes clair et sombre avec un tableau de bord animé (Motion, Recharts).",
+        ],
+      },
       {
         name: "kyna.ai",
         tagline: "Recherche immobilière par IA",
@@ -219,7 +245,7 @@ const fr = {
     ],
   },
   contact: {
-    title: "Vous recrutez un développeur full stack & IA à Dubaï ?",
+    title: "Vous recrutez un développeur full stack & IA/LLM à Dubaï ?",
     lead: "Je peux commencer immédiatement. L’e-mail est le moyen le plus rapide de me joindre.",
     copyEmail: "Copier l’e-mail",
     emailCopied: "E-mail copié",
@@ -239,15 +265,15 @@ const fr = {
   },
   hire: {
     label: "Disponibilité pour un entretien",
-    title: "Vous recrutez un développeur full stack & IA\u00a0?",
+    title: "Vous recrutez un développeur full stack & IA/LLM\u00a0?",
     body: "Disponible immédiatement, je peux passer un entretien cette semaine, en personne à Dubaï ou en ligne.",
     cta: "Planifier un entretien",
     whatsapp: "WhatsApp",
     close: "Fermer",
   },
   chat: {
-    open: "Interroger l’IA sur moi",
-    openShort: "Demander à l’IA",
+    open: "Vous recrutez ? Demandez à mon IA",
+    openShort: "Demander à mon IA",
     hint: "👋 Vous recrutez ? Posez-moi vos questions sur Ashique",
     title: "Questions sur Ashique",
     subtitle: "Assistant IA · connaît son parcours et ses compétences",
@@ -284,7 +310,7 @@ const fr = {
     tryAsking: "Posez votre question à voix haute ou touchez-en une",
     listening: "À l’écoute…",
     speaking: "Parle…",
-    interruptHint: "Touchez l’avatar pour interrompre",
+    interruptHint: "Touchez la sphère pour interrompre",
     muted: "Micro coupé",
     mute: "Couper le micro",
     unmute: "Réactiver le micro",
@@ -294,19 +320,6 @@ const fr = {
   },
   footer: {
     builtWith: "Réalisé avec Next.js.",
-  },
-  intro: {
-    play: "Lancer l’intro",
-    close: "Fermer l’intro",
-    dialogLabel: "Intro : {name}, Développeur Full Stack & IA",
-    badge: "Disponible immédiatement · Dubaï, EAU",
-    role: "Développeur Full Stack (Frontend et Backend) — React.js, Next.js, Node.js et intégration IA/LLM",
-    skillsLabel: "Compétences clés",
-    techLabel: "Technologies que j’utilise",
-    skills: ["TypeScript", "React Native", "MongoDB", "RTL arabe/anglais", "Intégration de l’IA"],
-    copy: "Copier",
-    copied: "Copié !",
-    copyLabel: "Copier l’adresse e-mail",
   },
 } satisfies Dictionary;
 

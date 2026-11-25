@@ -3,8 +3,8 @@ export type Theme = "light" | "dark";
 export const THEME_STORAGE_KEY = "theme";
 
 export const themeColors: Record<Theme, string> = {
-  light: "#eef2f6",
-  dark: "#0e1520",
+  light: "#fbfbfc",
+  dark: "#0b0b0f",
 };
 
 // Runs in <head> before first paint so the page never flashes the wrong theme.

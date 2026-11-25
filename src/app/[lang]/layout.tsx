@@ -110,9 +110,9 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Ashique PJ",
-  jobTitle: "Full Stack & AI Developer",
+  jobTitle: "Full Stack & AI/LLM Developer",
   description:
-    "Full Stack & AI Developer in Dubai, UAE with 5+ years of experience building enterprise and AI-powered web applications using React.js, Next.js, TypeScript, Node.js, MongoDB, and the OpenAI, Claude, and Gemini APIs.",
+    "Full Stack & AI/LLM Developer in Dubai, UAE with 5+ years of experience building enterprise and AI-powered web applications using React.js, Next.js, TypeScript, Node.js, MongoDB, and the OpenAI, Claude, and Gemini APIs.",
   url: "https://ashiquedev.netlify.app",
   image: "https://ashiquedev.netlify.app/Ashique.JPG",
   email: "ashiquejabbar007@gmail.com",
@@ -128,7 +128,7 @@ const jsonLd = {
   alumniOf: { "@type": "CollegeOrUniversity", name: "Mahatma Gandhi University, Kerala" },
   hasOccupation: {
     "@type": "Occupation",
-    name: "Full Stack & AI Developer",
+    name: "Full Stack & AI/LLM Developer",
     occupationLocation: { "@type": "City", name: "Dubai" },
     skills: "React.js, Next.js, TypeScript, Tailwind CSS, Zustand, TanStack Query, Micro Frontends, React Native, LLM integration (OpenAI, Claude, Gemini), Node.js, Express, MongoDB, Passport.js, Zod, AWS, Nginx",
   },

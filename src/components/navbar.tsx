@@ -1,17 +1,33 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { Mail, Menu, X } from "lucide-react";
-import { contactInfo, navLinks } from "@/lib/data";
+import Image from "next/image";
+import { contactInfo, navLinks, personalInfo } from "@/lib/data";
 import CvButton from "@/components/cv-button";
 import ThemeToggle from "@/components/theme-toggle";
-import IntroShowcase from "@/components/intro-showcase";
 import LanguageSwitcher from "@/components/language-switcher";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 const NAME = "Ashique PJ";
+// Height of the floating navbar plus its top gap; the hero photo counts as "gone" once it passes this line
+const NAV_SPACE = 76;
+
+// Live time in Dubai for the status chip. Checked every 15 s; empty on the server, so the
+// prerendered page never shows a wrong time
+const subscribeClock = (tick: () => void) => {
+  const id = window.setInterval(tick, 15_000);
+  return () => window.clearInterval(id);
+};
+function useDubaiTime(locale: Locale) {
+  return useSyncExternalStore(
+    subscribeClock,
+    () => new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Dubai" }).format(new Date()),
+    () => "",
+  );
+}
 const sectionIds =navLinks.map((link) => link.href.slice(1));
 // A section counts as current once its top passes this share of the screen height
 const ACTIVE_LINE = 0.4;
@@ -23,6 +39,19 @@ const UNLOCK_AFTER_MS = 500;
 // Scroll work runs at most once per frame and only sets state when something changes.
 export default function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.nav;
+  const dubaiTime = useDubaiTime(locale);
+  // True once the hero photo has scrolled up behind the navbar: a small photo then slides in beside the name
+  const [photoDocked, setPhotoDocked] = useState(false);
+  useEffect(() => {
+    const photo = document.getElementById("hero-photo");
+    if (!photo) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setPhotoDocked(!entry.isIntersecting && entry.boundingClientRect.top < NAV_SPACE),
+      { rootMargin: `-${NAV_SPACE}px 0px 0px 0px` },
+    );
+    observer.observe(photo);
+    return () => observer.disconnect();
+  }, []);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -85,7 +114,7 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
     unlockTimer.current = setTimeout(() => (lockedTo.current = null), 1200);
   };
 
-  // Keys 1–4 jump to the sections (ignored while typing, in the intro, or with modifier keys);
+  // Keys 1–4 jump to the sections (ignored while typing, in a dialog, or with modifier keys);
   // Escape closes the mobile menu
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -134,10 +163,27 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
       >
         <a
           href="#home"
-          className="nav-name group me-auto flex shrink-0 items-center gap-2 sm:gap-2.5 whitespace-nowrap font-heading text-base sm:text-lg font-semibold"
+          className="nav-name group me-auto lg:me-0 flex shrink-0 items-center gap-2 sm:gap-2.5 whitespace-nowrap font-heading text-base sm:text-lg font-semibold"
         >
           {/* Letters rise in one by one on load and ripple on hover (globals.css .nav-name).
               Split for the animation only: screen readers get the plain name. */}
+          {/* Small photo: slides in from the left once the hero photo has scrolled away; the name moves over */}
+          <span
+            aria-hidden="true"
+            className={`grid shrink-0 overflow-hidden transition-[width,opacity,margin] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+              photoDocked ? "w-7 opacity-100" : "w-0 opacity-0 -me-2 sm:-me-2.5"
+            }`}
+          >
+            <Image
+              src={personalInfo.photo}
+              alt=""
+              width={28}
+              height={28}
+              className={`size-7 max-w-none rounded-full border border-border object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                photoDocked ? "translate-x-0" : "-translate-x-4 rtl:translate-x-4"
+              }`}
+            />
+          </span>
           <span className="sr-only">{NAME}</span>
           <span aria-hidden="true" className="flex">
             {[...NAME].map((ch, i) => (
@@ -146,12 +192,25 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
               </span>
             ))}
           </span>
-          <span className="relative flex size-2" title={dict.hero.available}>
+          <span className="relative flex size-2 lg:hidden" title={dict.hero.available}>
             <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60 motion-reduce:hidden" />
             <span className="relative size-2 rounded-full bg-emerald-500" />
             <span className="sr-only">{dict.hero.available}</span>
           </span>
         </a>
+        {/* Recruiters' first questions at a glance: open to work, in the UAE, and the time there now */}
+        <span className="hidden lg:inline-flex -ms-0.5 me-auto items-center gap-1.5 rounded-full border border-foreground/12 px-2.5 py-1 text-xs text-muted-foreground whitespace-nowrap">
+          <span className="relative flex size-1.5" aria-hidden="true">
+            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60 motion-reduce:hidden" />
+            <span className="relative size-1.5 rounded-full bg-emerald-500" />
+          </span>
+          {t.openToWork}
+          {dubaiTime && (
+            <time dir="ltr" className="font-mono tabular-nums text-foreground/80" aria-label={`${t.dubaiTime}: ${dubaiTime}`}>
+              {dubaiTime}
+            </time>
+          )}
+        </span>
 
         <ul className="hidden md:flex items-center gap-0.5" onPointerLeave={() => setHovered(null)}>
           {navLinks.map((link, i) => {
@@ -203,14 +262,15 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
         <span className="hidden md:block mx-1 h-5 w-px bg-foreground/15" aria-hidden="true" />
 
         <div className="flex items-center gap-1">
-          <IntroShowcase t={dict.intro} common={dict.common} />
           <LanguageSwitcher locale={locale} t={dict.language} />
           <ThemeToggle t={dict.theme} />
           {/* Icon only on tablets (the phone menu has its own), full label from lg */}
+          {/* File-chip style: outline, document icon, label and a small filled download square */}
           <CvButton
             common={dict.common}
             compact
-            className="ms-1 hidden md:inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-primary max-lg:w-9 lg:px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            chip
+            className="ms-1 hidden md:inline-flex h-9 items-center gap-2 rounded-lg border border-foreground/15 ps-1.5 lg:ps-3 pe-1.5 text-sm font-medium text-foreground transition-[border-color,translate] hover:border-primary/60 hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           />
           <button
             type="button"

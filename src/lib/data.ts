@@ -135,7 +135,19 @@ export const experiences = [
 ] as const;
 
 // Same order as Dictionary["projects"]["items"]
-export const projects: { stack: string[]; url?: string }[] = [
+// Screenshots live in public/projects/; `key` picks the caption in Dictionary["projects"]["shots"]
+export type ProjectShot = { src: string; width: number; height: number; key: "overview" | "record" | "lara" };
+
+export const projects: { stack: string[]; url?: string; screenshots?: ProjectShot[] }[] = [
+  {
+    stack: ["Next.js", "React", "TypeScript", "Node.js", "Fastify", "Playwright", "SQLite", "Zod", "exceljs", "Claude API", "Web Speech API", "Tailwind CSS"],
+    // Demo data only: made-up projects, suppliers and people
+    screenshots: [
+      { src: "/projects/procurement/overview.webp", width: 1600, height: 1000, key: "overview" },
+      { src: "/projects/procurement/record.webp", width: 1600, height: 1889, key: "record" },
+      { src: "/projects/procurement/lara.webp", width: 1600, height: 1000, key: "lara" },
+    ],
+  },
   { stack: ["Next.js (SSR/SSG)", "TypeScript", "Tailwind CSS", "Node.js", "OpenAI API"], url: "https://kyna.ai" },
   { stack: ["React.js", "TypeScript", "Zustand", "Material-UI", "Biometric SDKs"] },
   { stack: ["React.js", "TypeScript", "Zustand", "Material-UI"] },
@@ -157,4 +169,4 @@ export const CV_PATH = "/Ashique_PJ_Dubai_CV.pdf";
 // Filename the browser saves the CV as
 export const CV_FILENAME = "Ashique_PJ_CV.pdf";
 // Shown in the CV button's tooltip; update it when the PDF changes
-export const CV_SIZE = "236 KB";
+export const CV_SIZE = "243 KB";
