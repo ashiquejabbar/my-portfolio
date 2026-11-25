@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { BadgeCheck, Briefcase, CalendarCheck, Mail, MapPin, type LucideIcon } from "lucide-react";
+import { BadgeCheck, Briefcase, CalendarCheck, MapPin, type LucideIcon } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
 import { personalInfo, contactInfo } from "@/lib/data";
 import CvButton from "@/components/cv-button";
@@ -9,7 +9,7 @@ import HeroBackdrop from "@/components/hero-backdrop";
 import CodeStage from "@/components/code-stage";
 import { StackRow } from "@/components/stack-grid";
 import NamePronunciation from "@/components/name-pronunciation";
-import EmailChip from "@/components/email-chip";
+import EmailChip, { EmailCta } from "@/components/email-chip";
 import { BrandIcon, LinkedInIcon, whatsappUrl } from "@/components/brand-icons";
 
 // CSS animation (globals.css) so hero content is visible even before JS hydrates
@@ -134,13 +134,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             className="fade-rise mt-7 inline-flex max-w-full flex-wrap items-center gap-1 rounded-3xl sm:rounded-full border border-foreground/12 bg-foreground/[0.04] p-1 backdrop-blur-md"
             style={{ animationDelay: "0.6s" }}
           >
-            <a
-              href={`mailto:${contactInfo.email}`}
-              className={`${cta} hero-cta-primary group gap-2 px-5 bg-primary text-primary-foreground`}
-            >
-              <Mail size={17} aria-hidden="true" className="hero-cta-mail" />
-              {t.emailMe}
-            </a>
+            <EmailCta t={dict.contact} className={`${cta} hero-cta-primary bg-primary text-primary-foreground`} />
             <CvButton
               common={dict.common}
               showNote
