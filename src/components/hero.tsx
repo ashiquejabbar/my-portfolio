@@ -143,11 +143,14 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           >
             {/* Phones: the email button takes the whole first row; Download CV and the icons share the second */}
             <EmailCta t={dict.contact} className={`${cta} hero-cta-primary max-sm:w-full max-sm:justify-between bg-primary text-primary-foreground`} />
+            {/* Same file-chip look as the navbar's CV button: document icon, label, filled download circle */}
             <CvButton
               common={dict.common}
               showNote
-              iconSize={17}
-              className={`${pillItem} gap-2 px-4`}
+              chip
+              iconSize={15}
+              squareClassName="size-7 rounded-full"
+              className={`${pillItem} gap-2 ps-3.5 pe-1.5 border border-foreground/15 hover:border-primary/60`}
             />
             <span className="max-sm:hidden mx-0.5 h-5 w-px bg-foreground/15" aria-hidden="true" />
             {/* The two icons stay together: if a long CV label (German on small phones) leaves no room,

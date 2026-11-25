@@ -20,6 +20,10 @@ const ar = {
     downloadCv: "تنزيل السيرة الذاتية",
     cvDownloaded: "تم التنزيل",
     cvLanguageNote: "(بالإنجليزية)",
+    cvSaved: "تم حفظ {file}",
+    cvOpen: "فتح",
+    cvPages: "صفحتان",
+    cvClose: "إغلاق",
     email: "البريد الإلكتروني",
   },
   language: {

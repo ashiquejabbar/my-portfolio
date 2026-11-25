@@ -19,6 +19,10 @@ const de = {
     downloadCv: "Lebenslauf herunterladen",
     cvDownloaded: "Heruntergeladen",
     cvLanguageNote: "(auf Englisch)",
+    cvSaved: "{file} gespeichert",
+    cvOpen: "Öffnen",
+    cvPages: "2 Seiten",
+    cvClose: "Schließen",
     email: "E-Mail",
   },
   language: {

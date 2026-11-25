@@ -22,6 +22,11 @@ const en = {
     cvDownloaded: "Downloaded",
     // Empty in English; other languages say the CV itself is in English
     cvLanguageNote: "",
+    // "Saved" card after the CV downloads; {file} is the file name. cvPages: page count of the CV PDF (update if it changes)
+    cvSaved: "{file} saved",
+    cvOpen: "Open",
+    cvPages: "2 pages",
+    cvClose: "Close",
     email: "Email",
   },
   language: {

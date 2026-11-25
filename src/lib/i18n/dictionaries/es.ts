@@ -19,6 +19,10 @@ const es = {
     downloadCv: "Descargar CV",
     cvDownloaded: "Descargado",
     cvLanguageNote: "(en inglés)",
+    cvSaved: "{file} guardado",
+    cvOpen: "Abrir",
+    cvPages: "2 páginas",
+    cvClose: "Cerrar",
     email: "Correo",
   },
   language: {
