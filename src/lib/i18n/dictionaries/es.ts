@@ -47,14 +47,14 @@ const es = {
     toDark: "Cambiar al tema oscuro",
   },
   hero: {
-    headline: ["Creo apps web", "empresariales con", "IA integrada."],
+    headline: ["Creo apps web", "empresariales con", "IA y LLM integrados."],
     roleLine: "Desarrollador full stack (frontend y backend) en Dubái, EAU. React.js, Next.js, Node.js e integración de IA/LLM",
     intro:
       "Cinco años de React, Next.js, TypeScript y Node.js creando plataformas empresariales para los sectores público y privado en la India y Oriente Medio: control de acceso por roles con verificación biométrica, un buscador inmobiliario con IA para el mercado de Dubái y una app de networking para web y móvil.",
     ai: "Desarrollo funciones de IA generativa para aplicaciones web con las API de OpenAI, Claude y Google Gemini: diseño de prompts, salida JSON estructurada, respuestas en streaming y endpoints en Node.js que mantienen las claves de API en el servidor. Por ejemplo, la búsqueda inmobiliaria en lenguaje natural de kyna.ai y la reescritura con IA del resumen de perfil en Orbin.",
     available: "Me trasladé de la India a Dubái. Disponible de inmediato, con visado de visita",
     summary:
-      "**Cinco años** de Next.js, React, TypeScript y Node.js en **plataformas empresariales y gubernamentales** en la India y Oriente Medio. Añado **funciones de IA** con las API de OpenAI, Anthropic Claude y Google Gemini, como el buscador inmobiliario de **kyna.ai** y una **plataforma de automatización de compras** para licitaciones de construcción.",
+      "**Cinco años** de **Next.js**, **React**, TypeScript y **Node.js** en **plataformas empresariales y gubernamentales** en la India y Oriente Medio. Añado **funciones de IA/LLM** con las API de OpenAI, Anthropic Claude y Google Gemini, como el buscador inmobiliario de **kyna.ai** y una **plataforma de automatización de compras** para licitaciones de construcción.",
     facts: ["Dubái, EAU", "Visado de visita de EAU", "Incorporación inmediata", "Más de 5 años de experiencia"],
     emailMe: "Escríbeme",
     whatsappLabel: "Enviar mensaje por WhatsApp",

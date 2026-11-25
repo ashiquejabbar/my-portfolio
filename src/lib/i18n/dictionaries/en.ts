@@ -52,7 +52,7 @@ const en = {
     toDark: "Switch to dark theme",
   },
   hero: {
-    headline: ["I build enterprise", "web apps with", "AI built in."],
+    headline: ["I build enterprise", "web apps with", "AI and LLMs built in."],
     roleLine: "Full stack developer (frontend and backend) in Dubai, UAE. React.js, Next.js, Node.js and AI/LLM integration",
     intro:
       "Five years of Next.js, React, TypeScript and Node.js, building enterprise platforms for government and private sectors across India and the Middle East: role-based access with biometric verification, an AI property search for the Dubai market, and a networking app across web and mobile.",
@@ -61,7 +61,7 @@ const en = {
     // Short hero paragraph; **double stars** mark the highlighted words.
     // The longer intro and ai texts above stay: the AI chat reads them
     summary:
-      "**Five years** of Next.js, React, TypeScript and Node.js on **enterprise and government platforms** across India and the Middle East. I add **AI features** with the OpenAI, Anthropic Claude and Google Gemini APIs, like the property search behind **kyna.ai** and a **procurement automation platform** for construction tenders.",
+      "**Five years** of **Next.js**, **React**, TypeScript and **Node.js** on **enterprise and government platforms** across India and the Middle East. I add **AI/LLM features** with the OpenAI, Anthropic Claude and Google Gemini APIs, like the property search behind **kyna.ai** and a **procurement automation platform** for construction tenders.",
     // Quick facts under the name, in this order: location, visa, start date, experience
     facts: ["Dubai, UAE", "UAE visit visa", "Can join immediately", "5+ years experience"],
     emailMe: "Email me",

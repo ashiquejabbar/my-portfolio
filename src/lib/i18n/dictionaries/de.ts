@@ -47,14 +47,14 @@ const de = {
     toDark: "Zum dunklen Design wechseln",
   },
   hero: {
-    headline: ["Ich baue Web-Apps", "für Unternehmen", "mit integrierter KI."],
+    headline: ["Ich baue Web-Apps", "für Unternehmen", "mit KI und LLMs."],
     roleLine: "Full-Stack-Entwickler (Frontend und Backend) in Dubai, VAE. React.js, Next.js, Node.js und KI/LLM-Integration",
     intro:
       "Fünf Jahre React, Next.js, TypeScript und Node.js: Unternehmensplattformen für den öffentlichen und privaten Sektor in Indien und im Nahen Osten – rollenbasierte Zugriffskontrolle mit biometrischer Verifizierung, eine KI-gestützte Immobiliensuche für den Markt in Dubai und eine Networking-App für Web und Mobile.",
     ai: "Ich entwickle Funktionen mit generativer KI für Web-Apps mit den APIs von OpenAI, Claude und Google Gemini: Prompt-Design, strukturierte JSON-Ausgabe, Streaming-Antworten und Node.js-Endpunkte, die API-Schlüssel auf dem Server halten. Beispiele sind die Immobiliensuche in natürlicher Sprache hinter kyna.ai und die KI-Überarbeitung von Profilzusammenfassungen in Orbin.",
     available: "Von Indien nach Dubai gezogen. Ab sofort verfügbar, mit Besuchsvisum",
     summary:
-      "**Fünf Jahre** Next.js, React, TypeScript und Node.js auf **Unternehmens- und Behördenplattformen** in Indien und im Nahen Osten. Ich baue **KI-Funktionen** mit den APIs von OpenAI, Anthropic Claude und Google Gemini ein, etwa die Immobiliensuche hinter **kyna.ai** und eine **Plattform zur Beschaffungsautomatisierung** für Bauausschreibungen.",
+      "**Fünf Jahre** **Next.js**, **React**, TypeScript und **Node.js** auf **Unternehmens- und Behördenplattformen** in Indien und im Nahen Osten. Ich baue **KI/LLM-Funktionen** mit den APIs von OpenAI, Anthropic Claude und Google Gemini ein, etwa die Immobiliensuche hinter **kyna.ai** und eine **Plattform zur Beschaffungsautomatisierung** für Bauausschreibungen.",
     facts: ["Dubai, VAE", "VAE-Besuchsvisum", "Ab sofort verfügbar", "5+ Jahre Erfahrung"],
     emailMe: "E-Mail schreiben",
     whatsappLabel: "Nachricht über WhatsApp",

@@ -47,14 +47,14 @@ const fr = {
     toDark: "Passer au thème sombre",
   },
   hero: {
-    headline: ["Je crée des apps web", "d’entreprise avec", "l’IA intégrée."],
+    headline: ["Je crée des apps web", "d’entreprise avec", "IA et LLM intégrés."],
     roleLine: "Développeur full stack (frontend et backend) à Dubaï, EAU. React.js, Next.js, Node.js et intégration IA/LLM",
     intro:
       "Cinq ans de React, Next.js, TypeScript et Node.js à concevoir des plateformes d’entreprise pour les secteurs public et privé en Inde et au Moyen-Orient : contrôle d’accès par rôles avec vérification biométrique, recherche immobilière par IA pour le marché de Dubaï et application de réseau professionnel sur web et mobile.",
     ai: "Je développe des fonctionnalités d’IA générative pour des applications web avec les API OpenAI, Claude et Google Gemini\u00a0: conception des prompts, sortie JSON structurée, réponses en streaming et endpoints Node.js qui gardent les clés d’API côté serveur. Par exemple, la recherche immobilière en langage naturel de kyna.ai et la réécriture par IA du résumé de profil dans Orbin.",
     available: "Installé à Dubaï, venu d’Inde. Disponible immédiatement, avec un visa de visite",
     summary:
-      "**Cinq ans** de Next.js, React, TypeScript et Node.js sur des **plateformes d’entreprise et gouvernementales** en Inde et au Moyen-Orient. J’intègre des **fonctionnalités d’IA** avec les API OpenAI, Anthropic Claude et Google Gemini, comme la recherche immobilière de **kyna.ai** et une **plateforme d’automatisation des achats** pour les appels d’offres de construction.",
+      "**Cinq ans** de **Next.js**, **React**, TypeScript et **Node.js** sur des **plateformes d’entreprise et gouvernementales** en Inde et au Moyen-Orient. J’intègre des **fonctionnalités d’IA/LLM** avec les API OpenAI, Anthropic Claude et Google Gemini, comme la recherche immobilière de **kyna.ai** et une **plateforme d’automatisation des achats** pour les appels d’offres de construction.",
     facts: ["Dubaï, EAU", "Visa de visite EAU", "Disponible immédiatement", "Plus de 5 ans d’expérience"],
     emailMe: "M’écrire",
     whatsappLabel: "Écrire sur WhatsApp",
