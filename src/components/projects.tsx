@@ -113,14 +113,16 @@ export default function Projects({ t }: { t: Dictionary["projects"] }) {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={(e) => toggle(i, e.currentTarget)}
-                    className="group flex-1 flex items-center gap-4 px-5 py-5 sm:px-6 text-start"
+                    className="group flex-1 min-w-0 flex items-center gap-4 px-5 py-5 sm:px-6 text-start"
                   >
                     {/* Code-style index: 01, 02 … */}
                     <span className="w-7 shrink-0 font-mono text-sm tabular-nums" style={{ color: "var(--accent-ink)" }} aria-hidden="true">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="flex-1 min-w-0 sm:flex sm:items-baseline sm:gap-4">
-                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold group-hover:text-primary transition-colors">
+                      {/* Long German compounds ("Beschaffungsautomatisierung") must break on phones, or the row
+                          pushes the whole page wider than the screen */}
+                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold hyphens-auto [overflow-wrap:anywhere] group-hover:text-primary transition-colors">
                         {name}
                         {project.url && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-sans text-xs font-medium text-emerald-600 dark:text-emerald-400">

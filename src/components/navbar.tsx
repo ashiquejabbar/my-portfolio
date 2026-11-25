@@ -185,7 +185,8 @@ export default function Navbar({ locale, dict }: { locale: Locale; dict: Diction
             />
           </span>
           <span className="sr-only">{NAME}</span>
-          <span aria-hidden="true" className="flex">
+          {/* dir="ltr": the name is Latin, and a right-to-left page (Arabic) would lay the letters out backwards */}
+          <span aria-hidden="true" dir="ltr" className="flex">
             {[...NAME].map((ch, i) => (
               <span key={i} className="nav-name-char" style={{ "--i": i } as React.CSSProperties}>
                 {ch === " " ? " " : ch}
