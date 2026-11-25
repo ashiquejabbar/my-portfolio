@@ -95,6 +95,8 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
+      // That Escape is closing the chat or its menu, not this card
+      if (document.getElementById("cv-chat-menu") || document.documentElement.hasAttribute("data-chat-open")) return;
       setOpen(false);
       rememberDismissed();
     };
@@ -113,7 +115,10 @@ export default function HireToast({ t }: { t: Dictionary["hire"] }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.97 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="fixed bottom-[5.5rem] inset-x-4 sm:inset-x-auto sm:end-4 z-[60] sm:w-[23rem] rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)] p-4"
+          // Sits just above the "Ask my AI" button (cv-chat.tsx, top edge at 8rem), lined up with its
+          // side, so it never covers it. globals.css hides the chat hint while this shows, and hides
+          // this while the button's menu is open.
+          className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] inset-x-4 sm:inset-x-auto sm:end-6 z-[60] sm:w-[23rem] rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--shadow-raised)] p-4"
         >
           <div className="flex items-start gap-3">
             <span className="relative grid place-items-center size-9 shrink-0 rounded-lg bg-dune-soft/20 text-dune" aria-hidden="true">

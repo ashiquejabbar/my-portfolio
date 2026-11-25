@@ -899,6 +899,12 @@ html[data-chat-open] [data-hire-toast],
 body:has([data-hire-toast]) [data-chat-hint] {
   display: none;
 }
+/* The hire card sits right above the chat button, where the button's chat/voice menu opens:
+   it steps aside while that menu is open */
+body:has(#cv-chat-menu) [data-hire-toast] {
+  opacity: 0;
+  visibility: hidden;
+}
 /* Phones: the translation notice spans the screen bottom, so the chat button and hint wait until it's closed */
 @media (max-width: 639px) {
   body:has([data-translation-notice]) [data-chat-button],
