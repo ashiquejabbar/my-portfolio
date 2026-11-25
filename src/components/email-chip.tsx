@@ -28,12 +28,13 @@ function useCopyEmail() {
   return { copied, copy };
 }
 
-// Hero quick-fact chip: the email address (opens the mail app) with a copy button beside it
+// Hero quick-fact chip: the email address (opens the mail app) with a copy button beside it.
+// Hidden on phones, where the email button (EmailCta) sits just below with the same address.
 export default function EmailChip({ t }: { t: Dictionary["contact"] }) {
   const { copied, copy } = useCopyEmail();
 
   return (
-    <li className="inline-flex items-center rounded-full border border-border bg-card/60 text-xs font-medium text-foreground/85">
+    <li className="max-sm:hidden inline-flex items-center rounded-full border border-border bg-card/60 text-xs font-medium text-foreground/85">
       <a
         href={`mailto:${contactInfo.email}`}
         dir="ltr"
@@ -66,9 +67,9 @@ export function EmailCta({ t, className }: { t: Dictionary["contact"]; className
 
   return (
     <span className={`${className} gap-1 ps-4 pe-1`}>
-      <a href={`mailto:${contactInfo.email}`} dir="ltr" lang="en" className="group inline-flex items-center gap-2 h-full">
+      <a href={`mailto:${contactInfo.email}`} dir="ltr" lang="en" className="group inline-flex min-w-0 items-center gap-2 h-full">
         <Mail size={17} aria-hidden="true" className="hero-cta-mail shrink-0" />
-        <span className="underline-offset-4 group-hover:underline">{contactInfo.email}</span>
+        <span className="truncate underline-offset-4 group-hover:underline">{contactInfo.email}</span>
       </a>
       <button
         type="button"

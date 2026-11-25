@@ -137,6 +137,20 @@ export default function CvChat({ t, locale }: { t: Dictionary["chat"]; locale: L
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // While the hero's contact bar is on screen, html gets data-hero-cta; on phones globals.css then
+  // hides this launcher, which would otherwise sit on top of the bar's copy button
+  useEffect(() => {
+    const cta = document.getElementById("hero-cta");
+    if (!cta) return;
+    const root = document.documentElement;
+    const io = new IntersectionObserver(([entry]) => root.toggleAttribute("data-hero-cta", entry.isIntersecting));
+    io.observe(cta);
+    return () => {
+      io.disconnect();
+      root.removeAttribute("data-hero-cta");
+    };
+  }, []);
+
   // "Ask me about Ashique's CV" bubble: once per visit, a few seconds in, gone again after a while
   useEffect(() => {
     if (wasHinted()) return;

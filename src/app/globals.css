@@ -170,6 +170,13 @@
 :lang(ar) h1 {
   line-height: 1.25;
 }
+/* Phones: Arabic words are wider than the condensed Latin face, so the hero headline would run to
+   five lines and push the contact buttons off the first screen */
+@media (max-width: 639px) {
+  :lang(ar) #home h1 {
+    font-size: 2.375rem;
+  }
+}
 
 /* Hero headline: each word comes into focus (blur to sharp) while rising a little. Never fully transparent
    (starts at 15% opacity), so it counts as painted at once for Largest Contentful Paint */
@@ -821,6 +828,12 @@
     opacity: 0.18;
   }
 }
+/* Phones: the 16px gutters leave no empty space, so the logos would sit behind the photo and text */
+@media (max-width: 639px) {
+  .hero-floater {
+    display: none;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .line-rise,
@@ -904,6 +917,19 @@ body:has([data-hire-toast]) [data-chat-hint] {
 body:has(#cv-chat-menu) [data-hire-toast] {
   opacity: 0;
   visibility: hidden;
+}
+/* Phones: the chat button and hint wait while the hero contact bar is on screen (data-hero-cta, set in
+   cv-chat.tsx), so they don't cover its copy button; they slide in once the visitor scrolls past it */
+[data-chat-button] {
+  transition: opacity 250ms ease-out, translate 300ms cubic-bezier(0.22, 1, 0.36, 1), visibility 250ms;
+}
+@media (max-width: 639px) {
+  html[data-hero-cta]:not([data-chat-open]) [data-chat-button],
+  html[data-hero-cta] [data-chat-hint] {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 12px;
+  }
 }
 /* Phones: the translation notice spans the screen bottom, so the chat button and hint wait until it's closed */
 @media (max-width: 639px) {

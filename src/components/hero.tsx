@@ -49,7 +49,12 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         <div className="lg:col-span-7">
           {/* Photo beside the name and role, above the headline. z-10 keeps the voice menu above the
               animated headline and paragraphs below, which form their own layers */}
-          <Reveal delay={0.05} className="relative z-10 mb-8 flex items-center gap-4">
+          {/* Phones: a grid with the photo beside the name and role, and the quick facts on their own
+              full-width row below (the text column is `contents` there). sm and up: one row, as before */}
+          <Reveal
+            delay={0.05}
+            className="relative z-10 mb-8 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 sm:flex sm:gap-4"
+          >
             <Image
               // The navbar watches this photo: once it scrolls away, a small copy slides in beside the name
               id="hero-photo"
@@ -58,9 +63,9 @@ export default function Hero({ dict }: { dict: Dictionary }) {
               width={72}
               height={72}
               priority
-              className="size-[4.5rem] shrink-0 rounded-full object-cover object-top border border-border"
+              className="row-span-2 size-16 sm:size-[4.5rem] shrink-0 rounded-full object-cover object-top border border-border"
             />
-            <div className="min-w-0">
+            <div className="min-w-0 max-sm:contents">
               {/* div, not p: the voice picker inside holds a menu, which a <p> can't contain */}
               <div className="flex items-center gap-1 font-medium text-foreground">
                 {personalInfo.name}
@@ -70,7 +75,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
                 {t.roleLine}
               </p>
               {/* Quick facts a recruiter looks for first: location, visa, start date, experience */}
-              <ul className="mt-3 flex flex-wrap gap-1.5">
+              <ul className="col-span-2 mt-4 sm:mt-3 flex flex-wrap gap-1.5">
                 {t.facts.map((fact, i) => {
                   const Icon = factIcons[i] ?? BadgeCheck;
                   const isStart = i === 2;
@@ -131,17 +136,23 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           {/* Connected pill: all four contact actions in one glass bar, Email me highlighted. Rises in as one
               piece (CSS, so it shows before hydration); hover motion lives in globals.css (.hero-cta) */}
           <div
-            className="fade-rise mt-7 inline-flex max-w-full flex-wrap items-center gap-1 rounded-3xl sm:rounded-full border border-foreground/12 bg-foreground/[0.04] p-1 backdrop-blur-md"
+            // cv-chat.tsx watches this bar: on phones the floating "Ask my AI" button waits until it scrolls away
+            id="hero-cta"
+            className="fade-rise mt-7 flex w-full sm:inline-flex sm:w-auto max-w-full flex-wrap items-center gap-1 rounded-3xl sm:rounded-full border border-foreground/12 bg-foreground/[0.04] p-1 backdrop-blur-md"
             style={{ animationDelay: "0.6s" }}
           >
-            <EmailCta t={dict.contact} className={`${cta} hero-cta-primary bg-primary text-primary-foreground`} />
+            {/* Phones: the email button takes the whole first row; Download CV and the icons share the second */}
+            <EmailCta t={dict.contact} className={`${cta} hero-cta-primary max-sm:w-full max-sm:justify-between bg-primary text-primary-foreground`} />
             <CvButton
               common={dict.common}
               showNote
               iconSize={17}
               className={`${pillItem} gap-2 px-4`}
             />
-            <span className="mx-0.5 h-5 w-px bg-foreground/15" aria-hidden="true" />
+            <span className="max-sm:hidden mx-0.5 h-5 w-px bg-foreground/15" aria-hidden="true" />
+            {/* The two icons stay together: if a long CV label (German on small phones) leaves no room,
+                they move to the next row as a pair instead of LinkedIn sitting alone */}
+            <span className="inline-flex gap-1">
             <a
               href={whatsappUrl}
               target="_blank"
@@ -164,6 +175,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             >
               <LinkedInIcon />
             </a>
+            </span>
           </div>
         </div>
 
